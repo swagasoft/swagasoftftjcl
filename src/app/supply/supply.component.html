@@ -1,0 +1,225 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons> 
+    <div class="row d-flex justify-content-center font-weight-bold">
+      SUPPLY ENTRY
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card class="p-3 aqua-gradient tezt-white">
+    <!-- select filter -->
+    <ion-item color="light" >
+      <ion-label color="dark" class="text-center">select outlet</ion-label>
+      <select (change)="selectOutlet($event)"  >
+        <option *ngFor="let item of allOutlet" [value]="item._id">{{item.code}}</option>
+       
+      </select>
+    </ion-item>
+  </ion-card>
+<ion-card  class="aqua-gradient text-white mb-5">
+  <ion-row>
+  <th class="text-center text-uppercase">{{singleOutlet?.name}} </th>
+  <p class="ml-4">{{singleOutlet?.location}} </p>
+</ion-row>
+<hr>
+<form  #badstock="ngForm" (submit)="badstock.valid && submitForm()">
+
+  <ion-row>
+    <ion-col>
+  <ion-item>
+    <div  class="text-input mb-1">
+      <ion-label position="floating">Pineapple</ion-label>
+      <ion-input  type="number" #pineapple="ngModel" name="pineapple" 
+      [(ngModel)]="model.pineapple" required="true"></ion-input>
+  </div>
+</ion-item>
+</ion-col>
+<ion-col>
+  <ion-item>
+    <div  class="text-input mb-1">
+      <ion-label position="floating">sample</ion-label>
+      <ion-input  type="number" #p_samp="ngModel" name="p_samp" 
+      [(ngModel)]="model.p_samp" required="true"></ion-input>
+  </div>
+</ion-item>
+</ion-col>
+  <ion-col>
+      <div  class="text-input mb-1">
+        <ion-label position="floating" color="success">capacity</ion-label>
+        <p *ngIf="singleOutlet?.p_max">{{singleOutlet?.p_max | number}} pineapples</p>
+    </div>
+  </ion-col>
+</ion-row>
+<ion-row>
+  <ion-col>
+<ion-item>
+  <div>
+    <ion-label position="floating">Orange</ion-label>
+    <ion-input  type="number" #orange="ngModel" name="orange" 
+    [(ngModel)]="model.orange" required="true"></ion-input>
+</div>
+</ion-item>
+</ion-col>
+<ion-col>
+  <ion-item>
+    <div  class="text-input mb-1">
+      <ion-label position="floating">sample</ion-label>
+      <ion-input  type="number" #o_samp="ngModel" name="o_samp" 
+      [(ngModel)]="model.o_samp" required="true"></ion-input>
+  </div>
+</ion-item>
+</ion-col>
+<ion-col>
+    <div  >
+      <ion-label position="floating" color="success">capacity</ion-label>
+      <p *ngIf="singleOutlet?.p_max">{{singleOutlet?.o_max | number}} oranges</p>
+  </div>
+</ion-col>
+</ion-row>
+<ion-row>
+  <ion-col>
+<ion-item>
+  <div>
+    <ion-label position="floating">Watermel</ion-label>
+    <ion-input  type="number" #watermelon="ngModel" name="watermelon" 
+    [(ngModel)]="model.watermelon" required="true"></ion-input>
+</div>
+</ion-item>
+</ion-col>
+<ion-col>
+  <ion-item>
+    <div  class="text-input mb-1">
+      <ion-label position="floating">sample</ion-label>
+      <ion-input  type="number" #w_samp="ngModel" name="w_samp" 
+      [(ngModel)]="model.w_samp" required="true"></ion-input>
+  </div>
+</ion-item>
+</ion-col>
+<ion-col>
+    <div  >
+      <ion-label position="floating" color="success">capacity</ion-label>
+      <p *ngIf="singleOutlet?.w_max">{{singleOutlet?.w_max | number}} watermelon</p>
+  </div>
+</ion-col>
+</ion-row>
+<ion-row>
+  <ion-col>
+<ion-item>
+  <div>
+    <ion-label position="floating">Tigernut</ion-label>
+    <ion-input  type="number" #tigernut="ngModel" name="tigernut" 
+    [(ngModel)]="model.tigernut" required="true"></ion-input>
+</div>
+</ion-item>
+</ion-col>
+<ion-col>
+  <ion-item>
+    <div  class="text-input mb-1">
+      <ion-label position="floating">sample</ion-label>
+      <ion-input  type="number" #t_samp="ngModel" name="t_samp" 
+      [(ngModel)]="model.t_samp" required="true"></ion-input>
+  </div>
+</ion-item>
+</ion-col>
+<ion-col>
+    <div  >
+      <ion-label position="floating" color="success">capacity</ion-label>
+      <p *ngIf="singleOutlet?.t_max">{{singleOutlet?.t_max | number}} tigernuts</p>
+  </div>
+</ion-col>
+</ion-row>
+<ion-row>
+  <ion-col>
+<ion-item>
+  <div>
+    <ion-label position="floating">Carrot</ion-label>
+    <ion-input  type="number" #carrot="ngModel" name="carrot" 
+    [(ngModel)]="model.carrot" required="true"></ion-input>
+</div>
+</ion-item>
+</ion-col>
+<ion-col>
+  <ion-item>
+    <div  class="text-input mb-1">
+      <ion-label position="floating">sample</ion-label>
+      <ion-input  type="number" #c_samp="ngModel" name="c_samp" 
+      [(ngModel)]="model.c_samp" required="true"></ion-input>
+  </div>
+</ion-item>
+</ion-col>
+<ion-col>
+    <div  >
+      <ion-label position="floating" color="success">capacity</ion-label>
+      <p *ngIf="singleOutlet?.c_max">{{singleOutlet?.c_max | number}} carrots</p>
+  </div>
+</ion-col>
+</ion-row>
+<ion-row>
+  <ion-col>
+<ion-item>
+  <div>
+    <ion-label position="floating">Sugercane</ion-label>
+    <ion-input  type="number" #sugercane="ngModel" name="sugercane" 
+    [(ngModel)]="model.sugarcane" required="true"></ion-input>
+</div>
+</ion-item>
+</ion-col>
+<ion-col>
+  <ion-item>
+    <div  class="text-input mb-1">
+      <ion-label position="floating">sample</ion-label>
+      <ion-input  type="number" #s_samp="ngModel" name="s_samp" 
+      [(ngModel)]="model.s_samp" required="true"></ion-input>
+  </div>
+</ion-item>
+</ion-col>
+<ion-col>
+    <div  >
+      <ion-label position="floating" color="success">capacity</ion-label>
+      <p *ngIf="singleOutlet?.s_max">{{singleOutlet?.s_max | number}} sugarcane</p>
+  </div>
+</ion-col>
+</ion-row>
+<ion-row>
+  <ion-col>
+<ion-item>
+  <div>
+    <ion-label position="floating">Slg</ion-label>
+    <ion-input  type="number" #slg="ngModel" name="slg" 
+    [(ngModel)]="model.slg" required="true"></ion-input>
+</div>
+</ion-item>
+</ion-col>
+<ion-col>
+  <ion-item>
+    <div  class="text-input mb-1">
+      <ion-label position="floating">sample</ion-label>
+      <ion-input  type="number" #slg_samp="ngModel" name="slg_samp" 
+      [(ngModel)]="model.slg_samp" required="true"></ion-input>
+  </div>
+</ion-item>
+</ion-col>
+<ion-col>
+    <div  >
+      <ion-label position="floating" color="success">capacity</ion-label>
+      <p *ngIf="singleOutlet?.slg_max">{{singleOutlet?.slg_max | number}} slg</p>
+  </div>
+</ion-col>
+</ion-row>
+
+<div class="row d-flex justify-content-center">
+  <ion-button [disabled]="!singleOutlet?.name" type="submit"  color="success"> SUBMIT</ion-button>
+  </div>
+</form>
+</ion-card>
+
+       <!-- loading -->
+<div *ngIf="loading" class="spinner">
+  <div class="loader"></div>
+</div>
+</ion-content>

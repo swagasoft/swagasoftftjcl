@@ -1,0 +1,57 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-title class="text-center">LOGIN</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="content">
+
+    <div class="p-1">
+    
+      <ion-card >
+      
+        
+  <form  class="mt-1 form fixed" #loginForm="ngForm" name="form"  (submit)="loginForm.valid && login(loginForm)">
+    <img class="navbar-brand" height="200" src="../../assets/icon/logo.jpg">
+
+         <div *ngIf="loading"><ion-progress-bar type="indeterminate"></ion-progress-bar></div>
+
+          <ion-item  class="text-input mb-1">
+              <ion-label class="ml-3" position="stacked">Phone</ion-label>
+              <ion-input class="ml-3" type="tel" #number name="number" clearInput [(ngModel)]="model.number"
+                autocomplete="off"  minlength="11"  required="true"  ></ion-input>
+          </ion-item>
+          <div *ngIf="loginForm.submitted && !number.value">
+              <small class="error">phone is required</small>
+          </div>
+          
+           
+          <ion-item class="text-input mb-1">
+              <ion-label   position="stacked">Password</ion-label>
+          <ion-input class="ml-3" type="password" input #password name="password" minlength="6"
+           [(ngModel)]="model.password" clearInput required="true">
+            <ion-icon (click)="password.type=password.type=='password'?'text':'password'" size="medium" name="eye"></ion-icon>
+
+          </ion-input>
+        </ion-item>
+        <div *ngIf="loginForm.submitted && !password.value">
+          <small class="error">password is required</small>
+        </div>
+          
+        <div class="justify-content-center row pt-2"  #submitBtn>
+          <ion-button  [disabled]="loading" size="medium"  type="submit" color="success" (submit)="login(loginForm)"
+          >LOGIN </ion-button>
+      </div>
+        
+        
+       
+       
+  
+      
+     
+        </form>
+      </ion-card>
+      </div>
+      </div>
+</ion-content>

@@ -1,0 +1,67 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <div class="row d-flex justify-content-center font-weight-bold">
+      FRUIT 
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <form>
+
+      <ion-item color="" >
+       <ion-label class="text-center">select fruit size</ion-label>
+       <ion-select select="success"  #select="ngModel" interface="popover" (ngModelChange)="selectChange($event)" 
+       [(ngModel)]="model.filterOptions" name="select">
+         <ion-select-option  value="very-small">very small</ion-select-option>
+         <ion-select-option  value="small">small</ion-select-option>
+         <ion-select-option  value="medium">medium</ion-select-option>
+         <ion-select-option  value="big">big</ion-select-option>
+         <ion-select-option  value="very-big">very big</ion-select-option>
+       </ion-select>
+     </ion-item>
+
+       <ion-row>
+      <ion-item class="bg-dark">
+        <div  class="text-input mb-1">
+        <ion-label position="floating">Description</ion-label>
+        <ion-input  type="text" #description="ngModel" name="description" 
+        [(ngModel)]="fruitModel.description" placeholder="e.g tigernut"
+          autocomplete="off" required="true"></ion-input>
+    </div>
+      </ion-item>
+      <ion-item class="bg-dark">
+        <div  class="text-input mb-1">
+        <ion-label position="floating">Quantity</ion-label>
+        <ion-input  type="number" #quantity="ngModel" name="quantity" 
+        [(ngModel)]="fruitModel.quantity"
+          autocomplete="off" required="true"></ion-input>
+    </div>
+      </ion-item>
+    </ion-row>
+    <ion-row>
+      <ion-item class="bg-dark">
+        <div  class="text-input mb-1">
+        <ion-label position="floating">Amount</ion-label>
+        <ion-input  type="number" #amount="ngModel" name="amount" 
+        [(ngModel)]="fruitModel.amount"
+          autocomplete="off" required="true"></ion-input>
+    </div>
+      </ion-item>
+      <ion-item class="bg-dark">
+        <div  class="text-input mb-1">
+        <ion-label position="floating">Suplier</ion-label>
+        <ion-input  type="texr" #suplier="ngModel" name="suplier" 
+        [(ngModel)]="fruitModel.suplier"
+          autocomplete="off" required="true"></ion-input>
+    </div>
+      </ion-item>
+    </ion-row>
+    <ion-button color="success">submit</ion-button>
+  </form>
+</ion-content>

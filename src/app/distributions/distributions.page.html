@@ -1,0 +1,251 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons> 
+    <div class="row d-flex justify-content-center font-weight-bold">
+      DAILY DISTRIBUTION
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+
+
+  <ion-refresher #refresherRef (ionRefresh)="doRefresh($event)" slot="fixed" >
+    <ion-refresher-content>
+    </ion-refresher-content>
+  </ion-refresher>
+     <!-- distribution table.. -->
+     <div class="table-responsive text-nowrap " *ngIf="!showbadStockForm">
+      <table class="table blue-gradient text-white" id="dist">
+        <thead>
+          <tr>
+            <th scope="col-sm">Products</th>
+            <th scope="col-sm">Opening <br> Stock</th>
+            <th scope="col-sm">Produced <br> Stock</th>
+            <th scope="col-sm">Bad <br> Stock</th>
+            <th scope="col-sm">Supplied <br> Stock</th>
+            <th scope="col-sm">Balance <br> Stock</th>
+          
+          </tr>
+        </thead>
+        <tbody>
+          <tr >
+            <th scope="row" > Pineapple </th>
+            <td>{{products?.open_p}} </td>
+            <td>{{ products?.prod_p}} </td>
+            <td>{{products?.bad_p}} </td>
+            <td>{{products?.sup_p}} </td>
+            <td>{{products?.open_p + products?.prod_p - (products?.bad_p) - (products?.sup_p)}} </td>
+           
+          </tr>
+          <tr>
+            <th scope="row">Orange</th>
+            <td>{{products?.open_o}} </td>
+            <td>{{ products?.prod_o}} </td>
+            <td>{{products?.bad_o}} </td>
+            <td>{{products?.sup_o}} </td>
+            <td>{{products?.open_o + products?.prod_o - products?.bad_o - products?.sup_o}} </td>
+          </tr>
+          <tr>
+            <th scope="row">Watermelon</th>
+            <td>{{products?.open_w}} </td>
+            <td>{{ products?.prod_w}} </td>
+            <td>{{products?.bad_w}} </td>
+            <td>{{products?.sup_w}} </td>
+            <td>{{products?.open_w + products?.prod_w - products?.bad_w - products?.sup_w}} </td>
+          </tr>
+           <tr>
+            <th scope="row">Tigernut</th>
+            <td>{{products?.open_t}} </td>
+            <td>{{ products?.prod_t}} </td>
+            <td>{{products?.bad_t}} </td>
+            <td>{{products?.sup_t}} </td>
+            <td>{{products?.open_t + products?.prod_t  - (products?.bad_t) - products?.sup_t}} </td>
+          </tr>
+          <tr>
+            <th scope="row">Carrot</th>
+            <td>{{products?.open_c}} </td>
+            <td>{{ products?.prod_c}} </td>
+            <td>{{products?.bad_c}} </td>
+            <td>{{products?.sup_c}} </td>
+            <td>{{products?.open_c + products?.prod_c - products?.bad_c - products?.sup_c}} </td>
+          </tr>
+          <tr>
+            <th scope="row">Sugarcane</th>
+            <td>{{products?.open_s}} </td>
+            <td>{{ products?.prod_s}} </td>
+            <td>{{products?.bad_s}} </td>
+            <td>{{products?.sup_s}} </td>
+            <td>{{products?.open_s + products?.prod_s - products?.bad_s - products?.sup_s}} </td>
+          </tr>
+          <tr>
+            <th scope="row">Slg</th>
+            <td>{{products?.open_slg}} </td>
+            <td>{{ products?.prod_slg}} </td>
+            <td>{{products?.bad_slg}} </td>
+            <td>{{products?.sup_slg}} </td>
+            <td>{{products?.open_slg + products?.prod_slg - products?.bad_slg - products?.sup_slg}} </td>
+          </tr>
+          <tr>
+            <th scope="row">Total</th>
+            <td>{{products?.open_p + products?.open_o + products?.open_w + products?.open_t + products?.open_c + products?.open_s + products?.open_slg}}</td>
+            <td>{{products?.prod_p + products?.prod_o + products?.prod_w + products?.prod_t + products?.prod_c + products?.prod_s + products?.prod_slg}}</td>
+            <td>{{products?.bad_p + products?.bad_o + products?.bad_w + products?.bad_t + products?.bad_c + products?.bad_s + products?.bad_slg}}</td>
+            <td>{{products?.sup_p + products?.sup_o + products?.sup_w + products?.sup_t + products?.sup_c + products?.sup_s + products?.sup_slg}}</td>
+
+
+            <td>{{products?.open_slg + products?.open_s + products?.open_c + products?.open_t 
+              + products?.open_w + products?.open_o + products?.open_p + products?.prod_p 
+               + products?.prod_o +products?.prod_w + products?.prod_t 
+               + products?.prod_c + products?.prod_s + products?.prod_slg 
+              - products?.bad_p - products?.sup_p - products?.bad_o - products?.sup_o
+                - products?.bad_w - products?.sup_w - products?.bad_t - products?.sup_t
+                 - products?.bad_c - products?.sup_c - products?.bad_s - products?.sup_s
+                    - products?.bad_slg - products?.sup_slg}} </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- list of supplies -->
+    <div class="mb-5">
+      <p class="text-center font-weight-bold"> SUPPLY LIST</p>
+    <ion-card class="blue-gradient text-white" *ngFor="let item of supplies">
+      <ion-row class="mb-0 pb-0">
+        <p><th class="pt-3">{{item?.outlet}} </th></p>
+        <!-- <p>{{item?.admin}} </p> -->
+        <ion-col>
+        <ion-row>
+          <ion-col>
+            <th>P</th>
+            <P>{{item?.pineapple}} </P>
+          </ion-col> 
+           <ion-col>
+            <th>O</th>
+            <P>{{item?.orange}} </P>
+          </ion-col> 
+           <ion-col>
+            <th>W</th>
+            <P>{{item?.watermelon}} </P>
+          </ion-col>
+          <ion-col>
+            <th>T</th>
+            <P>{{item?.tigernut}} </P>
+          </ion-col>
+          <ion-col>
+            <th>C</th>
+            <P>{{item?.carrot}} </P>
+          </ion-col>
+           <ion-col>
+            <th>S</th>
+            <P>{{item?.sugarcane}} </P>
+          </ion-col>
+           <ion-col>
+            <th>SLG</th>
+            <P>{{item?.slg}} </P>
+          </ion-col>
+          
+        </ion-row>
+      </ion-col>
+      </ion-row>
+      <small class="text-right ">AXIS ===> {{item?.axis}} </small>
+    </ion-card>
+  </div>
+<!-- end supply list -->
+
+
+
+    <form *ngIf="showbadStockForm" #badstock="ngForm"
+      (submit)="badstock.valid && sunmitBadstock(badstock)">
+      
+      <ion-grid>
+        <ion-row>
+        <ion-item>
+        <div  class="text-input mb-1">
+          <ion-label position="floating">Pineapple</ion-label>
+          <ion-input  type="number" #bad_p="ngModel" name="bad_p" 
+          [(ngModel)]="model.bad_p" required="true"></ion-input>
+      </div>
+    </ion-item>
+    <ion-item>
+      <div  class="text-input mb-1">
+        <ion-label position="floating">Orange</ion-label>
+        <ion-input  type="number" #bad_o="ngModel" name="bad_o" 
+        [(ngModel)]="model.bad_o" required="true"></ion-input>
+    </div>
+  </ion-item>
+  <ion-item>
+    <div  class="text-input mb-1">
+      <ion-label position="floating">watermelon</ion-label>
+      <ion-input  type="number" #bad_w="ngModel" name="bad_w" 
+      [(ngModel)]="model.bad_w" required="true"></ion-input>
+  </div>
+</ion-item>
+<ion-item>
+  <div  class="text-input mb-1">
+    <ion-label position="floating">tigernut</ion-label>
+    <ion-input  type="number" #bad_t="ngModel" name="bad_t" 
+    [(ngModel)]="model.bad_t" required="true"></ion-input>
+</div>
+</ion-item>
+<ion-item>
+  <div  class="text-input mb-1">
+    <ion-label position="floating">carrot</ion-label>
+    <ion-input  type="number" #bad_c="ngModel" name="bad_c" 
+    [(ngModel)]="model.bad_c" required="true"></ion-input>
+</div>
+</ion-item>
+<ion-item>
+  <div  class="text-input mb-1">
+    <ion-label position="floating">sugarcane</ion-label>
+    <ion-input  type="number" #bad_s="ngModel" name="bad_s" 
+    [(ngModel)]="model.bad_s" required="true"></ion-input>
+</div>
+<ion-item>
+  <div  class="text-input mb-1">
+    <ion-label position="floating">slg</ion-label>
+    <ion-input  type="number" #bad_slg="ngModel" name="bad_slg" 
+    [(ngModel)]="model.bad_slg" required="true"></ion-input>
+</div>
+</ion-item>
+</ion-item>
+</ion-row>
+</ion-grid>
+<div class="row d-flex justify-content-center">
+<ion-button type="submit"  color="success"> SUBMIT</ion-button>
+</div>
+    </form>
+ 
+      <!-- loading -->
+<div *ngIf="loading" class="spinner">
+  <div class="loader"></div>
+</div>
+
+
+
+<ion-fab horizontal="start" vertical="bottom" slot="fixed">
+  <ion-fab-button color="success">
+    <ion-icon name="alert"></ion-icon>
+  </ion-fab-button>
+  <ion-fab-list side="top">
+    <ion-button color="medium" (click)="closeRecord(model.id)"> 
+      <a class=" info text-white" ><ion-icon name="chatbubbles"></ion-icon>Close Record </a>
+    </ion-button>
+    <ion-button color="danger" (click)="badStockForm()">
+      <a class="info text-white" ><ion-icon name="help"></ion-icon>Register Bad stock </a>
+    </ion-button>
+     <ion-button color="success" [routerLink]="['/supply']">
+      <a class="info text-white" ><ion-icon name="reader"></ion-icon>Supply Outlet </a>
+    </ion-button>
+    <ion-button *ngIf="!products?.open_p" color="success" [routerLink]="['/production']">
+      <a class="info text-white" > <ion-icon name="list"></ion-icon>Submit Production </a>
+    </ion-button>
+  </ion-fab-list>
+</ion-fab>
+
+
+</ion-content>

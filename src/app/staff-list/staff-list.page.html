@@ -1,0 +1,245 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <div class="row d-flex justify-content-center font-weight-bold">
+      STAFFS
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-fab *ngIf="showList" (click)="addStaff()"  vertical="top" horizontal="end" slot="fixed">
+    <ion-fab-button   color="success">
+      <ion-icon  name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-fab *ngIf="showform" (click)="cancelForm()"  vertical="top" horizontal="end" slot="fixed">
+    <ion-fab-button   color="danger">
+      <ion-icon  name="close"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <!-- staff list  -->
+    <div *ngIf="showList" class="pt-5">
+
+      <ion-col>
+        <!-- select options -->
+      <ion-card>
+        <ion-item class="bg-dark">
+        <ion-label class="text-center">select by department</ion-label>
+        <ion-select select="success" interface="popover" name="accountType"
+         (ngModelChange)="selectCategory($event)"  [(ngModel)]="model.department"
+       >
+       <ion-select-option  value="ADMINISTRATOR">ADMINISTRATOR</ion-select-option>
+       <ion-select-option  value="MANAGEMENT">MANAGEMENT</ion-select-option>
+       <ion-select-option  value="TECHNICAL">TECHNICAL</ion-select-option>
+       <ion-select-option  value="PRODUCTION">PRODUCTION</ion-select-option>
+       <ion-select-option  value="MERCHANDISER">MERCHANDISER</ion-select-option>
+       <ion-select-option  value="CLEANER">CLEANER</ion-select-option>
+       <ion-select-option  value="SECURITY">SECURITY</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-card>
+       </ion-col>
+
+      <ion-card *ngFor="let item of staffList" class="m-2 p-0 mb-5 font-weight-bold">
+        <ion-card-title class="text-center text-white bg-dark">{{item.fullname}} </ion-card-title>
+        <ion-col>
+          
+        </ion-col>
+        <ion-row>
+          <ion-col>
+            <p class="text-white success-color-dark">phone</p>
+            <p>{{item.phone}}</p>
+          </ion-col>
+           <ion-col>
+            <p class="text-white success-color-dark">Department</p>
+            <p>{{item.department}}</p>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <p class="text-white success-color-dark">Account N0</p>
+            <p>{{item.bankNumber}} </p>
+            <p></p>
+          </ion-col> 
+          <ion-col>
+            <p class="text-white success-color-dark">Account Type</p>
+            <p>{{item.bankAccountType}} </p>
+            <p></p>
+          </ion-col>
+          <ion-col>
+            <p class="text-white success-color-dark">Account Name</p>
+            <p>{{item.bankAccountName}} </p>
+          </ion-col>
+        </ion-row>
+        
+        <ion-row>
+          <ion-col>
+        <small class="text-white text-center success-color-dark">{{item.created_at | date:'short'}} </small>
+        
+          </ion-col>
+          <ion-col>
+            <ion-icon (click)="penalizeStaff(item._id, item.fullname)" color="info" size="large" name="cut"></ion-icon>
+          </ion-col>
+          <ion-col>
+            <ion-icon (click)="deleteStaff(item._id, item.fullname)" color="danger"  size="large" name="trash"></ion-icon>
+          </ion-col>
+         
+        </ion-row>
+      </ion-card>
+    </div>
+  <!-- end staff list  -->
+
+  <div>
+    <ion-card *ngIf="showform">
+      <ion-card-header class="text-center bg-dark text-white">CREATE STAFF</ion-card-header>
+      <ion-card-content>
+        <form #staffForm="ngForm"  (submit)="staffForm.valid && submitStaff(staffForm)">
+          
+          <ion-col >
+            <ion-item class="bg-dark">
+              <div  class="text-input mb-1">
+              <ion-label position="floating">fullname</ion-label>
+              <ion-input  type="text" #fullname="ngModel" name="fullname" 
+              [(ngModel)]="model.fullname"
+                autocomplete="off" required="true"></ion-input>
+          </div>
+            </ion-item>
+            <small class="error text-danger" *ngIf="staffForm.submitted && !fullname.value"> fullname is required</small>
+          </ion-col>
+
+          <ion-col>
+            <ion-item class="bg-dark">
+              <div  class="text-input mb-1">
+              <ion-label position="floating">phone</ion-label>
+              <ion-input  type="text" #phone="ngModel" name="phone" 
+              [(ngModel)]="model.phone"
+                autocomplete="off" required="true"></ion-input>
+          </div>
+            </ion-item>
+            <small class="error text-danger" *ngIf="staffForm.submitted && !phone.value"> phone is required</small>
+          </ion-col>
+
+          <ion-col>
+            <ion-item class="bg-dark">
+              <div  class="text-input mb-1">
+              <ion-label position="floating">address</ion-label>
+              <ion-input  type="text" #address="ngModel" name="address" 
+              [(ngModel)]="model.address"
+                autocomplete="off" required="true"></ion-input>
+          </div>
+            </ion-item>
+            <small class="error text-danger" *ngIf="staffForm.submitted && !fullname.value"> address is required</small>
+          </ion-col>
+
+          <ion-row>
+            <ion-col>
+              <ion-item class="bg-dark">
+                <div  class="text-input mb-1">
+                <ion-label position="floating">bank</ion-label>
+                <ion-input  type="text" #bank="ngModel" name="bank" 
+                [(ngModel)]="model.bank"
+                  autocomplete="off" required="true"></ion-input>
+            </div>
+              </ion-item>
+               <small class="error text-danger" *ngIf="staffForm.submitted && !bank.value"> bank is required</small>
+             </ion-col>
+             <ion-col>
+              <ion-item class="bg-dark">
+                <div  class="text-input mb-1">
+                <ion-label position="floating">account number</ion-label>
+                <ion-input  type="text" #accountNumber="ngModel" name="accountNumber" 
+                [(ngModel)]="model.accountNumber"
+                  autocomplete="off" required="true"></ion-input>
+            </div>
+              </ion-item>
+               <small class="error text-danger" *ngIf="staffForm.submitted && !accountNumber.value"> required</small>
+             </ion-col>
+          </ion-row>
+
+          <ion-col>
+            <ion-item class="bg-dark">
+              <div  class="text-input mb-1">
+              <ion-label position="floating"> bank account fullname</ion-label>
+              <ion-input  type="text" #bankName="ngModel" name="bankName" 
+              [(ngModel)]="model.bankName"
+                autocomplete="off" required="true"></ion-input>
+          </div>
+            </ion-item>
+             <small class="error text-danger" *ngIf="staffForm.submitted && !bankName.value">required</small>
+           </ion-col>
+
+            <ion-col>
+              <!-- select options -->
+            <ion-card>
+              <ion-item class="bg-dark">
+              <ion-label class="text-center">bank type</ion-label>
+              <ion-select select="success" interface="popover" name="accountType"
+               (ngModelChange)="accounttype($event)" #accountType="ngModel"
+              [(ngModel)]="model.accountType">
+                <ion-select-option  value="SAVINGS">SAVINGS</ion-select-option>
+                <ion-select-option  value="CURRENT">CURRENT</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <small class="error text-danger" *ngIf="!model.accountType">account is required</small>
+          </ion-card>
+             </ion-col>
+
+             <ion-col>
+              <!-- select options -->
+            <ion-card>
+              <ion-item class="bg-dark" >
+              <ion-label class="text-center">select department</ion-label>
+              <ion-select select="success" interface="popover" name="accountType"
+               (ngModelChange)="selectDepartment($event)" #accountType="ngModel"
+              [(ngModel)]="model.department">
+                <ion-select-option  value="ADMINISTRATOR">ADMINISTRATOR</ion-select-option>
+                <ion-select-option  value="MANAGEMENT">MANAGEMENT</ion-select-option>
+                <ion-select-option  value="TECHNICAL">TECHNICAL</ion-select-option>
+                <ion-select-option  value="PRODUCTION">PRODUCTION</ion-select-option>
+                <ion-select-option  value="MERCHANDISER">MERCHANDISER</ion-select-option>
+                <ion-select-option  value="CLEANER">CLEANER</ion-select-option>
+                <ion-select-option  value="SECURITY">SECURITY</ion-select-option>
+              </ion-select>
+            </ion-item>
+             <small class="error text-danger" *ngIf=" !model.department"> department is required</small>
+          </ion-card>
+             </ion-col>
+
+             <ion-col *ngIf="model.department !== 'MERCHANDISER'">
+              <ion-item class="bg-dark">
+                <div  class="text-input mb-1">
+                <ion-label position="floating"> salary</ion-label>
+                <ion-input  type="number" #salary="ngModel" name="salary" 
+                [(ngModel)]="model.salary"
+                  autocomplete="off" ></ion-input>
+            </div>
+              </ion-item>
+               <small class="error text-danger" *ngIf="!salary.value">required for non-merchandisers</small>
+             </ion-col>
+
+             <ion-row class="pt-3">
+              <ion-button  [disabled]="!model.department || !model.accountType"
+              color="success" type="submit">SUBMIT</ion-button>
+              <ion-button type="reset"(click)="resetForm()" >RESET</ion-button>
+            </ion-row>
+        </form>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- loading.. -->
+<div *ngIf="loading" class="spinner">
+  <div class="loader"></div>
+</div>
+
+
+</ion-content>
+

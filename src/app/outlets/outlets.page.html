@@ -1,0 +1,425 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <div class="row d-flex justify-content-center font-weight-bold">
+      OUTLETS
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-fab *ngIf="!showForm" (click)="addNewOutlet()"  vertical="top" horizontal="end" slot="fixed">
+    <ion-fab-button   color="success">
+      <ion-icon  name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  
+
+   <ion-fab *ngIf="showForm" (click)="cancelForm()"  vertical="top" horizontal="end" slot="fixed">
+    <ion-fab-button   color="danger">
+      <ion-icon  name="close"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+ <!-- oulets list -->
+
+ 
+
+  <div class="pt=5" *ngIf="showOutletlist">
+  <!-- search list -->
+  <ion-card>
+    <ion-row>
+      <ion-item>
+      <ion-input name="search" #search placeholder="search outlet"  [(ngModel)]="model.search"></ion-input> 
+      <ion-button color="success" size="medium" (click)="searchOutlet()" [disabled]="!search.value">
+        <ion-icon name="search" size="large"></ion-icon>
+      </ion-button> 
+      <ion-col> <ion-button color="success" (click)="getAllOutlet()">ALL</ion-button></ion-col>
+    </ion-item>
+    </ion-row>
+  </ion-card>
+
+  <!--  display outlets -->
+  <div class="blue-gradient">
+     <ion-card *ngFor="let item of outletList; index as i" class="blue-gradient text-white">
+      <ion-card-header class="text-white">{{item.created_at | date}} </ion-card-header>
+      <br>
+      <ion-row class="font-weight-bold ">
+        <ion-col>Location: {{item.location}} </ion-col>
+        <ion-col>Axis : {{item.axis}} </ion-col>
+        <ion-col>Code : {{item.code}} </ion-col>
+      </ion-row>
+      <ion-card-title class="text-uppercase text-white"> {{i+1}}  - {{item.name}}</ion-card-title>
+      <ion-card-content>
+        <small class="text-center text-underline">SUPPLY RATE</small>
+       <ion-row class="text-white">
+         <ion-col>P : ₦{{item.p_price}} </ion-col>
+         <ion-col>O : ₦{{item.o_price}} </ion-col>
+         <ion-col>W : ₦{{item.w_price}} </ion-col>
+         <ion-col>T : ₦{{item.t_price}} </ion-col>
+         <ion-col>C : ₦{{item.c_price}} </ion-col>
+         <ion-col>S : ₦{{item.s_price}} </ion-col>
+         <ion-col>SLG : ₦{{item.slg_price}} </ion-col>
+       </ion-row>
+       <ion-row class="text-white">
+       
+         
+       </ion-row>
+      </ion-card-content>
+      <!-- capacity -->
+      <ion-card-content>
+        <small class="text-center text-white">CAPACITY RATE</small>
+       <ion-row class=" text-white">
+         <ion-col>P :{{item.p_max}} </ion-col>
+         <ion-col> O:{{item.o_max}}</ion-col>
+         <ion-col>W:{{item.w_max}}</ion-col>
+         <ion-col>T:{{item.t_max}}</ion-col>
+         <ion-col>C:{{item.c_max}} </ion-col>
+         <ion-col>S{{item.s_max}}</ion-col>
+         <ion-col>slg{{item.slg_max}}</ion-col>
+       </ion-row>
+      
+      </ion-card-content>
+      <ion-row>
+        <ion-col>
+          <ion-icon (click)="deleteOutlet(item._id)" size="large" color="danger" name="trash"></ion-icon>
+        </ion-col>
+        <!-- <ion-col >
+          <ion-icon (click)="editOutlet(item._id)" class="card" size="large"  name="create"></ion-icon>
+        </ion-col> -->
+      </ion-row>
+     </ion-card>
+    </div>
+  </div>
+
+  <!--  end of outlets list -->
+
+  <div *ngIf="showForm">
+  <ion-card class="aqua-gradient">
+    <form class="p-3 pb-4 text-center"
+    #outletForm="ngForm"  (submit)="outletForm.valid && createOutlet(outletForm)">
+      <h5  class="text-center font-weight-bold text-dark mb-4 pt-5">CREATE NEW OUTLET</h5>
+
+      <ion-item>
+        <div  class="text-input mb-1">
+        <ion-label position="floating">Name</ion-label>
+        <ion-input  type="text" #name="ngModel" name="name" 
+        [(ngModel)]="model.name"
+          autocomplete="off" required="true"  ></ion-input>
+    </div>
+      </ion-item>
+      <small class="error text-danger" *ngIf="outletForm.touched && !name.value"> name is required</small>
+      
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <div  class="text-input mb-1">
+            <ion-label position="floating">location</ion-label>
+            <ion-input class="p-0 m-0"  type="text" #location="ngModel" name="location" 
+            [(ngModel)]="model.location" 
+              autocomplete="off" required="true"  ></ion-input>
+        </div>
+          </ion-item>
+          <small class="error text-danger" *ngIf="outletForm.touched && !location.value">enter location</small>
+
+        </ion-col>
+        <ion-col>
+          <ion-item>
+            <div  class="text-input mb-1">
+            <ion-label position="floating">code</ion-label>
+            <ion-input  type="text" #code="ngModel" name="code" 
+            [(ngModel)]="model.code" 
+              autocomplete="off" required="true"></ion-input>
+        </div>
+          </ion-item>
+          <small class="error text-danger" *ngIf="outletForm.touched && !code.value"> enter code</small>
+
+        </ion-col>
+      </ion-row>
+
+      
+      
+      <ion-card class="p-3">
+        <!-- select filter --> 
+        <ion-item color="light" >
+          <ion-label color="dark" class="text-center">select axis</ion-label>
+          <ion-select select="dark" interface="popover" required #axis name="axis"
+          (ngModelChange)="selectChange($event)" [(ngModel)]="modelSel.filterOptions">
+            <ion-select-option class="text-dark" value="OWERRI">Owerri</ion-select-option>
+            <ion-select-option color="success" value="PORT">Port Harcourt</ion-select-option>
+            <ion-select-option color="success" value="ENUGU">Enugu</ion-select-option>
+            <ion-select-option color="success" value="WARRI">Warri</ion-select-option>
+            <ion-select-option color="success" value="ORE">Ore</ion-select-option>
+            <ion-select-option color="success" value="BAYELSA">Bayelsa</ion-select-option>
+            <ion-select-option color="success" value="DIRECTOR">Abuja</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <small class="error text-danger" *ngIf="outletForm.touched && !model.axis"> axis must be selected</small>
+      </ion-card>
+
+      <!-- prices row -->
+     
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <div  class="text-input mb-1">
+            <ion-label position="floating">(P) price</ion-label>
+            <ion-input  type="number" #pineapple="ngModel" name="pneapple" 
+            [(ngModel)]="model.p_price" 
+              autocomplete="off" required="true"  ></ion-input>
+        </div>
+          </ion-item>
+          <small class="error text-danger" *ngIf="pineapple.touched && !pineapple.value">enter value</small>
+        </ion-col>
+      
+        <ion-col>
+          <ion-item>
+            <div  class="text-input mb-1">
+            <ion-label position="floating">(O) price</ion-label>
+            <ion-input  type="number" #orange="ngModel" name="orange" 
+            [(ngModel)]="model.o_price" 
+              autocomplete="off" required="true"  ></ion-input>
+        </div>
+          </ion-item>
+          <small class="error text-danger" *ngIf="outletForm.touched && !orange.value">invalid</small>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+            <div  class="text-input mb-1">
+            <ion-label position="floating">(W) price</ion-label>
+            <ion-input  type="number" #watermelon="ngModel" name="watermelon" 
+            [(ngModel)]="model.w_price" 
+              autocomplete="off" required="true"  ></ion-input>
+        </div>
+          </ion-item>
+          <small class="error text-danger" *ngIf="outletForm.touched && !watermelon.value">enter value</small>
+        </ion-col>
+      </ion-row>
+
+
+        
+         <!-- prices row-->
+         <ion-row>
+          <ion-col>
+            <ion-item>
+              <div  class="text-input mb-1">
+              <ion-label position="floating">(T) price</ion-label>
+              <ion-input  type="number" #tigernut="ngModel" name="tigernut" 
+              [(ngModel)]="model.t_price" 
+                autocomplete="off" required="true"  ></ion-input>
+          </div>
+            </ion-item>
+            <small class="error text-danger" *ngIf="outletForm.touched && !tigernut.value">enter value</small>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <div  class="text-input mb-1">
+              <ion-label position="floating">(C) price</ion-label>
+              <ion-input  type="number" #carrot="ngModel" name="carrot" 
+              [(ngModel)]="model.c_price" 
+                autocomplete="off" required="true"  ></ion-input>
+          </div>
+            </ion-item>
+            <small class="error text-danger" *ngIf="outletForm.touched && !carrot.value">enter value</small>
+          </ion-col>
+        
+          <ion-col>
+            <ion-item>
+              <div  class="text-input mb-1">
+              <ion-label position="floating">(S) price</ion-label>
+              <ion-input  type="number" #sugarcane="ngModel" name="sugercane" 
+              [(ngModel)]="model.s_price" 
+                autocomplete="off" required="true"  ></ion-input>
+          </div>
+            </ion-item>
+            <small class="error text-danger" *ngIf="outletForm.touched && !sugarcane.value">enter value</small>
+          </ion-col>
+        </ion-row>
+
+         <!-- prices row-->
+         <ion-row>
+          <ion-col>
+            <ion-item>
+              <div  class="text-input mb-1">
+              <ion-label position="floating">(SLG) price</ion-label>
+              <ion-input  type="number" #slg="ngModel" name="slg" 
+              [(ngModel)]="model.slg_price" 
+                autocomplete="off" required="true"  ></ion-input>
+          </div>
+            </ion-item>
+            <small class="error text-danger" *ngIf="outletForm.touched && !slg.value">enter value</small>
+          </ion-col>
+        </ion-row>
+
+        <!-- max setting -->
+        <h6 class="text-center pt-3 text-dark">ENTER MAXIMUM OUTLET CAPACITY</h6>
+         <ion-row class="bg-dark">
+          <ion-col>
+            <ion-item>
+              <div  class="text-input mb-1">
+              <ion-label position="floating"> P-MAX</ion-label>
+              <ion-input  type="number" #pineapple_max ="ngModel" name="pineapple_max" 
+              [(ngModel)]="model.p_max" 
+                autocomplete="off" required="true"  ></ion-input>
+          </div>
+            </ion-item>
+            <small class="error text-danger" *ngIf="outletForm.touched && !pineapple_max.value">enter value</small>
+          </ion-col>
+        
+          <ion-col>
+            <ion-item>
+              <div  class="text-input mb-1">
+              <ion-label position="floating">O-MAX</ion-label>
+              <ion-input  type="number" #orange_max="ngModel" name="orange_max" 
+              [(ngModel)]="model.o_max" 
+                autocomplete="off" required="true"  ></ion-input>
+          </div>
+            </ion-item>
+            <small class="error text-danger" *ngIf="outletForm.touched && !orange_max.value">enter value</small>
+          </ion-col>
+        </ion-row>
+
+        <!-- row 2 -->
+        <ion-row class="bg-dark">
+          <ion-col>
+            <ion-item>
+              <div  class="text-input mb-1">
+              <ion-label position="floating"> W-MAX</ion-label>
+              <ion-input  type="number" #watermelon_max="ngModel" name="watermelon_max" 
+              [(ngModel)]="model.w_max" 
+                autocomplete="off" required="true"  ></ion-input>
+          </div>
+            </ion-item>
+            <small class="error text-danger" *ngIf="outletForm.touched && !watermelon_max.value">enter value</small>
+          </ion-col>
+        
+          <ion-col>
+            <ion-item>
+              <div  class="text-input mb-1">
+              <ion-label position="floating">T-MAX</ion-label>
+              <ion-input  type="number" #tigernut_max="ngModel" name="tigernut_max" 
+              [(ngModel)]="model.t_max" 
+                autocomplete="off" required="true"  ></ion-input>
+          </div>
+            </ion-item>
+            <small class="error text-danger" *ngIf="outletForm.touched && !tigernut_max.value">enter value</small>
+          </ion-col>
+        </ion-row>
+
+         <!-- row 3 -->
+         <ion-row class="bg-dark">
+          <ion-col>
+            <ion-item>
+              <div  class="text-input mb-1">
+              <ion-label position="floating"> C-MAX</ion-label>
+              <ion-input  type="number" #carrot_max="ngModel" name="carrot_max" 
+              [(ngModel)]="model.c_max" 
+                autocomplete="off" required="true"  ></ion-input>
+          </div>
+            </ion-item>
+            <small class="error text-danger" *ngIf="outletForm.touched && !carrot_max.value">enter value</small>
+          </ion-col>
+        
+          <ion-col>
+            <ion-item>
+              <div  class="text-input mb-1">
+              <ion-label position="floating">S-MAX</ion-label>
+              <ion-input  type="number" #sugarcane_max="ngModel" name="sugarcane_max" 
+              [(ngModel)]="model.s_max" 
+                autocomplete="off" required="true"  ></ion-input>
+          </div>
+            </ion-item>
+            <small class="error text-danger" *ngIf="outletForm.touched && !sugarcane_max.value">enter value</small>
+          </ion-col>
+        </ion-row>
+
+        <ion-row  class="bg-dark">
+          <ion-col>
+            <ion-item>
+              <div  class="text-input mb-1">
+              <ion-label position="floating"> SLG-MAX</ion-label>
+              <ion-input  type="number" #slg_max="ngModel" name="slg_max" 
+              [(ngModel)]="model.slg_max" 
+                autocomplete="off" required="true"  ></ion-input>
+          </div>
+            </ion-item>
+            <small class="error text-danger" *ngIf="outletForm.touched && !slg_max.value">enter value</small>
+          </ion-col>
+        </ion-row>
+        <!-- end max setting -->
+        <ion-row>
+        <p class="text-center text-white">ENTER MERCHANDISER'S PROFIT PER BOTTLE</p>
+        <ion-col>
+          <ion-item>
+            <div>
+            <ion-label position="floating">P</ion-label>
+            <ion-input  type="number" #merchant_p="ngModel" name="merchant_p" 
+            [(ngModel)]="model.merchant_p"  required="true"  ></ion-input>
+        </div>
+          </ion-item>
+        </ion-col>
+         <ion-col>
+          <ion-item>
+            <ion-label position="floating">O</ion-label>
+            <ion-input  type="number" #merchant_o="ngModel" name="merchant_o" 
+            [(ngModel)]="model.merchant_o"  required="true"  ></ion-input>
+          </ion-item>
+         </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label position="floating">W</ion-label>
+              <ion-input  type="number" #merchant_w="ngModel" name="merchant_w" 
+              [(ngModel)]="model.merchant_w"  required="true"  ></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label position="floating">T</ion-label>
+              <ion-input  type="number" #merchant_t="ngModel" name="merchant_t" 
+              [(ngModel)]="model.merchant_t"  required="true"  ></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label position="floating">C</ion-label>
+              <ion-input  type="number" #merchant_c="ngModel" name="merchant_c" 
+              [(ngModel)]="model.merchant_c"  required="true"  ></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label position="floating">S</ion-label>
+              <ion-input  type="number" #merchant_s="ngModel" name="merchant_s" 
+              [(ngModel)]="model.merchant_s"  required="true"  ></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label position="floating">SLG</ion-label>
+              <ion-input  type="number" #merchant_slg="ngModel" name="merchant_slg" 
+              [(ngModel)]="model.merchant_slg"  required="true"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-col>
+          <ion-row>
+            <ion-button [disabled]="!outletForm.valid" color="success" type="submit">SUBMIT</ion-button>
+            <ion-button color="danger" (click)="cancelForm()"  type="reset">CANCEL</ion-button>
+          </ion-row>
+        </ion-col>
+    </form>
+  </ion-card>
+</div>
+
+<!-- loading.. -->
+<div *ngIf="loading" class="spinner">
+  <!-- Circles -->
+  <div class="loader"></div>
+</div>
+</ion-content>

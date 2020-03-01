@@ -37,7 +37,9 @@
               },
               {
                 "input": "src/global.scss"
-              }
+              },
+              "node_modules/angular-bootstrap-md/assets/scss/bootstrap/bootstrap.scss",
+              "node_modules/angular-bootstrap-md/assets/scss/mdb.scss"
             ],
             "scripts": []
           },

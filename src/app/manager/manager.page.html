@@ -1,0 +1,157 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons> 
+    <div class="row d-flex justify-content-center font-weight-bold">
+      MANAGER
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- <p class="text-center ">use the form below to create account for users</p> -->
+
+  <ion-fab *ngIf="!showUserForm" (click)="addNewUser()"  vertical="top" horizontal="end" slot="fixed">
+    <ion-fab-button   color="success">
+      <ion-icon  name="person-add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  
+  <ion-fab *ngIf="showUserForm" (click)="cancelForm()"  vertical="top" horizontal="end" slot="fixed">
+    <ion-fab-button   color="danger">
+      <ion-icon  name="close"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <div class="list" *ngIf="showList">
+    <!-- search user -->
+    <ion-card>
+      <ion-row>
+        <ion-item>
+        <ion-input name="search" #search placeholder="search username"  [(ngModel)]="model.search"></ion-input> 
+        <ion-button (click)="searchUser()" [disabled]="!search.value">search</ion-button>
+      </ion-item>
+      </ion-row>
+    </ion-card>
+
+    <ion-card *ngFor="let item of listOfUsers; index as i"
+     class=" blue-gradient text-white">
+   
+        <ion-row>
+          <ion-col>
+        
+           <div>{{i+1}}</div>
+           <div class="font-weight-bold">{{item.username}}</div>
+           <div>Role :{{item.role}} </div>
+           <ion-button *ngIf="item.active" (click)="disable(item._id)" color="warning" size="small"> DISABLE</ion-button>
+           <ion-button color="success" *ngIf="!item.active" (click)="activateUser(item._id)" size="small"> ACTIVATE</ion-button>
+          </ion-col>
+
+          <ion-col>
+        <div *ngIf="item.active" class="text-success "> ACTIVE   </div> 
+          <div *ngIf="!item.active" class="text-warning">DISABLED </div> 
+
+          <div>created : {{item.date | date :'shortDate'}}</div>
+          <div> +234{{item.phone}} </div>
+          <ion-button color="danger" (click)="confirmDelete(item._id)" size="small"> DELETE</ion-button>
+        </ion-col>
+      
+      
+    </ion-row>
+    </ion-card>
+  </div>
+
+  <div *ngIf="showUserForm">
+    <ion-card class=" blue-grey lighten-4">
+  <form class="p-3 pb-4 text-center "
+  #userForm="ngForm"  (submit)="userForm.valid && createUser(userForm)">
+    <h5  class="text-center font-weight-bold text-dark mb-4 pt-5">CREATE USER</h5>
+   
+   
+    
+      <ion-item>
+        <div  class="text-input mb-2">
+        <ion-label class="ml-3" position="floating">Phone number</ion-label>
+        <ion-input class="ml-3" type="number" #phone="ngModel" name="phone" 
+        [(ngModel)]="model.phone" [pattern]="phoneRegex"
+          autocomplete="off"  minlength="11"  required="true"  ></ion-input>
+    </div>
+      </ion-item>
+      <div *ngIf="userForm.submitted && phone.errors">
+        <small class="error text-danger" *ngIf="phone.errors.required"> phone is required</small>
+        <small class="error text-danger" *ngIf="phone.errors.pattern"> invalid phone number</small>
+        <small class="error text-danger" *ngIf="phone.errors.minlength">phone must be greater than 10 ctr</small>
+      </div>
+
+    <ion-item>
+      <div  class="text-input mb-2">
+        <ion-label class="ml-3" position="floating">Username</ion-label>
+        <ion-input class="ml-3" type="text" #username="ngModel" name="username" [(ngModel)]="model.username"
+          autocomplete="off"  required="true" ></ion-input>
+    </div>
+    </ion-item>
+    <small class="error text-danger" *ngIf="userForm.submitted && username.errors"> username is required</small>
+
+
+<ion-item>
+  <div class="text-input mb-2">
+    <ion-label  class="ml-3" position="floating">Password</ion-label>
+  <ion-input #password="ngModel" name="password" [(ngModel)]="model.password" 
+   type="password" required  minlength="6"  ngControl="title"></ion-input>
+</div>
+</ion-item>
+<div *ngIf="userForm.submitted && password.errors">
+  <small class="error text-danger" *ngIf="password.errors.required"> password is required</small>
+  <small class="error text-danger" *ngIf="phone.errors.minlength">password must be greater than 5 ctr</small>
+</div>
+
+<ion-item>
+  <div class="text-input mb-2">
+    <ion-label  class="ml-3" position="floating">Confirm password</ion-label>
+  <ion-input #conf_password name="conf_password" position="floating" 
+   type="password" required   ngControl="title"></ion-input>
+</div>
+</ion-item>
+<div *ngIf="password.touched && password.value !==conf_password.value ">
+  <small class="error text-danger"> password not match</small>
+</div>
+
+<ion-card class="p-3">
+  <!-- select filter -->
+  <ion-item color="light" >
+    <ion-label color="dark" class="text-center">select your role</ion-label>
+    <ion-select select="dark" interface="popover" required #role name="role"
+    (ngModelChange)="selectChange($event)" [(ngModel)]="modelSel.filterOptions">
+      <ion-select-option class="text-dark" value="ADMIN">Admin</ion-select-option>
+      <ion-select-option color="success" value="MANAGER">Manager</ion-select-option>
+      <ion-select-option color="success" value="DIRECTOR">Director</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <div>
+    
+  </div>
+  <small class="error text-danger" *ngIf="password.touched || userForm.submitted && !role.value"> role is required</small>
+</ion-card>
+
+<ion-col>
+  <ion-row>
+    <ion-button color="success" type="submit">SUBMIT</ion-button>
+    <ion-button color="danger" (click)="cancelForm()"  type="reset">CANCEL</ion-button>
+  </ion-row>
+</ion-col>
+
+
+
+  </form>
+</ion-card>
+</div>
+
+<div *ngIf="loading" class="spinner">
+  <!-- Circles -->
+  <div class="loader"></div>
+</div>
+
+
+</ion-content>
