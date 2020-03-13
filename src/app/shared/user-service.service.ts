@@ -14,7 +14,8 @@ import { Observable } from 'rxjs';
 export class UserServiceService {
   messsageFromServer : any;
   token: any;
-  accountBalance: any;
+  public appUser: any;
+  public role: any;
   username: any;
   networkDisconnet = false;
 
@@ -32,6 +33,12 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
       
      }
 
+     refreshDetails(){
+    this.appUser =   localStorage.getItem('appUser');
+     
+    this.role =   localStorage.getItem('user-role');
+     }
+
      login(credentials) {
       return this.http.post(environment.apiBaseUrl  + '/login',
        credentials, this.noAuthHeader);
@@ -41,6 +48,14 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
       return  this.http.post(environment.apiBaseUrl + `/create-user`, user_info);
     }
 
+    getUserDetails(){
+      return this.http.get(environment.apiBaseUrl + '/get-user-details');
+    }
+
+    resetPassword(password){
+      return this.http.post(environment.apiBaseUrl + '/change-password', password);
+    }
+
     updateBalance(amount){
       return this.http.post(environment.apiBaseUrl + '/update-balance', amount);
     }
@@ -48,9 +63,24 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
     submitExpense(list){
       return this.http.post(environment.apiBaseUrl + '/submit-expense', list);
     }
+    confirmExpense(id){
+      return this.http.get(environment.apiBaseUrl +`/confirm-expense${id}`);
+    }
 
     getExpenses(){
       return this.http.get(environment.apiBaseUrl + '/get-expenses');
+    }
+
+    thisMonthExpense(month){
+      return this.http.post(environment.apiBaseUrl + '/this-month-expense', month);
+    }
+
+    findExpenseByDate(date){
+      return this.http.post(environment.apiBaseUrl + '/find-by-date', date);
+    }
+
+    updateExpense(expense){
+      return this.http.put(environment.apiBaseUrl + '/update-expense', expense);
     }
 
     getCredit(){
@@ -115,7 +145,7 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
         const userPayload = atob(token.split('.')[1]);
         return JSON.parse(userPayload);
       } else {
-        return null;
+        return null;      
       }
     }
     
@@ -140,7 +170,6 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
       this.deleteToken();
       this.token = '';
       this.username = '';
-      this.accountBalance = '';
       localStorage.removeItem('appUser');
       this.router.navigateByUrl('/login');
      }
@@ -167,4 +196,9 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
       });
       toast.present();
     }
-}
+
+  
+  
+    }
+
+

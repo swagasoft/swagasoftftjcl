@@ -1,17 +1,18 @@
 <ion-header>
-  <ion-toolbar color="primary">
+  <ion-toolbar color="dark">
     
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons> 
     <div class="row d-flex justify-content-center font-weight-bold">
-      MANAGER
+      USERS
     </div>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <!-- <p class="text-center ">use the form below to create account for users</p> -->
+
 
   <ion-fab *ngIf="!showUserForm" (click)="addNewUser()"  vertical="top" horizontal="end" slot="fixed">
     <ion-fab-button   color="success">
@@ -125,14 +126,15 @@
     <ion-select select="dark" interface="popover" required #role name="role"
     (ngModelChange)="selectChange($event)" [(ngModel)]="modelSel.filterOptions">
       <ion-select-option class="text-dark" value="ADMIN">Admin</ion-select-option>
-      <ion-select-option color="success" value="MANAGER">Manager</ion-select-option>
       <ion-select-option color="success" value="DIRECTOR">Director</ion-select-option>
+      <ion-select-option color="success" value="DILIGENT">Diligent</ion-select-option>
+      <ion-select-option color="success" value="SPECIAL">Special</ion-select-option>
     </ion-select>
   </ion-item>
   <div>
     
   </div>
-  <small class="error text-danger" *ngIf="password.touched || userForm.submitted && !role.value"> role is required</small>
+  <small class="error text-danger" *ngIf="!model.role"> role is required</small>
 </ion-card>
 
 <ion-col>

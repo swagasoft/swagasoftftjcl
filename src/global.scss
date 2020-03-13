@@ -161,8 +161,8 @@
     border-right: 10px solid rgb(197, 6, 143);
     border-bottom: 10px solid rgb(252, 96, 7);
     border-left: 10px solid white;
-    width: 70px;
-    height: 70px;
+    width: 50px;
+    height: 50px;
     -webkit-animation: spin 0.3s linear infinite;
     animation: spin 0.3s linear infinite;
   }
@@ -198,4 +198,11 @@
     background-color: transparent;
     width: auto;
     ;
+  }
+
+  .datepicker-only-month-select {
+    border: 0 !important;
+    .ngb-dp-months {
+      display: none !important;
+    }
   }

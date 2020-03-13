@@ -18,6 +18,7 @@ export class OutletsPage implements OnInit {
   outletList: any;
   outletEdit: any;
   admin:any;
+  selectedAxis: any;
 
   constructor(private outletService: OutletService,
               public alertController: AlertController,
@@ -34,8 +35,7 @@ export class OutletsPage implements OnInit {
    p_price:null, o_price: null, w_price : null, t_price: null, c_price : null,
     s_price: null, slg_price: null, axis:'', location : '', id:'', search:'',
     p_max: null, o_max:null,w_max:null,t_max:null,c_max:null, s_max:null,slg_max:null,
-    merchant_p:null,merchant_o:null, merchant_w:null, merchant_t:null, merchant_c:null,
-    merchant_s:null, merchant_slg:null
+    merchant_rate:null,
   }
   resetForm(){
   this.model = {
@@ -43,10 +43,9 @@ export class OutletsPage implements OnInit {
     admin: this.admin,
     code: "",
     p_price:null, o_price: null, w_price : null, t_price: null, c_price : null,
-     s_price: null,slg_price: null, axis:'', location : '', id:'', search:'',
+     s_price: null,slg_price: null, axis: this.selectedAxis, location : '', id:'', search:'',
      p_max: null, o_max:null,w_max:null,t_max:null,c_max:null, s_max:null,slg_max:null,
-     merchant_p:null,merchant_o:null, merchant_w:null, merchant_t:null, merchant_c:null,
-    merchant_s:null, merchant_slg:null
+     merchant_rate:null,
   }
 
 
@@ -99,6 +98,7 @@ export class OutletsPage implements OnInit {
   selectChange( $event) {
     console.log($event);
     this.model.axis = $event;
+    this.selectedAxis = $event;
         }
 
     cancelForm(){

@@ -23,8 +23,9 @@
   </ion-card>
 <ion-card  class="aqua-gradient text-white mb-5">
   <ion-row>
-  <th class="text-center text-uppercase">{{singleOutlet?.name}} </th>
-  <p class="ml-4">{{singleOutlet?.location}} </p>
+  <th class="text-center text-uppercase text-danger font-weight-bold">{{singleOutlet?.name}} </th>
+  <div class="ml-4 text-danger font-weight-bold">{{singleOutlet?.location}} </div>
+  <div class="ml-4 text-danger font-weight-bold"> AXIS :{{singleOutlet?.axis}} </div>
 </ion-row>
 <hr>
 <form  #badstock="ngForm" (submit)="badstock.valid && submitForm()">
@@ -213,7 +214,7 @@
 </ion-row>
 
 <div class="row d-flex justify-content-center">
-  <ion-button [disabled]="!singleOutlet?.name" type="submit"  color="success"> SUBMIT</ion-button>
+  <ion-button [disabled]="!singleOutlet?.name || loading" type="submit"  color="success"> SUBMIT</ion-button>
   </div>
 </form>
 </ion-card>
@@ -222,4 +223,13 @@
 <div *ngIf="loading" class="spinner">
   <div class="loader"></div>
 </div>
+
+<!-- 
+<div class="spinner">
+<ngb-toast *ngIf="show" header="Click my close icon →" [autohide]="false"
+  (hide)="close()">
+  If you close me, I will automatically re-appear after a few seconds.
+</ngb-toast>
+<p *ngIf="!show">I'll be back!</p>
+</div> -->
 </ion-content>

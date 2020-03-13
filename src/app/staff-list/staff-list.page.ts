@@ -14,38 +14,42 @@ showform = false;
 showList = true;
 staffList = [];
 loading = false;
+admin: any;
 
   constructor(private staffService: StaffService,
               public userService: UserServiceService,
               public alertController: AlertController) {
-    this.getAllStaff();
+    
    }
 
   model = {
     fullname : '',
     phone : '',
     department : '',
-    bank:'',
-    bankName:'',
-    address:'',
-    accountNumber:'',
-    booking:'',
-    salary:null,
-    accountType:''
+    bank: '',
+    bankName: '',
+    address: '',
+    accountNumber: '',
+    booking: '',
+    accountType: '',
+    admin:''
   }
 
 
   ngOnInit() {
+    this.admin = localStorage.getItem('appUser');
+    this.model.admin = this.admin;
+    this.getLimitStaff();
   }
 
   ngOnDestroy(){
     this.staffList = [];
   }
 
-  async deleteStaff(id,fullname){
+  async deleteStaff(id, fullname){
     const alert = await this.alertController.create({
       header: `delete ${fullname}`,
-      message :`<p class="text-danger">staff cannot be recovered</p>`,
+      message : `<p class="text-danger">staff cannot be recovered</p>`,
       buttons: [
         {
           text: 'Cancel',
@@ -64,6 +68,7 @@ loading = false;
             res => {
               this.loading = false;
               this.userService.generalToast(res['msg']);
+              this.getLimitStaff();
             },
             err => {
               this.loading = false;
@@ -77,10 +82,10 @@ loading = false;
     await alert.present();
   }
 
-  async penalizeStaff(id,fullname){
+  async penalizeStaff(id, fullname){
     const alert = await this.alertController.create({
       header: `Penalize ${fullname}`,
-      message :`<p class="text-danger"> amount will be deducted from users salary</p>`,
+      message : `<p class="text-danger"> penalize user</p>`,
       inputs: [
         {
           name: 'amount',
@@ -105,10 +110,16 @@ loading = false;
           cssClass : 'danger',
           handler: (values) => {
             console.log(values);
+            if (values.amount == '' || values.reason == ''){
+              this.userService.generalToast("you did not enter amount/reasons");
+            }else{
+
+            
             this.loading = true;
             let body = {
                 values: values,
-                id :id
+                admin: this.admin,
+                id : id
             }
             console.log(body);
             this.staffService.penalizeStaff(body).subscribe(
@@ -121,6 +132,7 @@ loading = false;
               this.userService.generalToast(err.error.msg);
             }
           );
+        }
           }
         }
       ]
@@ -128,18 +140,78 @@ loading = false;
     await alert.present();
   }
 
+ async salaryAdAlert(id, fullname){
+    const alert = await this.alertController.create({
+      header: `Salary Advance`,
+      message : `<p> salary advance for <div class="font-weight-bold">${fullname}</div>  </p>`,
+      inputs: [
+        {
+          name: 'amount',
+          type: 'number',
+          placeholder: 'enter amount',
+        },
+        {
+          name: 'reason',
+          type: 'text',
+          placeholder: 'enter reason',
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'danger',
+          handler: (blah) => {
+            console.log('cancel amount input');
+          }
+        }, {
+          text: 'Confirm',
+          cssClass : 'danger',
+          handler: (values) => {
+            console.log(values);
+            if (values.amount == ''){
+              this.userService.generalToast("you did not enter amount!");
+            }else{
+
+            
+            this.loading = true;
+            let body = {
+                values: values,
+                admin : this.admin,
+                id : id
+            }
+            console.log(body);
+            this.staffService.salaryAdvance(body).subscribe(
+            res => {
+              this.loading = false;
+              this.userService.generalToast(res['msg']);
+            },
+            err => {
+              this.loading = false;
+              this.userService.generalToast(err.error.msg);
+            }
+          );
+        }
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+
   resetForm(){
     this.model = {
       fullname : '',
       phone : '',
       department : '',
-      bank:'',
-      bankName:'',
-      address:'',
-      accountNumber:'',
-      booking:'',
-      salary:null,
-      accountType:''
+      bank: '',
+      bankName: '',
+      address: '',
+      accountNumber: '',
+      booking: '',
+      accountType: '',
+      admin: this.admin
     }
   }
 
@@ -151,7 +223,10 @@ loading = false;
   selectDepartment(event){
     console.log(event);
     this.model.department = event;
-    console.log(this.model.department);
+    console.log(this.model.department); 
+  }
+
+  selectFormEvent(car){
   }
 
   addStaff(){
@@ -164,7 +239,7 @@ this.showList = false;
     this.showList = true;
   }
 
-  submitStaff(form:NgForm){
+  submitStaff(form: NgForm){
     console.log(form.value);
     this.loading = true;
     this.staffService.submitStaff(this.model).subscribe(
@@ -175,7 +250,7 @@ this.showList = false;
         this.resetForm();
         this.showform = false;
         this.showList = true;
-        this.getAllStaff();
+        this.getLimitStaff();
       },
       err => {
         this.loading = false;
@@ -187,10 +262,11 @@ this.showList = false;
     
   }
 
-  getAllStaff(){
+  getLimitStaff(){
+    console.log('getting the limit')
     this.loading = true;
-    this.staffService.getAllStaff().subscribe(
-      res=> {
+    this.staffService.getLimitStaff().subscribe(
+      res => {
         this.loading = false;
         console.log(res);
         this.staffList = res['staff'];
@@ -199,7 +275,7 @@ this.showList = false;
         this.loading = false;
         console.log(err);
       }
-    );
+    ); 
   }
 
   selectCategory(cat){

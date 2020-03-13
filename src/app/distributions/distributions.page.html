@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar color="primary">
+  <ion-toolbar color="dark">
     
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
@@ -23,18 +23,18 @@
       <table class="table blue-gradient text-white" id="dist">
         <thead>
           <tr>
-            <th scope="col-sm">Products</th>
-            <th scope="col-sm">Opening <br> Stock</th>
-            <th scope="col-sm">Produced <br> Stock</th>
-            <th scope="col-sm">Bad <br> Stock</th>
-            <th scope="col-sm">Supplied <br> Stock</th>
-            <th scope="col-sm">Balance <br> Stock</th>
+            <th scope="col-sm">#</th>
+            <th scope="col-sm">O/S</th>
+            <th scope="col-sm">P/S</th>
+            <th scope="col-sm">BAD</th>
+            <th scope="col-sm">S/S</th>
+            <th scope="col-sm">B/S</th>
           
           </tr>
         </thead>
         <tbody>
           <tr >
-            <th scope="row" > Pineapple </th>
+            <th scope="row" > P</th>
             <td>{{products?.open_p}} </td>
             <td>{{ products?.prod_p}} </td>
             <td>{{products?.bad_p}} </td>
@@ -43,7 +43,7 @@
            
           </tr>
           <tr>
-            <th scope="row">Orange</th>
+            <th scope="row">O</th>
             <td>{{products?.open_o}} </td>
             <td>{{ products?.prod_o}} </td>
             <td>{{products?.bad_o}} </td>
@@ -51,7 +51,7 @@
             <td>{{products?.open_o + products?.prod_o - products?.bad_o - products?.sup_o}} </td>
           </tr>
           <tr>
-            <th scope="row">Watermelon</th>
+            <th scope="row">W</th>
             <td>{{products?.open_w}} </td>
             <td>{{ products?.prod_w}} </td>
             <td>{{products?.bad_w}} </td>
@@ -59,7 +59,7 @@
             <td>{{products?.open_w + products?.prod_w - products?.bad_w - products?.sup_w}} </td>
           </tr>
            <tr>
-            <th scope="row">Tigernut</th>
+            <th scope="row">T</th>
             <td>{{products?.open_t}} </td>
             <td>{{ products?.prod_t}} </td>
             <td>{{products?.bad_t}} </td>
@@ -67,7 +67,7 @@
             <td>{{products?.open_t + products?.prod_t  - (products?.bad_t) - products?.sup_t}} </td>
           </tr>
           <tr>
-            <th scope="row">Carrot</th>
+            <th scope="row">C</th>
             <td>{{products?.open_c}} </td>
             <td>{{ products?.prod_c}} </td>
             <td>{{products?.bad_c}} </td>
@@ -75,7 +75,7 @@
             <td>{{products?.open_c + products?.prod_c - products?.bad_c - products?.sup_c}} </td>
           </tr>
           <tr>
-            <th scope="row">Sugarcane</th>
+            <th scope="row">S</th>
             <td>{{products?.open_s}} </td>
             <td>{{ products?.prod_s}} </td>
             <td>{{products?.bad_s}} </td>
@@ -91,7 +91,7 @@
             <td>{{products?.open_slg + products?.prod_slg - products?.bad_slg - products?.sup_slg}} </td>
           </tr>
           <tr>
-            <th scope="row">Total</th>
+            <th scope="row">T</th>
             <td>{{products?.open_p + products?.open_o + products?.open_w + products?.open_t + products?.open_c + products?.open_s + products?.open_slg}}</td>
             <td>{{products?.prod_p + products?.prod_o + products?.prod_w + products?.prod_t + products?.prod_c + products?.prod_s + products?.prod_slg}}</td>
             <td>{{products?.bad_p + products?.bad_o + products?.bad_w + products?.bad_t + products?.bad_c + products?.bad_s + products?.bad_slg}}</td>
@@ -122,31 +122,38 @@
         <ion-row>
           <ion-col>
             <th>P</th>
-            <P>{{item?.pineapple}} </P>
+            <div>{{item?.pineapple}} </div>
+            <div>{{item?.p_samp}} </div>
           </ion-col> 
            <ion-col>
             <th>O</th>
-            <P>{{item?.orange}} </P>
+            <div>{{item?.orange}} </div>
+            <div>{{item?.o_samp}} </div>
           </ion-col> 
            <ion-col>
             <th>W</th>
-            <P>{{item?.watermelon}} </P>
+            <div>{{item?.watermelon}} </div>
+            <div>{{item?.w_samp}} </div>
           </ion-col>
           <ion-col>
             <th>T</th>
-            <P>{{item?.tigernut}} </P>
+            <div>{{item?.tigernut}} </div>
+            <div>{{item?.t_samp}} </div>
           </ion-col>
           <ion-col>
             <th>C</th>
-            <P>{{item?.carrot}} </P>
+            <div>{{item?.carrot}} </div>
+            <div>{{item?.c_samp}} </div>
           </ion-col>
            <ion-col>
             <th>S</th>
-            <P>{{item?.sugarcane}} </P>
+            <div>{{item?.sugarcane}} </div>
+            <div>{{item?.s_samp}} </div>
           </ion-col>
            <ion-col>
             <th>SLG</th>
-            <P>{{item?.slg}} </P>
+            <div>{{item?.slg}} </div>
+            <div>{{item?.slg_samp}} </div>
           </ion-col>
           
         </ion-row>

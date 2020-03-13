@@ -42,4 +42,36 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
   editOutlet(id){
     return this.http.get(environment.apiBaseUrl + `/edit-outlet${id}`);
   }
+
+  getAllMercahnt(){
+    return this.http.get(environment.apiBaseUrl + '/get-all-merchant');
+  }
+
+  submitMerchantRecord(body){
+    return this.http.post(environment.apiBaseUrl +'/submit-merchant-sales', body);
+  }
+
+  getSaleRecord(){
+    return this.http.get(environment.apiBaseUrl + '/get-sales-record');
+  }
+  okSaleRecord(id){
+    return this.http.get(environment.apiBaseUrl + `/ok-sales-record${id}`);
+  }
+  deleteRecord(id){
+    return this.http.get(environment.apiBaseUrl + `/delete-sales-record${id}`);
+  }
+  verifySaleRecord(id){
+    return this.http.get(environment.apiBaseUrl + `/verify-sales-record${id}`);
+  }
+
+  getMerchantRecord(name){
+    return this.http.post(environment.apiBaseUrl + '/get-merchant-record', name);
+  }
+
+  findmerchantByMonth(ref){
+    return this.http.post(environment.apiBaseUrl + '/merchant-date-bymonth', ref);
+  }
+   findmerchantByDay(ref){
+    return this.http.post(environment.apiBaseUrl + '/merchant-date-day', ref);
+  }
 }

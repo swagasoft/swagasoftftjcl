@@ -16,28 +16,32 @@
 
 <ion-menu  contentId="main-content" type="overlay">
   <ion-header>
-    <ion-toolbar color="primary">
-        <small class="p-5 pt-2 pl-1 text-uppercase">user - {{app_user}} </small> <br>
-        <small class="p-5 pl-1 text-uppercase ">role - {{userRole}} </small> <br>
-
+    <ion-toolbar color="dark">
+        <small class="p-5 pt-2 pl-1 text-uppercase" [routerLink]="['/setting']"
+        >user - {{userService.appUser}} </small> <br>
+        <small class="p-5 pl-1 text-uppercase" [routerLink]="['/setting']"
+        >MY ROLE - {{userService.role}} </small> <br>
+   
     
-        <div class="">
-          <h6 class="ml-5"> <ion-badge color="dark">  </ion-badge>
-            <div #bal class="animated">
-              <!-- <ion-icon name="wallet" size="large" ></ion-icon> -->
-            </div>  
+       
             
-            <br>
-         <p class=" text-white"> </p></h6>
+            <ion-row class="ml-5">
+              <ion-col class="ml-5">
+                <div #bal class="rubberBand animated infinite" (click)="userService.refreshDetails()">
+                  <ion-icon name="swap" size="large" ></ion-icon>
+                </div>
+              </ion-col>
+            </ion-row>
 
-        </div>
+            
+        
       
     </ion-toolbar>
   </ion-header>
-  <ion-content color="primary"> 
-    <ion-list class="drawer-list">
+  <ion-content > 
+    <ion-list color="light">
       <ion-menu-toggle  auto-hide="false" *ngFor="let p of appPages">
-        <ion-item color="primary" [routerDirection]="'root'" [routerLink]="[p.url]" routerLinkActive="router-link-active">
+        <ion-item color="dark" [routerDirection]="'root'" [routerLink]="[p.url]" routerLinkActive="router-link-active">
           <ion-icon slot="start" [name]="p.icon"></ion-icon>
           <ion-label>
             {{p.title}}
@@ -45,22 +49,24 @@
         </ion-item>
       </ion-menu-toggle>
 
-      <ion-menu-toggle class="p-0 m-0" *ngIf="userService.getUserRole() =='MANAGER'" [routerLink]="['/manager']" routerLinkActive="router-link-active"  >
-        <ion-item color="primary">
-        <ion-icon name="build"></ion-icon>
-        <ion-label  class="ml-4">MANAGER</ion-label>
+      <ion-menu-toggle class="p-0 m-0" 
+        [routerLink]="['/payout']" routerLinkActive="router-link-active"  >
+        <ion-item color="dark" class="p-0 m-0">
+        <ion-icon name="basket"></ion-icon>
+        <ion-label  class="ml-4">PAYOUT </ion-label>
       </ion-item>
     </ion-menu-toggle>
        
-      <ion-menu-toggle class="p-0 m-0" *ngIf="userService.getUserRole() === 'DIRECTOR'" [routerLink]="['/md-section']" routerLinkActive="router-link-active"  >
-        <ion-item color="primary">
-        <ion-icon name="man"></ion-icon>
-        <ion-label  class="ml-4">DIRECTOR</ion-label>
+
+      <ion-menu-toggle class="p-0 m-0" *ngIf="userService.getUserRole() =='DIRECTOR'" [routerLink]="['/manager']" routerLinkActive="router-link-active"  >
+        <ion-item color="dark">
+        <ion-icon name="build"></ion-icon>
+        <ion-label  class="ml-4">APP USER</ion-label>
       </ion-item>
     </ion-menu-toggle>
        
         <ion-menu-toggle (click)="logout()">
-            <ion-item color="primary"  >
+            <ion-item color="dark"  >
             <ion-icon name="power"></ion-icon>
             <ion-label  class="ml-4">LOGOUT</ion-label>
           </ion-item>

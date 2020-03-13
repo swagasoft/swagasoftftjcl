@@ -10,7 +10,7 @@ import { IonRefresher } from '@ionic/angular';
 export class CreditPage implements OnInit {
   @ViewChild('refresherRef', {static : false}) refresherRef: IonRefresher; 
 loading = false;
-  constructor(private userService: UserServiceService) {
+  constructor(public userService: UserServiceService) {
     this.getCredit();
    }
 

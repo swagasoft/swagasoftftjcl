@@ -36,7 +36,7 @@ userRole : any;
     {
       title: 'FRUITS RECORDS',
       url: '/fruit',
-      icon: 'cash'
+      icon: 'nutrition'
     },
      {
       title: 'PENALTY',
@@ -45,7 +45,7 @@ userRole : any;
     },
    
      {
-      title: 'STAFFS',
+      title: 'STAFF',
       url: '/staff-list',
       icon: 'contacts'
     },
@@ -85,4 +85,6 @@ userRole : any;
   logout(){
     this.userService.logout();
   }
+
+
 }

@@ -1,0 +1,163 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons> 
+    <div class="row d-flex justify-content-center font-weight-bold">
+      PAYROLL
+    </div>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+   <!-- referesh -->
+   <ion-refresher #refresherRef (ionRefresh)="doRefresh($event)" slot="fixed" >
+    <ion-refresher-content>
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <div class="">
+
+ 
+
+  <!-- <p>A pagination with customized links:</p>
+  <ngb-pagination [collectionSize]="70" [(page)]="page" aria-label="Custom pagination">
+    <ng-template ngbPaginationPrevious>Prev</ng-template>
+    <ng-template ngbPaginationNext>Next</ng-template>
+    <ng-template ngbPaginationNumber let-p>{{ getPageSymbol(p) }}</ng-template>
+  </ngb-pagination>
+  <hr>
+  <pre>Current page: {{page}}</pre> -->
+
+  <!-- <table class="table blue-gradient text-white" id="dist"> -->
+    <!-- [ngClass]="{'bg-success text-white': item.settled}" -->
+    
+    <!-- department pick -->
+    <ion-card>
+      <ion-item color="light">
+      <ion-label class="text-center">select by department</ion-label>
+      <ion-select select="success" interface="popover" name="accountType"
+       (ngModelChange)="selectCategory($event)"  [(ngModel)]="model.department"
+     >
+     <ion-select-option  value="ADMINISTRATOR">ADMINISTRATOR</ion-select-option>
+     <ion-select-option  value="ADMIN-ASSIST">ADMIN-ASSIST</ion-select-option>
+     <ion-select-option  value="TECHNICAL">TECHNICAL</ion-select-option>
+     <ion-select-option  value="PRODUCTION">PRODUCTION</ion-select-option>
+     <ion-select-option  value="CLEANER">CLEANER</ion-select-option>
+     <ion-select-option  value="CLEANER">DRIVER</ion-select-option>
+     <ion-select-option  value="SECURITY">SECURITY</ion-select-option>
+     <ion-select-option  value="MERCHANDISER">MERCHANDISER</ion-select-option>
+     <ion-select-option  value="MANAGEMENT">MANAGEMENT</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-card>
+
+ 
+    <ion-card>
+      <ion-row>
+        <ion-item>
+        <ion-input name="search" #search placeholder="search name"  [(ngModel)]="model.search"></ion-input> 
+        <ion-button color="success" size="medium" (click)="searchName()" [disabled]="!search.value">
+          <ion-icon name="search" size="large"></ion-icon>
+        </ion-button> 
+      </ion-item>
+      </ion-row>
+    </ion-card>
+    <ion-row>
+      <ion-col>
+        <ion-badge color="light"> ₦{{totalSalary | number}} </ion-badge>
+      </ion-col>
+      <ion-col>
+        <ion-badge color="light">TOTAL: {{totalStaff}} </ion-badge>
+      </ion-col>
+
+    </ion-row>
+  
+
+  <div class="mb-5">
+    <div *ngFor="let item of allStaff; index as i" >
+     <ion-card  
+     [ngClass]="{'bg-danger text-white': item.not_paid}">
+        <ion-row>
+          <ion-checkbox *ngIf="item.settled" (click)="undoRecord($event, item._id)" checked color="success"></ion-checkbox>
+          <ion-checkbox  *ngIf="!item.settled"  (click)="processRecord($event, item._id)"  color="primary"></ion-checkbox>
+          <ion-col (click)="presentModal(item._id,item.fullname,item.salary,item.bonus,item.penalty,
+          item.savings,item.advance_salary,item.give,item.AmountPaid)">
+           
+            <div  [ngClass]="{'success-color-dark text-white': item.settled}" class="font-weight-bold">{{i+1}} - {{item?.fullname}}</div>
+            <div  [ngClass]="{'success-color-dark text-white': item.settled}" >DEPARTMENT :  {{item.department}} </div>
+          </ion-col>
+        
+          <ion-button *ngIf="!item.settled"  size="small" (click)="notpaid(item._id)" color="success">!</ion-button>
+        </ion-row>
+        <ion-card color="" [ngClass]="{'bg-danger text-white': item.not_paid}" >
+          <ion-row>
+            <ion-col>
+              <small>salary</small>
+              <div>{{item.salary}} </div>
+            </ion-col>
+            <ion-col>
+              <small>bonus</small>
+              <div>{{item.bonus}} </div>
+            </ion-col>
+             <ion-col>
+              <small>penalty</small>
+              <div>{{item.penalty}} </div>
+            </ion-col>
+            <ion-col>
+              <small>savings</small>
+              <div>{{item.savings}} </div>
+            </ion-col><ion-col>
+              <small>give</small>
+              <div>{{item.give}} </div>
+            </ion-col>
+            <ion-col>
+              <small>salary_adv</small>
+              <div>{{item.advance_salary}} </div>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <small>Paid</small>
+              <h5 class="font-weight-bold">₦{{item.AmountPaid | number}} </h5>
+            </ion-col>
+            <ion-col>
+              <ion-icon *ngIf="item.penalize" size="large" color="dark" name="cut"></ion-icon>
+            </ion-col>
+          </ion-row>
+        </ion-card>
+      </ion-card>
+    </div>
+  </div>
+
+   
+  
+   
+  <!-- </table> -->
+
+</div>
+<!-- loading.. -->
+<div *ngIf="loading" class="spinner">
+  <div class="loader"></div>
+</div>
+
+
+<ion-fab horizontal="start" vertical="bottom" slot="fixed">
+  <ion-fab-button color="success">
+    <ion-icon name="alert"></ion-icon>
+  </ion-fab-button>
+  <ion-fab-list side="top">
+    <ion-button color="danger" > 
+      <a class=" info text-white" ><ion-icon name="chatbubbles"></ion-icon> RESET </a>
+    </ion-button>
+     <ion-button color="success" [routerLink]="['/payout']">
+      <a class="info text-white" ><ion-icon name="reader"></ion-icon>Payout </a>
+    </ion-button>
+    <!-- <ion-button *ngIf="!products?.open_p" color="success" [routerLink]="['/production']">
+      <a class="info text-white" > <ion-icon name="list"></ion-icon>Submit Production </a>
+    </ion-button> -->
+  </ion-fab-list>
+</ion-fab>
+
+
+</ion-content>

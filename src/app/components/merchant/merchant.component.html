@@ -1,0 +1,127 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <div class="row d-flex justify-content-center font-weight-bold">
+      MERCHANDISERS
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+      <!-- loading -->
+      <div *ngIf="loading" class="spinner">
+        <div class="loader"></div>
+      </div>
+      
+<ion-content>
+  <div class="pb-5">
+
+<ion-card color="light">
+    <ngb-datepicker #dateClass  (navigate)="dateNavigate($event)" 
+    class="datepicker-only-month-select "></ngb-datepicker>
+  </ion-card> 
+
+    <form #dateform="ngForm"   (submit)=" submitDate(dateform)" class="form-inline">
+      <div class="form-group">
+        <div class="input-group">
+          <input class="form-control"  placeholder="yyyy-mm-dd"
+                 name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" (click)="d.toggle()"
+             type="button"><ion-icon name="apps"></ion-icon> </button>
+            <button class="btn btn-success" [disabled]="!model"
+             (click)="submitDate(dateform)" type="submit">
+            <ion-icon name="search"></ion-icon></button>
+          </div>
+        </div>
+      </div>
+    </form>
+
+
+
+
+
+<!-- sales list -->
+
+<ion-card *ngFor="let item of salesRecord" class="blue-gradient text-white">
+  <ion-row>
+    <ion-col>
+      <div  class="font-weight-bold"> {{item.merchantName}} </div>
+    </ion-col>
+     <ion-col>
+      <div  class="font-weight-bold"> {{item.outletCode}} </div>
+    </ion-col>
+     <ion-col>
+      <small> {{item.created_at | date:'medium'}} </small>
+    </ion-col>
+  </ion-row>
+  <!-- col 2 -->
+  <ion-row>
+    <ion-col>
+      <h6>bottle(s):{{item.bottles}} </h6>
+    </ion-col>
+      <ion-col>
+      <small>attendant:{{item.attendant}}</small>
+    </ion-col>
+      <ion-col>
+      <small >admin:{{item.admin}}</small>
+    </ion-col>
+      <ion-col>
+      <h6 class="font-weight-bold"> ₦{{item.amountSold | number}}</h6>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-button  *ngIf="!item.confirm" [disabled]="userService.getUserRole() != 'DILIGENT'"
+       size="small" color="light" (click)="clickOk(item._id)">ok</ion-button>
+      <ion-button 
+       *ngIf="item.confirm" size="small" color="success">ok</ion-button>
+    </ion-col>
+     <ion-col>
+      <ion-button  *ngIf="!item.verify"  [disabled]="userService.getUserRole() != 'DIRECTOR'" size="small" 
+      color="light" (click)="clickVerify(item._id)">verify</ion-button>
+      <ion-button [disabled]="userService.getUserRole() != 'DIRECTOR'"
+       *ngIf="item.verify" size="small" color="success">verified</ion-button>
+      
+    </ion-col>
+     <ion-col>
+      <ion-button [disabled]="userService.getUserRole() != 'DIRECTOR'"
+       size="small" color="danger" (click)="delete(item._id)">delete</ion-button>
+    </ion-col>
+
+  </ion-row>
+</ion-card>
+
+
+</div>
+
+ <ion-fab horizontal="start" vertical="bottom" slot="fixed">
+  <ion-fab-button color="light">
+    <ion-icon name="alert"></ion-icon>
+  </ion-fab-button>
+  <ion-fab-list side="top">
+    <ion-button color="light"  [routerLink]="['/view-merchant-sales']">
+      <a class=" " ><ion-icon name="arrow-dropdown-circle"></ion-icon>VIEW MERCHANT SALES </a>
+    </ion-button>
+     <ion-button color="light" [routerLink]="['/view-outlet-sales']">
+      <a class=" " ><ion-icon name="cube"></ion-icon>VIEW SALES BY OUTLET </a>
+    </ion-button>
+    
+    <ion-button color="light" (click)="merchantModal()"> 
+      <a class=" " ><ion-icon name="chatbubbles"></ion-icon>ENTER SALES </a>
+    </ion-button>
+    <!-- <ion-button *ngIf="!products?.open_p" color="medium" [routerLink]="['/production']">
+      <a class="info text-white" > <ion-icon name="list"></ion-icon>Submit Production </a>
+    </ion-button> -->
+  </ion-fab-list>
+</ion-fab>
+
+    <!-- loading.. -->
+    <div *ngIf="loading" class="spinner">
+      <div class="loader"></div>
+    </div>
+
+ 
+</ion-content>

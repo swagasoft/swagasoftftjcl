@@ -1,0 +1,121 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <div class="row d-flex justify-content-center font-weight-bold">
+      FRUIT 
+    </div>
+  </ion-toolbar>
+</ion-header> 
+
+<ion-content>
+ <!-- referesh -->
+ <ion-refresher #refresherRef (ionRefresh)="doRefresh($event)" slot="fixed" >
+  <ion-refresher-content>
+  </ion-refresher-content>
+</ion-refresher>
+
+
+<!-- add button -->
+ <ion-fab  (click)="presentModal()"  vertical="top" horizontal="end" slot="fixed">
+  <ion-fab-button   color="success">
+    <ion-icon  name="add"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
+
+<form #dateform="ngForm"  (submit)=" submitDate(dateform)" class="form-inline">
+  <div class="form-group">
+    <div class="input-group">
+      <input class="form-control" placeholder="yyyy-mm-dd"
+             name="dp" [(ngModel)]="model.date" ngbDatepicker #d="ngbDatepicker">
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" (click)="d.toggle()"
+         type="button"><ion-icon name="apps"></ion-icon> </button>
+        <button class="btn btn-success" [disabled]="!model.date"
+         (click)="submitDate(dateform)" type="submit">
+        <ion-icon name="search"></ion-icon></button>
+      </div>
+    </div>
+  </div>
+</form>
+<div class="pt-5">
+  <ion-card *ngFor="let item of fruit index as i">
+    <ion-row>
+      <ion-col>
+        <div class="font-weight-bold">{{i+1}} -{{item.product}} </div>
+        <div class="d-flex justify-content-center">
+          <img *ngIf="item.product == 'pineapple'"  src="../../../assets/fruits/pineapple.jpg" alt="pineapple" style="width:80px;">
+          <img *ngIf="item.product == 'orange'" src="../../../assets/fruits/orange.jpg" alt="orange" style="width:80px;">
+          <img *ngIf="item.product == 'carrot'" src="../../../assets/fruits/carottes.jpg" alt="carrot" style="width:80px;">
+          <img *ngIf="item.product == 'sugarcane'" src="../../../assets/fruits/sugarcane.jpg" alt="sugarcane" style="width:80px;">
+          <img *ngIf="item.product == 'tigernut'" src="../../../assets/fruits/tigernuts.PNG" alt="tigernut" style="width:80px;">
+          <img *ngIf="item.product == 'watermelon'" src="../../../assets/fruits/watermelon.jpg" alt="watermelon" style="width:80px;">
+         </div>
+      </ion-col>
+     <ion-col>
+      <small>{{item.created_at | date:'medium'}} </small>
+     </ion-col> <ion-col>
+      <small class="text-primary">edited :{{item.edit}} </small>
+      <small class="pl-1">{{item.admin}} </small>
+      <ion-button [disabled]="item.verify || item.confirm" (click)="editRecord(item._id,item.product,item.very_big,item.big,
+      item.medium,item.small,item.very_small,item.amount,item.kilo,item.supplier,item.driver)"
+       color="light">EDIT</ion-button>
+     </ion-col>
+    </ion-row> 
+    <ion-row  color="light">
+      <ion-col>
+        <small class="mr-1">V_BIG</small>
+        <small>{{item.very_big}}</small>
+      </ion-col>
+      <ion-col>
+        <small class="mr-1">BIG</small>
+        <small>{{item.big}}</small>
+      </ion-col>
+      <ion-col>
+        <small class="mr-1">MEDIUM</small>
+        <small>{{item.medium}}</small>
+      </ion-col>
+      <ion-col>
+        <small class="mr-1">SMALL</small>
+        <small>{{item.small}}</small>
+      </ion-col>
+      <ion-col>
+        <small class="mr-1">V_SMALL</small>
+        <small>{{item.very_small}}</small>
+      </ion-col>
+      <ion-col>
+        <small>{{item.kilo | number}}KG</small>
+      </ion-col>
+    </ion-row>
+    <ion-row  color="light">
+      <ion-col>
+        supplier > {{item.supplier}}
+      </ion-col>
+       <ion-col>
+        driver > {{item.driver}}
+      </ion-col>
+       <ion-col>
+       <div class="font-weight-bold"> ₦{{item.amount | number}}</div>
+      </ion-col>
+    </ion-row>
+    <ion-row  color="light">
+      <ion-col>
+        <div *ngIf="item.confirm" class="font-weight-bold text-success">OK</div>
+        <ion-button *ngIf="!item.confirm" size="small" [disabled]="userService.getUserRole() != 'DILIGENT'"
+        (click)="okRecord(item._id)" color="light">ok</ion-button>
+      </ion-col>
+      <ion-col>
+        <small *ngIf="item.verify" class="font-weight-bold text-success">VERIFIED</small>
+        <small *ngIf="!item.verify" class="font-weight-bold text-warning">NOT VERIFIED</small>
+        <ion-button *ngIf="!item.verify" size="small" [disabled]="userService.getUserRole() != 'DIRECTOR'"
+        (click)="verify(item._id)" color="success">verify</ion-button>
+         <ion-button *ngIf="item.verify" size="small" [disabled]="userService.getUserRole() != 'DIRECTOR'"
+        (click)="disprove(item._id)" color="warning">disprove</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+</div>
+</ion-content>
+

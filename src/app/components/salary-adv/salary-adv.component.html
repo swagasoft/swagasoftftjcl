@@ -1,0 +1,109 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons> 
+    <div class="row d-flex justify-content-center font-weight-bold">
+SALARY ADVANCE    </div>
+  </ion-toolbar>
+</ion-header>
+ 
+<ion-content>
+
+    <ion-card>
+      <ngb-datepicker  (navigate)="thisMonthRecord($event)" 
+      class="datepicker-only-month-select "></ngb-datepicker>
+    </ion-card>
+
+ 
+  
+  <form #dateform="ngForm"  (submit)=" submitDate(dateform)" class="form-inline">
+    <div class="form-group">
+      <div class="input-group">
+        <input class="form-control" placeholder="yyyy-mm-dd"
+               name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" (click)="d.toggle()"
+           type="button"><ion-icon name="apps"></ion-icon> </button>
+          <button class="btn btn-success" [disabled]="!model"
+           (click)="submitDate(dateform)" type="submit">
+          <ion-icon name="search"></ion-icon></button>
+        </div>
+      </div>
+    </div>
+  </form>
+
+
+      <!-- search list -->
+<!-- <ion-card>
+  <ion-row>
+    <ion-item>
+    <ion-input name="search" #search placeholder="search by name"  [(ngModel)]="searchModel.search"></ion-input> 
+    <ion-button color="success" size="medium" (click)="searchRecord()" [disabled]="!search.value">
+      <ion-icon name="search" size="large"></ion-icon>
+    </ion-button> 
+  </ion-item>
+  </ion-row>
+</ion-card> -->
+  
+<!-- refresher -->
+  <ion-refresher #refresherRef (ionRefresh)="doRefresh($event)" slot="fixed" >
+    <ion-refresher-content>
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <ion-card *ngFor="let item of allAdvance" class="primary-color-dark text-white">
+    <ion-row class="font-weight-bold">
+     <ion-col>
+      <div>{{item.name}} </div>
+     </ion-col>
+    <ion-col>
+      <div class="pl-4">₦ {{item.amount}} </div>
+    </ion-col>
+    <ion-col>
+      <small>{{item.created_at | date:'medium'}} </small>
+    </ion-col>
+    </ion-row>
+  
+    <ion-row>
+      <ion-col>
+        <small>{{item.admin}} </small>
+      </ion-col>
+      <ion-col> 
+        <!-- <small class="text-warning"> edited:{{item.edit}} </small> -->
+      </ion-col>
+       
+         <ion-button size="small" color="danger" [disabled]="userService.getUserRole() != 'DIRECTOR'"
+          (click)="editRecord(item._id,item.user_id,item.amount, item.reason)">DELETE</ion-button>
+    
+    </ion-row>
+    <div class="text-center">{{item.reason}} </div> <br>
+
+  </ion-card>
+
+
+
+  <ion-fab horizontal="start" vertical="bottom" slot="fixed">
+    <ion-fab-button  color="light">
+      <ion-icon name="alert"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+       <ion-button color="light" [routerLink]="['/penalty']">
+       <div>penalty</div>
+      </ion-button>
+      <ion-button  color="light"  [routerLink]="['/salary_adv']">
+        <div>salary advance</div>
+      </ion-button>
+    </ion-fab-list>
+  </ion-fab>
+
+
+
+   <!-- loading.. -->
+   <div *ngIf="loading" class="spinner">
+    <div class="loader"></div>
+  </div>
+
+
+</ion-content>

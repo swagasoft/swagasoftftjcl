@@ -1,0 +1,87 @@
+<ion-header>
+  <ion-button color="light" (click)="closeModal()">
+    <button >
+      <ion-icon color="danger" name="close"></ion-icon>
+    </button>
+  </ion-button>
+</ion-header>
+
+<ion-content>
+
+  <div ></div>
+  <ion-card class="aqua-gradient pt-5 mt-5">
+  <form #salaryForm="ngForm"  (submit)="salaryForm.valid && submitForm(salaryForm)">
+        <p class="  text-center font-weight-bold">{{model.fullname}} </p>
+        <p class="bg-white text-center font-weight-bold">₦ {{model.salary + model.bonus + model.give
+           - model.salary_adv - model.penalty -model.savings | number}} </p>
+  <ion-row>
+    <ion-col>
+      <ion-item>
+        <ion-label position="floating">salary</ion-label>
+        <ion-input  type="number" #salary="ngModel" name="salary" 
+        [(ngModel)]="model.salary"
+          autocomplete="off" required="true"></ion-input>
+      </ion-item>
+    </ion-col>
+    <ion-col>
+      <ion-item>
+        <ion-label position="floating">bonus</ion-label>
+        <ion-input  type="number" #bonus="ngModel" name="bonus" 
+        [(ngModel)]="model.bonus"
+          autocomplete="off" required="true"></ion-input>
+      </ion-item>
+    </ion-col>
+    <ion-col>
+      <ion-item>
+        <ion-label position="floating">penalty</ion-label>
+        <ion-input  type="number" #penalty="ngModel" name="penalty" 
+        [(ngModel)]="model.penalty"
+          autocomplete="off" required="true"></ion-input>
+      </ion-item>
+    </ion-col>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label position="floating">savings</ion-label>
+          <ion-input  type="number" #saving="ngModel" name="savings" 
+          [(ngModel)]="model.savings"
+            autocomplete="off" required="true"></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <ion-label position="floating">salary adv</ion-label>
+          <ion-input  type="number" #penalty="ngModel" name="salary_adv" 
+          [(ngModel)]="model.salary_adv"
+            autocomplete="off" required="true"></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <ion-label position="floating">give</ion-label>
+          <ion-input  type="number" #give="ngModel" name="give" 
+          [(ngModel)]="model.give"
+            autocomplete="off" required="true"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-row>
+
+    <ion-row class=" row d-flex justify-content-center">
+    
+        <ion-button [disabled]="userSErvice.getUserRole() !=='DIRECTOR'"
+         type="submit"  size="small" color="success" >CONFIRM</ion-button>
+
+    
+    </ion-row>
+  </form>
+</ion-card>
+
+
+  <!-- loading.. -->
+<div *ngIf="loading" class="spinner">
+  <div class="loader"></div>
+</div>
+
+
+</ion-content>

@@ -39,10 +39,10 @@ export class LoginPage implements OnInit {
       console.log('RESPONSE FROM LOGIN');
       localStorage.setItem('user_id',response['doc']['user_id']);
       localStorage.setItem('appUser',response['doc']['username']);
-      console.log(response);
      
       localStorage.setItem('user-role',response['doc']['role']);
       this.loading = false;
+      this.userService.refreshDetails();
       this.router.navigate(['/distributions']);
    
         

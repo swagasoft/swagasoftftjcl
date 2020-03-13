@@ -1,0 +1,72 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <div class="row d-flex justify-content-center font-weight-bold">
+      MERCHANDISER'S EARNINGS
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list>
+    <ion-item color="light">
+      <ion-label>Select merchandiser</ion-label>
+      <ion-select (ionChange)="selectedVal($event)" >
+        <ion-select-option  *ngFor="let item of allMerchant" [value]="item.fullname">{{item.fullname}} </ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-list> 
+
+  <ion-card>
+    <ion-card>
+      <ngb-datepicker  (navigate)="dateNavigate($event)" 
+      class="datepicker-only-month-select "></ngb-datepicker>
+    </ion-card>
+    
+  </ion-card>
+  <ion-row color="light">
+    <ion-col>
+      <ion-chip class="font-weight-bold" ouline color="dark"> bottles: {{totalBottles}}</ion-chip>
+    </ion-col>
+    <ion-col>
+      <ion-chip class="font-weight-bold" color="dark" outline>₦ {{totalAmount}} </ion-chip>
+    </ion-col>
+  </ion-row>
+
+  <h5 class="text-center font-weight-bold">{{searchModel.fullname}} </h5>
+  <ion-card *ngFor="let item of merchRecord" class="primary-color-dark text-white">
+
+    <ion-row>
+<ion-col>
+  <div>{{item.merchantName}} </div>
+</ion-col>
+<ion-col>
+  <div>{{item.outletCode}} </div>
+</ion-col>
+<ion-col>
+  <div>{{item.created_at | date :'medium'}} </div>
+</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <div>attendant:{{item.attendant}} </div>
+      </ion-col>
+      <ion-col>
+        <div>bottles:{{item.bottles}} </div>
+      </ion-col>
+       <ion-col>
+        <div class="font-weight-bold"> ₦ {{item.amountSold | number}} </div>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+
+     <!-- loading.. -->
+<div *ngIf="loading" class="spinner">
+  <div class="loader"></div>
+</div>
+</ion-content>
+

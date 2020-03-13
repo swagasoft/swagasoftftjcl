@@ -41,6 +41,21 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
       return this.http.post(environment.apiBaseUrl + '/penalize-staff', body);
     }
 
+    salaryAdvance(body){
+      return this.http.post(environment.apiBaseUrl + '/salary-advance', body);
+    }
+
+    getAllSalaryAdvance(){
+      return this.http.get(environment.apiBaseUrl + '/get-salary-adv');
+    }
+
+    deleteSalaryAdvance(body){
+      return this.http.post(environment.apiBaseUrl + '/delete-salary-advance', body);
+    }
+     editPenalty(body){
+      return this.http.post(environment.apiBaseUrl + '/edit-penalty', body);
+    }
+
     getAllPenalty(){
       return this.http.get(environment.apiBaseUrl + '/get-all-penalty');
     }
@@ -48,10 +63,51 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
     getAllStaff(){
       return this.http.get(environment.apiBaseUrl + '/get-all-staff');
     }
+     getLimitStaff(){
+      return this.http.get(environment.apiBaseUrl + '/get-limit-staff');
+    }
+
+    thismonthRecord(date){
+      return this.http.post(environment.apiBaseUrl + '/this-month-advs', date);
+
+    }
 
     getStaffByDepartment(department){
       return this.http.get(environment.apiBaseUrl + `/select-staff-depart${department}`);
+    } 
+       getPayoutByDepartment(department){
+      return this.http.get(environment.apiBaseUrl + `/select-payout-depart${department}`);
     }
+
+    findSalaryAdvbyDate(date){
+      return this.http.post(environment.apiBaseUrl +'/find-salary-advbydate', date);
+    }
+    findPenaltyDate(date){
+      return this.http.post(environment.apiBaseUrl +'/find-penalty-date', date);
+    }
+
+    wavePenalty(id){
+      return this.http.get(environment.apiBaseUrl + `/wave-penalty${id}`);
+    } 
+     deletePenalty(id){
+      return this.http.get(environment.apiBaseUrl + `/delete-penalty${id}`);
+    }
+
+    searchPenalty(name){
+      return this.http.post(environment.apiBaseUrl + '/search-penalty',name);
+    }
+
+    thisMonthPenalty(date){
+      return this.http.post(environment.apiBaseUrl + '/this-month-penalty', date);
+    }
+     searchAdvsalary(name){
+      return this.http.post(environment.apiBaseUrl + '/search-adv-salary',name);
+    }
+
+    settleSalary(salary){
+      return this.http.post(environment.apiBaseUrl + '/settle-salary', salary);
+    }
+   
 
 
 

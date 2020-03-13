@@ -1,3 +1,12 @@
+import { ViewMerchantComponent } from './components/view-merchant/view-merchant.component';
+import { MerchantComponent } from './components/merchant/merchant.component';
+import { FruitComponent } from './components/fruit/fruit.component';
+import { PayoutComponent } from './components/payout/payout.component';
+import { ExpenseComponent } from './components/expense/expense.component';
+import { SettingComponent } from './components/setting/setting.component';
+import { PenaltyComponent } from './components/penalty/penalty.component';
+import { SalaryAdvComponent } from './components/salary-adv/salary-adv.component';
+import { PayRollComponent } from './components/pay-roll/pay-roll.component';
 import { SupplyComponent } from './supply/supply.component';
 import { ProductionComponent } from './components/production/production.component';
 import { DirectorGuard } from './shared/director.guard';
@@ -5,19 +14,24 @@ import { ManagerGuard } from './shared/manager.guard';
 import { AuthGuard } from './auth.guard';
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes, CanActivate } from '@angular/router';
+import { ViewByOutletComponent } from './components/view-by-outlet/view-by-outlet.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '', redirectTo: 'distributions', pathMatch: 'full' },
   { path: 'home', loadChildren: () => import('./home/home.module').then( m => m.HomePageModule),
 canActivate:[AuthGuard]},
   {
     path: 'expenses', 
-    loadChildren: () => import('./expenses/expenses.module').then( m => m.ExpensesPageModule),
-  canActivate:[AuthGuard]},
+    component : ExpenseComponent,canActivate:[AuthGuard]
+  },
+  {
+    path: 'payout', 
+    component : PayoutComponent,canActivate:[AuthGuard]
+  },
   {
     path: 'manager',
     loadChildren: () => import('./manager/manager.module').then( m => m.ManagerPageModule),
-     canActivate:[AuthGuard, ManagerGuard]
+     canActivate:[AuthGuard, DirectorGuard]
   },
   {
     path: 'distributions',
@@ -28,6 +42,10 @@ canActivate:[AuthGuard]},
     path: 'production',
    component : ProductionComponent,canActivate:[AuthGuard]
   },
+  {
+    path: 'setting',
+   component : SettingComponent,canActivate:[AuthGuard]
+  },
    {
     path: 'supply',
    component : SupplyComponent,canActivate:[AuthGuard]
@@ -37,11 +55,7 @@ canActivate:[AuthGuard]},
     loadChildren: () => import('./admin/admin.module').then( m => m.AdminPageModule),
     canActivate:[AuthGuard]
   },
-  {
-    path: 'md-section',
-    loadChildren: () => import('./md-section/md-section.module').then( m => m.MdSectionPageModule),
-    canActivate:[AuthGuard, DirectorGuard]
-  },
+   
   {
     path: 'staff-list',
     loadChildren: () => import('./staff-list/staff-list.module').then( m => m.StaffListPageModule),
@@ -57,14 +71,8 @@ canActivate:[AuthGuard]},
     loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
   },
   {
-    path: 'booking',
-    loadChildren: () => import('./booking/booking.module').then( m => m.BookingPageModule),
-    canActivate:[AuthGuard]
-  },
-  {
     path: 'penalty',
-    loadChildren: () => import('./penalty/penalty.module').then( m => m.PenaltyPageModule),
-    canActivate:[AuthGuard]
+    component : PenaltyComponent, canActivate: [AuthGuard]
   },
   {
     path: 'credit',
@@ -73,16 +81,28 @@ canActivate:[AuthGuard]},
   },
   {
     path: 'fruit',
-    loadChildren: () => import('./fruit/fruit.module').then( m => m.FruitPageModule)
-  , canActivate:[AuthGuard]},
+    component : FruitComponent, canActivate: [AuthGuard]
+  },
   {
     path: 'merchandisers',
-    loadChildren: () => import('./merchandisers/merchandisers.module').then( m => m.MerchandisersPageModule)
-  , canActivate:[AuthGuard]},
+    component : MerchantComponent, canActivate: [AuthGuard]
+  }, 
+  {
+    path: 'view-merchant-sales',
+    component : ViewMerchantComponent, canActivate: [AuthGuard]
+  },  
+  {
+    path: 'view-outlet-sales',
+    component : ViewByOutletComponent, canActivate: [AuthGuard]
+  }, 
   {
     path: 'pay-roll',
-    loadChildren: () => import('./pay-roll/pay-roll.module').then( m => m.PayRollPageModule)
-  , canActivate:[AuthGuard]},
+    component : PayRollComponent, canActivate: [AuthGuard, DirectorGuard]
+  }, 
+  {
+    path: 'salary_adv',
+    component : SalaryAdvComponent, canActivate: [AuthGuard]
+  },
 ];
 
 @NgModule({

@@ -41,7 +41,19 @@ supplies: any;
 
   ngOnDestroy(){
     this.products = [];
-    this.allOutlet = null;
+    this.allOutlet = [];
+    this.supplies= [];
+    this.productName = [];
+    this.model = {
+      bad_p : 0,
+      bad_o : 0,
+      bad_w : 0,
+      bad_t: 0,
+      bad_c: 0,
+      bad_s : 0,
+      bad_slg : 0,
+      id:null
+    };
   }
 
   doRefresh(event){

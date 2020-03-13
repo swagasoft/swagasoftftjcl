@@ -16,7 +16,7 @@ export class ManagerGuard implements CanActivate  {
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean{
     this.userRole = this.userService.getUserRole();
-    const manager = 'MANAGER';
+    const manager = 'DIRECTOR';
     if( this.userRole !== manager){
       this.router.navigateByUrl('/login');
       this.userService.deleteToken();

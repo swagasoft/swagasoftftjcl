@@ -13,7 +13,8 @@
       
         
   <form  class="mt-1 form fixed" #loginForm="ngForm" name="form"  (submit)="loginForm.valid && login(loginForm)">
-    <img class="navbar-brand" height="200" src="../../assets/icon/logo.jpg">
+    <!-- <img class="" height="250" width="50"  src="../../assets/icon/farm_logo2.png"> -->
+    <img class="" height="250" width="50"  src="../../assets/icon/farm_logo.png">
 
          <div *ngIf="loading"><ion-progress-bar type="indeterminate"></ion-progress-bar></div>
 
@@ -40,7 +41,7 @@
         </div>
           
         <div class="justify-content-center row pt-2"  #submitBtn>
-          <ion-button  [disabled]="loading" size="medium"  type="submit" color="success" (submit)="login(loginForm)"
+          <ion-button  [disabled]="loading" size="large"  type="submit" color="success" (submit)="login(loginForm)"
           >LOGIN </ion-button>
       </div>
         
@@ -53,5 +54,10 @@
         </form>
       </ion-card>
       </div>
+      </div>
+
+      <div *ngIf="loading" class="spinner">
+        <!-- Circles -->
+        <div class="loader"></div>
       </div>
 </ion-content>

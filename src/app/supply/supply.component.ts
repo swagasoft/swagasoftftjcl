@@ -14,6 +14,12 @@ export class SupplyComponent implements OnInit, OnDestroy {
   loading = false;
   singleOutlet: any;
   admin: any;
+  show = true;
+
+  close() {
+    this.show = false;
+    setTimeout(() => this.show = true, 5000);
+  }
 
   constructor(private outletService: OutletService,
               private distService: DistributionService,

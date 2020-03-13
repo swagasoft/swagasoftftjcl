@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar color="primary">
+  <ion-toolbar color="dark">
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
@@ -46,14 +46,12 @@
   <div class="blue-gradient">
      <ion-card *ngFor="let item of outletList; index as i" class="blue-gradient text-white">
       <ion-card-header class="text-white">{{item.created_at | date}} </ion-card-header>
-      <br>
       <ion-row class="font-weight-bold ">
         <ion-col>Location: {{item.location}} </ion-col>
         <ion-col>Axis : {{item.axis}} </ion-col>
         <ion-col>Code : {{item.code}} </ion-col>
       </ion-row>
       <ion-card-title class="text-uppercase text-white"> {{i+1}}  - {{item.name}}</ion-card-title>
-      <ion-card-content>
         <small class="text-center text-underline">SUPPLY RATE</small>
        <ion-row class="text-white">
          <ion-col>P : ₦{{item.p_price}} </ion-col>
@@ -65,10 +63,7 @@
          <ion-col>SLG : ₦{{item.slg_price}} </ion-col>
        </ion-row>
        <ion-row class="text-white">
-       
-         
        </ion-row>
-      </ion-card-content>
       <!-- capacity -->
       <ion-card-content>
         <small class="text-center text-white">CAPACITY RATE</small>
@@ -255,7 +250,7 @@
         </ion-row>
 
         <!-- max setting -->
-        <h6 class="text-center pt-3 text-dark">ENTER MAXIMUM OUTLET CAPACITY</h6>
+        <div class="text-center pt-3 text-white">ENTER MAXIMUM OUTLET CAPACITY</div>
          <ion-row class="bg-dark">
           <ion-col>
             <ion-item>
@@ -351,61 +346,17 @@
         </ion-row>
         <!-- end max setting -->
         <ion-row>
-        <p class="text-center text-white">ENTER MERCHANDISER'S PROFIT PER BOTTLE</p>
         <ion-col>
           <ion-item>
             <div>
-            <ion-label position="floating">P</ion-label>
-            <ion-input  type="number" #merchant_p="ngModel" name="merchant_p" 
-            [(ngModel)]="model.merchant_p"  required="true"  ></ion-input>
+            <ion-label position="floating">merchandiser profit per bottle</ion-label>
+            <ion-input  type="number" #merchant_rate="ngModel" name="merchant_rate" 
+            [(ngModel)]="model.merchant_rate"  required="true"  ></ion-input>
         </div>
           </ion-item>
         </ion-col>
-         <ion-col>
-          <ion-item>
-            <ion-label position="floating">O</ion-label>
-            <ion-input  type="number" #merchant_o="ngModel" name="merchant_o" 
-            [(ngModel)]="model.merchant_o"  required="true"  ></ion-input>
-          </ion-item>
-         </ion-col>
-          <ion-col>
-            <ion-item>
-              <ion-label position="floating">W</ion-label>
-              <ion-input  type="number" #merchant_w="ngModel" name="merchant_w" 
-              [(ngModel)]="model.merchant_w"  required="true"  ></ion-input>
-            </ion-item>
-          </ion-col>
-          <ion-col>
-            <ion-item>
-              <ion-label position="floating">T</ion-label>
-              <ion-input  type="number" #merchant_t="ngModel" name="merchant_t" 
-              [(ngModel)]="model.merchant_t"  required="true"  ></ion-input>
-            </ion-item>
-          </ion-col>
         </ion-row>
-        <ion-row>
-          <ion-col>
-            <ion-item>
-              <ion-label position="floating">C</ion-label>
-              <ion-input  type="number" #merchant_c="ngModel" name="merchant_c" 
-              [(ngModel)]="model.merchant_c"  required="true"  ></ion-input>
-            </ion-item>
-          </ion-col>
-          <ion-col>
-            <ion-item>
-              <ion-label position="floating">S</ion-label>
-              <ion-input  type="number" #merchant_s="ngModel" name="merchant_s" 
-              [(ngModel)]="model.merchant_s"  required="true"  ></ion-input>
-            </ion-item>
-          </ion-col>
-          <ion-col>
-            <ion-item>
-              <ion-label position="floating">SLG</ion-label>
-              <ion-input  type="number" #merchant_slg="ngModel" name="merchant_slg" 
-              [(ngModel)]="model.merchant_slg"  required="true"></ion-input>
-            </ion-item>
-          </ion-col>
-        </ion-row>
+      
 
         <ion-col>
           <ion-row>

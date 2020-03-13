@@ -1,0 +1,104 @@
+<ion-header>
+  <ion-button (click)="closeModal()" color="danger">
+    <button >
+      <ion-icon color="danger" name="close"></ion-icon>
+    </button>
+  </ion-button>
+</ion-header>
+
+<ion-content>
+ 
+  <ion-card class="p-3 aqua-gradient tezt-white">
+    <ion-list>
+    <!-- select filter -->
+    <ion-item color="light" >
+      <ion-label color="dark" class="text-center">select outlet</ion-label>
+      <select (change)="selectOutlet($event)"  >
+        <option *ngFor="let item of allOutlet" [value]="item._id">{{item.code}}</option>
+      </select>
+    </ion-item>
+    <ion-row>
+      <th class="text-center text- text-uppercase">{{singleOutlet?.name}} </th>
+      <div class="ml-4">{{singleOutlet?.location}} </div>
+      <div class="ml-4 text-dark font-weight-bold"> AXIS :{{singleOutlet?.axis}} </div>
+      <div class="ml-4 text-dark font-weight-bold"> RATE :  ₦{{model.outletRate}} </div>
+    </ion-row>
+  </ion-list>
+  </ion-card>
+
+  <ion-list>
+    <ion-item color="light">
+      <ion-label>Select merchandiser</ion-label>
+      <ion-select (ionChange)="selectedVal($event)" >
+        <ion-select-option  *ngFor="let item of allMerchant" [value]="item.fullname">{{item.fullname}} </ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+  
+
+    <form #merchant="ngForm"  (submit)="merchant.valid && submitForm(merchant)">
+      <ion-row>
+        <ion-col>
+          <ion-item class="bg-dark">
+            <ion-label position="floating">bottles sold</ion-label>
+            <ion-input  type="number" #bottles="ngModel" name="bottles" 
+            [(ngModel)]="model.bottleSold" required="true"></ion-input>
+          </ion-item>
+      <small class="text-danger" *ngIf="merchant.submitted && !bottles.value"> required</small>
+        </ion-col>
+
+
+
+        <ion-col>
+          <ion-item class="bg-dark">
+            <ion-label position="floating"> ₦ value</ion-label>
+            <ion-input  type="number" #amount="ngModel" name="amount" 
+            [value]="model.outletRate * bottles.value" readonly
+            [(ngModel)]="model.amountSold" required="true"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <div *ngFor="let item of model.merchant">
+        <ion-chip outline color="dark">
+          <ion-icon name="user" color="primary"></ion-icon>
+          <ion-label class="font-weight-bold">{{item}} </ion-label>
+          <div class="text-center text-success font-weight-bold pl-2">=  ₦{{model.outletRate *  bottles.value / model.merchant.length }} </div>
+        </ion-chip>
+      </div>
+     <div class="row d-flex justify-content-center">
+    <ion-chip (click)="deleteMerchant()" color="danger">
+      <ion-icon  size="large"  name="close"></ion-icon>
+    </ion-chip>
+     </div>
+    <div class="row d-flex justify-content-center">
+      <ion-button type="submit" color="success" [disabled]="!bottles.value 
+      || !amount.value || !singleOutlet || model.merchant.length == 0 || loading">SUBMIT</ion-button>
+    </div>
+    </form>
+
+
+  <!-- <ion-item>
+    <ion-label>Toppings</ion-label>
+    <ion-select multiple="true" cancelText="Nah" okText="Okay!">
+      <ion-select-option value="bacon">Bacon</ion-select-option>
+      <ion-select-option value="olives">Black Olives</ion-select-option>
+      <ion-select-option value="xcheese">Extra Cheese</ion-select-option>
+      <ion-select-option value="peppers">Green Peppers</ion-select-option>
+      <ion-select-option value="mushrooms">Mushrooms</ion-select-option>
+      <ion-select-option value="onions">Onions</ion-select-option>
+      <ion-select-option value="pepperoni">Pepperoni</ion-select-option>
+      <ion-select-option value="pineapple">Pineapple</ion-select-option>
+      <ion-select-option value="sausage">Sausage</ion-select-option>
+      <ion-select-option value="Spinach">Spinach</ion-select-option>
+    </ion-select>
+  </ion-item> -->
+
+ 
+
+
+      <!-- loading.. -->
+<div *ngIf="loading" class="spinner">
+  <div class="loader"></div>
+</div>
+</ion-content>
