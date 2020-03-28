@@ -27,10 +27,12 @@ export class FruitComponent implements OnInit {
       filterOptions:'',
       date:''
     }
+
+    searchModel = { 
+      search: '',fullname: '', month: null, year : null
+      };
   
   ngOnInit() {
-      this.getRecord();
-  
     }
 
     doRefresh(event){
@@ -39,6 +41,24 @@ export class FruitComponent implements OnInit {
       this.loading = false;
     }
   
+
+    thisMonthRecord(event){
+      this.searchModel.month = event.next.month;
+      this.searchModel.year = event.next.year;
+      console.log(this.searchModel);
+      this.recordService.thisMonthFruit(this.searchModel).subscribe(
+        res => {
+          console.log('this month',res);
+          this.fruit = res['record'];
+        },
+        err => {
+          console.log(err)
+          this.fruit = [];
+          this.userService.generalToastSh(err.error.msg);
+        }
+      );
+   }
+
   getRecord(){
       this.loading = true;
       this.recordService.getFruit().subscribe(
@@ -97,20 +117,23 @@ export class FruitComponent implements OnInit {
   
  
 
-    async editRecord(id,product,very_big,big,
-      medium,small,very_small,amount,kilo,supplier,driver){
+    async editRecord(id,product,damage,assist_buyer,paid_for,
+      amount,kilo,supplier,driver,quantity,confirmed_by,buyer, size,remark){
         const modal = await this.modalController.create({
           component: FruiteditComponent,
           componentProps: {
             'id': id,
             'product':product ,
-            'very_big': very_big,
-            'big': big,
-            'medium': medium,
-            'small': small,
-            'very_small': very_small,
+            'damage':damage ,
+            'assist_buyer':assist_buyer ,
+            'paid_for':paid_for ,
+            'buyer':buyer ,
+            'confirmed_by':confirmed_by ,
+            'quantity':quantity ,
             'amount': amount,
+            'remark': remark,
             'kilo': kilo,
+            'size': size,
             'supplier': supplier,
             'driver': driver,
           }
@@ -177,6 +200,22 @@ export class FruitComponent implements OnInit {
     okRecord(id){
       this.loading = true;
       this.recordService.okFruitRecord(id).subscribe(
+        res => {
+          this.loading = false;
+          this.getRecord();
+          this.userService.generalToastSh(res['msg']);
+        },
+        err => {
+          this.loading = false;
+          this.userService.generalToastSh(err.error.msg);
+        }
+      );
+
+    }   
+    
+    UnokRecord(id){
+      this.loading = true;
+      this.recordService.UnOkFruitRecord(id).subscribe(
         res => {
           this.loading = false;
           this.getRecord();

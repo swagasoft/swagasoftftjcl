@@ -75,7 +75,7 @@ totalStaff = 0;
   }
 
   async presentModal(id,fullname,salary,bonus,penalty,
-       savings,salary_adv,AmountPaid) {
+       savings,salary_adv,give,AmountPaid) {
     const modal = await this.modalController.create({
       component: PayModalComponent,
       componentProps: {
@@ -94,15 +94,16 @@ totalStaff = 0;
     );
     
     modal.onDidDismiss().then(()=> {
-      this.getAllStaff();
+     this.selectCategory(this.model.department);
     });
     return await modal.present();
   }
 
-  notpaid(id){
+  notpaid(id, department){
+    this.model.department = department;
     this.payService.notPaidStaff(id).subscribe(
       res => {
-        this.getAllStaff();
+        this.selectCategory(this.model.department);
         this.userService.generalToastSh(res['msg']);
       },
       err => {
@@ -111,14 +112,15 @@ totalStaff = 0;
     );
   }
 
-  undoRecord(event, id){
-    // settled: false
+  undoRecord(event, id, department){
+    console.log(department)
+    this.model.department = department;
     this.loading = true;
     this.payService.setTofalse(id).subscribe(
       res => {
         this.loading = false;
         this.userService.generalToastSh(res['msg']);
-        this.getAllStaff();
+        this.selectCategory(this.model.department);
       },
       err => {
         this.loading = false;
@@ -128,19 +130,55 @@ totalStaff = 0;
   }
 
 
-  processRecord(event, id){
+  processRecord(event, id, department){
     this.loading = true;
+    this.model.department = department;
     this.payService.setToTrue(id).subscribe(
       res => {
         this.loading = false;
         this.userService.generalToastSh(res['msg']);
-        this.getAllStaff();
+        this.selectCategory(this.model.department);
       },
       err => {
         this.loading = false;
         this.userService.generalToastSh(err.error.msg);
       }
     );
+  }
+
+
+  async resetPayroll(){
+    const alert = await this.alertController.create({
+      header: `RESET PAYROLL?`,
+     message : `<div class="text-danger">This action will reset every staff record to defualt!.</div>`,
+      buttons: [
+        {
+          text: 'Cancel', role: 'cancel', cssClass: 'danger',
+          handler: (blah) => {
+            console.log('cancel amount input');
+          }
+        }, {
+          text: 'Confirm',
+          cssClass : 'danger',
+          handler: (values) => {
+            this.loading = true;
+            this.payService.resetPayroll().subscribe(
+            res => {
+              this.loading = false;
+              this.userService.generalToast(res['msg']);
+              this.getAllStaff();
+            },
+            err => {
+              this.loading = false;
+              this.userService.generalToastSh(err.error.msg);
+            }
+          );
+        }
+          }
+        
+      ]
+    });
+    await alert.present();
   }
 
 

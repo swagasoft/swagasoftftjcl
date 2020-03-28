@@ -1,0 +1,333 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons> 
+    <div class="row d-flex justify-content-center font-weight-bold">
+      PRODUCTION RECORD
+    </div>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+
+      <!-- referesh -->
+      <ion-refresher #refresherRef (ionRefresh)="doRefresh($event)" slot="fixed" >
+        <ion-refresher-content>
+        </ion-refresher-content>
+      </ion-refresher>
+  
+
+  <!-- month/year picker -->
+  <ion-card color="medium">
+    <ngb-datepicker  (navigate)=" thisMonthRecord($event)" 
+    class="datepicker-only-month-select"></ngb-datepicker>
+  </ion-card>
+<form #dateform="ngForm"  (submit)=" submitDate(dateform)" (keydown.enter)="submitDate(dateform)"
+class="card form-inline p-0 m-0">
+ <div class="form-group">
+   <div class="input-group">
+     <input class="form-control" placeholder="yyyy-mm-dd"
+            name="dp" [(ngModel)]="Calmodel" ngbDatepicker #d="ngbDatepicker">
+     <div class="input-group-append">
+       <button class="btn btn-outline-secondary" (click)="d.toggle()"
+        type="button"><ion-icon name="apps"></ion-icon> </button>
+       <button class="btn btn-success" [disabled]="!Calmodel"
+      type="submit">
+       <ion-icon name="search"></ion-icon></button>
+     </div>
+   </div>
+ </div> 
+</form>
+
+  <!-- sum of sum -->
+<ion-card color="light" class="font-weight-bold">
+  <ion-row>
+    <ion-col>
+      <small>prod p</small>
+      <div>{{totalProd_p | number}} </div>
+    </ion-col>
+    <ion-col>
+      <small>prod o</small>
+      <div>{{totalProd_o | number}} </div>
+    </ion-col>
+    <ion-col>
+      <small>prod w</small>
+      <div>{{totalProd_w | number}} </div>
+    </ion-col>
+    <ion-col>
+      <small>prod t</small>
+      <div>{{totalProd_t | number}} </div>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <small>prod c</small>
+      <div>{{totalProd_c | number}} </div>
+    </ion-col>
+    <ion-col>
+      <small>prod s</small>
+      <div>{{totalProd_s | number}} </div>
+    </ion-col>
+    <ion-col>
+      <small>prod slg</small>
+      <div>{{totalProd_slg | number}} </div>
+    </ion-col>
+     <ion-col>
+      <small>total prod</small>
+      <div>{{totalProd_slg + totalProd_p + totalProd_o + totalProd_w 
+        + totalProd_t + totalProd_c + totalProd_s | number}} </div>
+     </ion-col>
+  </ion-row>
+  </ion-card>
+
+
+  <ion-card color="light" class="font-weight-bold">
+    <ion-row>
+      <ion-col>
+        <small>supply p</small>
+        <div>{{totalSup_p}} </div>
+      </ion-col>
+      <ion-col>
+        <small>supply o</small>
+        <div>{{totalSup_o}} </div>
+      </ion-col>
+      <ion-col>
+        <small>supply w</small>
+        <div>{{totalSup_w}} </div>
+      </ion-col>
+      <ion-col>
+        <small>supply t</small>
+        <div>{{totalSup_t}} </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <small>supply c</small>
+        <div>{{totalSup_c}} </div>
+      </ion-col>
+      <ion-col>
+        <small>supply s</small>
+        <div>{{totalSup_s}} </div>
+      </ion-col>
+      <ion-col>
+        <small>supply slg</small>
+        <div>{{totalSup_slg}} </div>
+      </ion-col>
+      <ion-col>
+        <small>total supply</small>
+        <div>{{totalSup_slg + totalSup_p + totalSup_o + totalSup_w+ 
+          totalSup_t +totalSup_c + totalSup_s | number}} </div>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+
+
+
+  <ion-card *ngFor="let item of prod_list index as i" class="primary-color-dark text-white font-weight-bold">
+     <ion-row>
+       <ion-col>
+        <div>{{i + 1}}</div>
+       </ion-col>
+        <div>{{item.created_at | date:'medium'}} </div>
+   
+     </ion-row>
+     <small>OPEN STOCK</small>
+      <ion-row>
+        <ion-col>
+          <small>P</small>
+          <div>{{item.open_p}} </div>
+        </ion-col>
+        <ion-col>
+          <small>O</small>
+          <div>{{item.open_o}} </div>
+        </ion-col>
+        <ion-col>
+          <small>W</small>
+          <div>{{item.open_w}} </div>
+        </ion-col>
+        <ion-col>
+          <small>T</small>
+          <div>{{item.open_t}} </div>
+        </ion-col>
+        <ion-col>
+          <small>C</small>
+          <div>{{item.open_c}} </div>
+        </ion-col>
+        <ion-col>
+          <small>S</small>
+          <div>{{item.open_s}} </div>
+        </ion-col>
+        <ion-col>
+          <small>Slg</small>
+          <div>{{item.open_slg}} </div>
+        </ion-col>
+        <ion-col>
+          <small>TOT</small>
+          <div>{{item.open_p + item.open_o + item.open_w + item.open_t+ 
+            item.open_c +item.open_s + item.open_slg}} </div>
+        </ion-col>
+      </ion-row>
+    
+      <small>PRODUCTION STOCK</small>
+      <ion-row>
+        <ion-col>
+          <small>P</small>
+          <div>{{item.prod_p}} </div>
+        </ion-col>
+        <ion-col>
+          <small>O</small>
+          <div>{{item.prod_o}} </div>
+        </ion-col>
+        <ion-col>
+          <small>W</small>
+          <div>{{item.prod_w}} </div>
+        </ion-col>
+        <ion-col>
+          <small>T</small>
+          <div>{{item.prod_t}} </div>
+        </ion-col>
+        <ion-col>
+          <small>C</small>
+          <div>{{item.bad_c}} </div>
+        </ion-col>
+        <ion-col>
+          <small>S</small>
+          <div>{{item.prod_s}} </div>
+        </ion-col>
+        <ion-col>
+          <small>Slg</small>
+          <div>{{item.prod_slg}} </div>
+        </ion-col>
+        <ion-col>
+          <small>TOT</small>
+          <div>{{item.prod_p + item.prod_o + item.prod_w + item.prod_t+ 
+            item.prod_c +item.prod_s + item.prod_slg}} </div>
+        </ion-col>
+      </ion-row>
+      <small>BAD STOCK</small>
+      <ion-row>
+        <ion-col>
+          <small>P</small>
+          <div>{{item.bad_p}} </div>
+        </ion-col>
+        <ion-col>
+          <small>O</small>
+          <div>{{item.bad_o}} </div>
+        </ion-col>
+        <ion-col>
+          <small>W</small>
+          <div>{{item.bad_w}} </div>
+        </ion-col>
+        <ion-col>
+          <small>T</small>
+          <div>{{item.bad_t}} </div>
+        </ion-col>
+        <ion-col>
+          <small>C</small>
+          <div>{{item.bad_c}} </div>
+        </ion-col>
+        <ion-col>
+          <small>S</small>
+          <div>{{item.bad_s}} </div>
+        </ion-col>
+        <ion-col>
+          <small>Slg</small>
+          <div>{{item.bad_slg}} </div>
+        </ion-col>
+        <ion-col>
+          <small>TOT</small>
+          <div>{{item.bad_p + item.bad_o + item.bad_w + item.bad_t+ 
+            item.bad_c +item.bad_s + item.bad_slg}} </div>
+        </ion-col>
+      </ion-row>
+      <small>SUPPLY</small>
+      <ion-row>
+        <ion-col>
+          <small>P</small>
+          <div>{{item.sup_p}} </div>
+        </ion-col>
+        <ion-col>
+          <small>O</small>
+          <div>{{item.sup_o}} </div>
+        </ion-col>
+        <ion-col>
+          <small>W</small>
+          <div>{{item.sup_w}} </div>
+        </ion-col>
+        <ion-col>
+          <small>T</small>
+          <div>{{item.sup_t}} </div>
+        </ion-col>
+        <ion-col>
+          <small>C</small>
+          <div>{{item.sup_c}} </div>
+        </ion-col>
+        <ion-col>
+          <small>S</small>
+          <div>{{item.sup_s}} </div>
+        </ion-col>
+        <ion-col>
+          <small>Slg</small>
+          <div>{{item.sup_slg}} </div>
+        </ion-col>
+        <ion-col>
+          <small>TOT</small>
+          <div>{{item.sup_p + item.sup_o + item.sup_w + item.sup_t+ 
+            item.sup_c +item.sup_s + item.sup_slg}} </div>
+        </ion-col>
+      </ion-row>
+      <small>BALANCE</small>
+      <ion-row>
+        <ion-col>
+          <small>P</small>
+          <div>{{item.bal_p}} </div>
+        </ion-col>
+        <ion-col>
+          <small>O</small>
+          <div>{{item.bal_o}} </div>
+        </ion-col>
+        <ion-col>
+          <small>W</small>
+          <div>{{item.bal_w}} </div>
+        </ion-col>
+        <ion-col>
+          <small>T</small>
+          <div>{{item.bal_t}} </div>
+        </ion-col>
+        <ion-col>
+          <small>C</small>
+          <div>{{item.bal_c}} </div>
+        </ion-col>
+        <ion-col>
+          <small>S</small>
+          <div>{{item.bal_s}} </div>
+        </ion-col>
+        <ion-col>
+          <small>Slg</small>
+          <div>{{item.bal_slg}} </div>
+        </ion-col>
+        <ion-col>
+          <small>TOT</small>
+          <div>{{item.bal_p + item.bal_o + item.bal_w + item.bal_t+ 
+            item.bal_c +item.bal_s + item.bal_slg}} </div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <small> create: {{item.who_create}} </small>
+        </ion-col>
+        <ion-col>
+          <small> bad_stock: {{item.who_bad_stock}} </small>
+        </ion-col>
+        <ion-col>
+          <small> close: {{item.who_close}} </small>
+        </ion-col>
+      </ion-row>
+  </ion-card>
+
+         <!-- loading -->
+<div *ngIf="loading" class="spinner">
+  <div class="loader"></div>
+</div>
+</ion-content>

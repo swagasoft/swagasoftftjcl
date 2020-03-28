@@ -16,7 +16,7 @@ loading = false;
     console.log('id', navParams.get('description'));
    }
 
-   
+    
    expenseModel = {
     date : Date.now(),
     description : '',
@@ -25,7 +25,7 @@ loading = false;
     amountPaid : null,
     receiver : '',
     admin :  '',
-    information : ''
+    information : '',
     };
 
   ngOnInit() {
@@ -36,7 +36,7 @@ loading = false;
    this.expenseModel.receiver =  this.navParams.get('receiver');
    this.expenseModel.amountPaid =  this.navParams.get('amountPaid');
    this.expenseModel.information =  this.navParams.get('information');
-   this.expenseModel.information =  this.navParams.get('description');
+   this.expenseModel.description =  this.navParams.get('description');
    console.log(this.expenseModel);
   }
 
@@ -50,7 +50,7 @@ loading = false;
     this.userService.updateExpense(this.expenseModel).subscribe(
       res => {
         this.loading = false;
-        this.userService.generalToastSh(res['msg']);
+        // this.userService.generalToastSh(res['msg']);
       this.modalController.dismiss();
       },
       err => {

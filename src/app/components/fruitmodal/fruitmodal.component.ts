@@ -11,20 +11,25 @@ import { ModalController } from '@ionic/angular';
 export class FruitmodalComponent implements OnInit {
 loading = false;
   constructor( public modalController: ModalController,
-    public userService: UserServiceService,
-     private recordService: RecordService) { }
+               public userService: UserServiceService,
+               private recordService: RecordService) { }
   fruitModel = {
+    quantity:'',
+    buyer:'',
+    assist_buyer:'',
+    confirmed_by:'',
+    bottles:'',
+    remark:'',
+    paid_for:'',
+    damage:'',
     product: '',
-    very_big: 0,
-    big: 0,
-    medium:0,
-    small:0,
-    very_small: 0,
+    size: '',
     amount: 0,
     kg:undefined,
     supplier:'',
     driver:'',
-    admin:''
+    admin:'',
+    date: Date.now()
   }
   ngOnInit() {
     this.fruitModel.admin =localStorage.getItem('appUser');
@@ -40,19 +45,27 @@ loading = false;
   selectChange( $event) {
     console.log($event);
     this.fruitModel.product = $event;
+        } 
+
+  selectSize( $event) {
+    console.log($event);
+    this.fruitModel.size = $event;
         }
 
    submitFruit(){
-    console.log(this.fruitModel);
-    this.recordService.submitFruit(this.fruitModel).subscribe(
+     this.loading = true;
+     console.log(this.fruitModel);
+     this.recordService.submitFruit(this.fruitModel).subscribe(
       res => {
+        this.loading = false;
         this.closeModal();
         console.log(res);
       },
       err => {
+        this.loading = false;
         console.log(err);
         this.userService.generalToastSh(err.error.msg);
       }
-    )
+    );
         }
 }

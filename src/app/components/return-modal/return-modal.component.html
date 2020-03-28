@@ -1,0 +1,116 @@
+<ion-header>
+  <ion-button color="light" (click)="closeModal()">
+    <button >
+      <ion-icon color="danger" name="close"></ion-icon>
+    </button>
+  </ion-button>
+</ion-header>
+<ion-content>
+
+<h5 class="text-center font-weight-bold pt-3">ENTER RETURNS</h5>
+  <!--  detials -->
+  <ion-card class="p-1 aqua-gradient tezt-white">
+    <!-- select filter -->
+    <ion-item color="light" >
+      <ion-label color="dark" class="text-center">select outlet</ion-label>
+      <select (change)="selectOutlet($event)"  >
+        <option *ngFor="let item of allOutlet" [value]="item._id">{{item.code}}</option>
+       
+      </select>
+    </ion-item>
+  </ion-card>
+<ion-card  class="aqua-gradient text-white mb-5">
+  <ion-row>
+  <th class="text-center text-uppercase text-danger font-weight-bold">{{singleOutlet?.name}} </th>
+  <div class="ml-3 text-danger font-weight-bold"> location : {{singleOutlet?.location}} </div>
+</ion-row>
+<hr>
+<form  #badstock="ngForm"  (keydown.enter)="badstock.valid && submitForm()"
+ (submit)="badstock.valid && submitForm()">
+
+  <ion-row>
+    <ion-col>
+  <ion-item>
+    <div  class="text-input mb-1">
+      <ion-label position="floating">Pineapple</ion-label>
+      <ion-input  type="number" #pineapple="ngModel" name="pineapple" 
+      [(ngModel)]="model.pineapple" required="true"></ion-input>
+  </div>
+</ion-item>
+</ion-col>
+<ion-col>
+  <ion-item>
+    <div>
+      <ion-label position="floating">Orange</ion-label>
+      <ion-input  type="number" #orange="ngModel" name="orange" 
+      [(ngModel)]="model.orange" required="true"></ion-input>
+  </div>
+  </ion-item>
+  </ion-col>
+  <ion-col>
+    <ion-item>
+      <div>
+        <ion-label position="floating">Watermel</ion-label>
+        <ion-input  type="number" #watermelon="ngModel" name="watermelon" 
+        [(ngModel)]="model.watermelon" required="true"></ion-input>
+    </div>
+    </ion-item>
+    </ion-col>
+</ion-row>
+
+<!-- row 2 -->
+<ion-row>
+  <ion-col>
+    <ion-item>
+    <div>
+      <ion-label position="floating">Tigernut</ion-label>
+      <ion-input  type="number" #tigernut="ngModel" name="tigernut" 
+      [(ngModel)]="model.tigernut" required="true"></ion-input>
+  </div>
+</ion-item>
+  </ion-col>
+  <ion-col>
+    <ion-item>
+      <div>
+        <ion-label position="floating">Carrot</ion-label>
+        <ion-input  type="number" #carrot="ngModel" name="carrot" 
+        [(ngModel)]="model.carrot" required="true"></ion-input>
+    </div>
+    </ion-item>
+    </ion-col>
+</ion-row>
+<ion-row>
+  <ion-col>
+    <ion-item>
+      <div>
+        <ion-label position="floating">Sugercane</ion-label>
+        <ion-input  type="number" #sugercane="ngModel" name="sugercane" 
+        [(ngModel)]="model.sugarcane" required="true"></ion-input>
+    </div>
+    </ion-item>
+    </ion-col>
+    <ion-col>
+      <ion-item>
+        <div>
+          <ion-label position="floating">Slg</ion-label>
+          <ion-input  type="number" #slg="ngModel" name="slg" 
+          [(ngModel)]="model.slg" required="true"></ion-input>
+      </div>
+      </ion-item>
+      </ion-col>
+</ion-row>
+
+
+
+
+<div class="row d-flex justify-content-center">
+  <ion-button [disabled]="!singleOutlet?.name || loading" type="submit"  color="success"> SUBMIT RETURN</ion-button>
+  </div>
+</form>
+</ion-card>
+
+       <!-- loading -->
+<div *ngIf="loading" class="spinner">
+  <div class="loader"></div>
+</div>
+</ion-content>

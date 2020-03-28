@@ -36,4 +36,52 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
   closeRecord(id){
     return this.http.get(environment.apiBaseUrl + `/close-record${id}`);
   }
+
+  submitReturns(returns){
+    return this.http.post(environment.apiBaseUrl + '/submit-returns', returns);
+  }
+  editProduction(production){
+    return this.http.post(environment.apiBaseUrl + '/edit-production',production);
+  }
+
+  confirmProd(id){
+    return this.http.get(environment.apiBaseUrl + `/confirm-prod${id}`);
+  }
+  unConfirmProd(id){
+    return this.http.get(environment.apiBaseUrl + `/un-confirm-prod${id}`);
+  }
+
+  getOutletSupplies(properties){
+    return this.http.post(environment.apiBaseUrl + '/get-outlet-supplies', properties);
+  }
+
+  productionList(date){
+    return this.http.post(environment.apiBaseUrl +'/production-list',date);
+  }
+
+  editBadStock(stock){
+    return this.http.post(environment.apiBaseUrl + '/edit-bad-stock', stock);
+  }
+
+  confirmSupply(id){
+    return this.http.get(environment.apiBaseUrl + `/confirm-supply${id}`);
+  }
+
+  unConfirmSupply(id){
+    return this.http.get(environment.apiBaseUrl + `/un-confirm-supply${id}`);
+  }
+  verifySupply(id){
+    return this.http.get(environment.apiBaseUrl + `/verify-supply${id}`);
+  }
+  unVerifySupply(id){
+    return this.http.get(environment.apiBaseUrl + `/un-verify-supply${id}`);
+  }
+
+  updateSupply(supply){
+    return this.http.post(environment.apiBaseUrl + '/update-supply',supply);
+  }
+
+  getProdByDate(date){
+    return this.http.post(environment.apiBaseUrl + '/prod-by-date', date);
+  }
 }

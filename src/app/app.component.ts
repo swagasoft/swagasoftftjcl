@@ -34,7 +34,7 @@ userRole : any;
       icon: 'calculator'
     }, 
     {
-      title: 'FRUITS RECORDS',
+      title: 'FRUIT',
       url: '/fruit',
       icon: 'nutrition'
     },
@@ -75,7 +75,7 @@ userRole : any;
     this.platform.ready().then(() => {
       this.statusBar.show();
       this.splashScreen.hide();
-      timer(5000).subscribe(()=> this.showSlash = false);
+      timer(2000).subscribe(()=> this.showSlash = false);
       this.app_user = localStorage.getItem('appUser');
       this.userRole = localStorage.getItem('user-role');
  

@@ -10,9 +10,10 @@
  
 
   <ion-card class="pt-5 aqua-gradient">
-    <form #fruitform="ngForm"  (submit)="fruitform.valid && submitFruit(fruitform)">
+    <form #fruitform="ngForm"  (keydown.enter)="fruitform.valid && submitFruit()"  
+    (submit)="fruitform.valid && submitFruit()">
       <ion-item color="light" >
-       <ion-label class="text-center">select product</ion-label>
+       <ion-label class="text-center">SELECT PRODUCT</ion-label>
        <ion-select select="success"  #select="ngModel" interface="popover" (ngModelChange)="selectChange($event)" 
        [(ngModel)]="fruitModel.product" name="select">
          <ion-select-option  value="sugarcane">sugarcane</ion-select-option>
@@ -21,6 +22,8 @@
          <ion-select-option  value="pineapple">pineapple</ion-select-option>
          <ion-select-option  value="carrot">carrot</ion-select-option>
          <ion-select-option  value="watermelon">watermelon</ion-select-option>
+         <ion-select-option  value="ginger">ginger</ion-select-option>
+         <ion-select-option  value="lime">lime</ion-select-option>
        </ion-select>
      </ion-item>
      <small *ngIf="!fruitModel.product" class="text-white bg-danger text-center">product is required</small>
@@ -32,63 +35,81 @@
       <img *ngIf="fruitModel.product == 'sugarcane'" src="../../../assets/fruits/sugarcane.jpg" alt="sugarcane" style="width:100px;">
       <img *ngIf="fruitModel.product == 'tigernut'" src="../../../assets/fruits/tigernuts.PNG" alt="tigernut" style="width:100px;">
       <img *ngIf="fruitModel.product == 'watermelon'" src="../../../assets/fruits/watermelon.jpg" alt="watermelon" style="width:100px;">
+      <img *ngIf="fruitModel.product == 'lime'" src="../../../assets/fruits/limes.jpg" alt="lime" style="width:100px;">
+      <img *ngIf="fruitModel.product == 'ginger'" src="../../../assets/fruits/ginger.jpg" alt="ginger" style="width:100px;">
      </div>
     
+     <!-- select size -->
+     <ion-item color="light" >
+      <ion-label class="text-center">SELECT SIZE</ion-label>
+      <ion-select select="success"  #select="ngModel" interface="popover" (ngModelChange)="selectSize($event)" 
+      [(ngModel)]="fruitModel.size" name="select">
+        <ion-select-option  value="VERY BIG">VERY BIG</ion-select-option>
+        <ion-select-option  value="BIG">BIG</ion-select-option>
+        <ion-select-option  value="MEDIUM">MEDIUM</ion-select-option>
+        <ion-select-option  value="SMALL">SMALL</ion-select-option>
+        <ion-select-option  value="VERY SMALL">VERY SMALL</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <small *ngIf="!fruitModel.product" class="text-white bg-danger text-center">size is required</small>
+  
+     <!-- end select -->
 
        <ion-row>
      <ion-col>
       <ion-item color="light">
-        <ion-label position="floating">very big</ion-label>
-        <ion-input  type="number" #very_big="ngModel" name="very_big" 
-        [(ngModel)]="fruitModel.very_big"  required="true"></ion-input>
+        <ion-label position="floating">quantity</ion-label>
+        <ion-input  type="text" #quantity="ngModel" name="quantity" 
+        [(ngModel)]="fruitModel.quantity"  required="true"></ion-input>
       </ion-item>
      </ion-col>
      <ion-col>
       <ion-item color="light">
-        <ion-label position="floating">big</ion-label>
-        <ion-input  type="number" #big="ngModel" name="big" 
-        [(ngModel)]="fruitModel.big"  required="true"></ion-input>
+        <ion-label position="floating">buyer</ion-label>
+        <ion-input  type="text" #buyer="ngModel" name="buyer" 
+        [(ngModel)]="fruitModel.buyer"  required="true"></ion-input>
       </ion-item>
      </ion-col>
      <ion-col>
       <ion-item color="light">
-        <ion-label position="floating">medium</ion-label>
-        <ion-input  type="number" #medium="ngModel" name="medium" 
-        [(ngModel)]="fruitModel.medium"  required="true"></ion-input>
+        <ion-label position="floating">confirm by</ion-label>
+        <ion-input  type="text" #confirm_by="ngModel" name="confirm_by" 
+        [(ngModel)]="fruitModel.confirmed_by"  required="true"></ion-input>
       </ion-item>
      </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col>
+       <ion-col>
         <ion-item color="light">
-          <ion-label position="floating">small</ion-label>
-          <ion-input  type="number" #small="ngModel" name="small" 
-          [(ngModel)]="fruitModel.small"  required="true"></ion-input>
+          <ion-label position="floating">damage</ion-label>
+          <ion-input  type="text" #damage="ngModel" name="damage" 
+          [(ngModel)]="fruitModel.damage"  ></ion-input>
         </ion-item>
        </ion-col>
        <ion-col>
         <ion-item color="light">
-          <ion-label position="floating">very small</ion-label>
-          <ion-input  type="number" #medium="ngModel" name="medium" 
-          [(ngModel)]="fruitModel.very_small"  required="true"></ion-input>
+          <ion-label position="floating">bottles prod</ion-label>
+          <ion-input  type="number" #bottles="ngModel" name="bottles" 
+          [(ngModel)]="fruitModel.bottles"  ></ion-input>
         </ion-item>
        </ion-col>
        <ion-col>
         <ion-item color="light">
           <ion-label position="floating">Kg</ion-label>
           <ion-input  type="number" #kg="ngModel" name="kg" 
-          [(ngModel)]="fruitModel.kg"  required="true"></ion-input>
+          [(ngModel)]="fruitModel.kg"  ></ion-input>
         </ion-item>
        </ion-col>
     </ion-row>
-    <ion-col>
-      <ion-item color="light">
-        <ion-label position="floating">amount</ion-label>
-        <ion-input  type="number" #amount="ngModel" name="amount" 
-        [(ngModel)]="fruitModel.amount"  required="true"></ion-input>
-      </ion-item>
-     </ion-col>
+    
      <ion-row>
+      <ion-col>
+        <ion-item color="light">
+          <ion-label position="floating">amount</ion-label>
+          <ion-input  type="number" #amount="ngModel" name="amount" 
+          [(ngModel)]="fruitModel.amount"  required="true"></ion-input>
+        </ion-item>
+       </ion-col>
       <ion-col>
         <ion-item color="light">
           <ion-label position="floating">supplier</ion-label>
@@ -103,11 +124,35 @@
           [(ngModel)]="fruitModel.driver"  required="true"></ion-input>
         </ion-item>
        </ion-col>
-       
      </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item color="light">
+          <ion-label position="floating">asst buyer</ion-label>
+          <ion-input  type="text" #remark="ngModel" name="remark" 
+          [(ngModel)]="fruitModel.assist_buyer" ></ion-input>
+        </ion-item>
+       </ion-col>
+      <ion-col>
+        <ion-item color="light">
+          <ion-label position="floating">remark</ion-label>
+          <ion-input  type="text" #remark="ngModel" name="remark" 
+          [(ngModel)]="fruitModel.remark" ></ion-input>
+        </ion-item>
+       </ion-col>
+       <ion-col>
+        <ion-item color="light">
+          <ion-label position="floating">paid for</ion-label>
+          <ion-input  type="text" #paid_for="ngModel" name="paid_for" 
+          [(ngModel)]="fruitModel.paid_for"  ></ion-input>
+        </ion-item>
+       </ion-col>
+    </ion-row>
+
    
     <ion-button type="submit" expand="full"
-     [disabled]="!fruitModel.product || !fruitform.valid || loading" color="success">submit</ion-button>
+     [disabled]="!fruitModel.product || !fruitModel.size || amount.value < 0 ||
+      loading" color="success">submit</ion-button>
   </form>
   </ion-card>
 

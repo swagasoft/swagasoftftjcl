@@ -1,0 +1,213 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <div class="row d-flex justify-content-center font-weight-bold">
+      SUPPLY RECORD
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content> 
+
+  <!-- month/year picker -->
+    <ion-card color="medium">
+      <ngb-datepicker  (navigate)=" thisMonthRecord($event)" 
+      class="datepicker-only-month-select"></ngb-datepicker>
+    </ion-card>
+
+    <ion-card class="p-1 aqua-gradient tezt-white">
+      <!-- select filter -->
+      <ion-item color="light" >
+        <ion-label color="dark" class="text-center">select outlet</ion-label>
+        <select (change)="selectOutlet($event)"  >
+          <option *ngFor="let item of allOutlet" [value]="item.code">{{item.code}}</option>
+         
+        </select>
+      </ion-item>
+    </ion-card>
+
+    <ion-card>
+      <ion-row>
+        <ion-title>{{selectedOutlet?.outlet}} </ion-title>
+      </ion-row>
+      <ion-row>
+        <ion-title>{{selectedOutlet?.location}} </ion-title>
+      </ion-row>
+    </ion-card>
+
+     <ion-card class="primary-color-dark text-white" *ngFor="let item of selectedOutlet">
+      <ion-title class="text-center ">SUPPLY</ion-title>
+      <ion-row >
+        <ion-col >
+          <small> P</small>
+          <div>{{total_p}} </div>
+        </ion-col>
+        <ion-col>
+          <small> O</small>
+          <div>{{total_o}} </div>
+        </ion-col>
+        <ion-col>
+          <small> W</small>
+          <div>{{total_w}} </div>
+        </ion-col>
+        <ion-col>
+          <small> T</small>
+          <div>{{total_t}} </div>
+        </ion-col>
+        <ion-col>
+          <small> C</small>
+          <div>{{total_c}} </div>
+        </ion-col>
+        <ion-col>
+          <small> S</small>
+          <div>{{total_s}} </div>
+        </ion-col>
+        <ion-col>
+          <small> Slg</small>
+          <div>{{total_slg}} </div>
+        </ion-col>
+        <ion-col>
+          <small>total</small>
+          <div>{{total_p + total_o + total_w + total_c + total_t + total_s + total_slg}} </div>
+        </ion-col>
+      </ion-row>
+      <div class="font-weight-bold"> ₦ {{total_p * item.rate_p + total_o * item.rate_o + total_w *item.rate_w + total_t *item.rate_t 
+        +total_c *item.rate_c + total_s*item.rate_s + total_slg * item.rate_slg }} </div>
+    </ion-card>
+
+      <!-- samples -->
+      <ion-card class="primary-color-dark text-white" *ngFor="let item of selectedOutlet">
+        <ion-title class="text-center ">SAMPLES</ion-title>
+        <ion-row >
+          <ion-col >
+            <div> P</div>
+            <div>{{p_sample}} </div>
+          </ion-col>
+          <ion-col>
+            <div> O</div>
+            <div>{{o_sample}} </div>
+          </ion-col>
+          <ion-col>
+            <div> W</div>
+            <div>{{w_sample}} </div>
+          </ion-col>
+          <ion-col>
+            <div> T</div>
+            <div>{{t_sample}} </div>
+          </ion-col>
+          <ion-col>
+            <div> C</div>
+            <div>{{c_sample}} </div>
+          </ion-col>
+          <ion-col>
+            <div> S</div>
+            <div>{{s_sample}} </div>
+          </ion-col>
+          <ion-col>
+            <div> Slg</div>
+            <div>{{slg_sample}} </div>
+          </ion-col>
+          <ion-col>
+            <div>total</div>
+            <div>{{p_sample + o_sample + w_sample + t_sample + c_sample + s_sample + slg_sample}} </div>
+          </ion-col>
+        </ion-row>
+        <div class="font-weight-bold"> ₦ {{p_sample * item.rate_p + o_sample * item.rate_o + w_sample *item.rate_w + t_sample *item.rate_t 
+          +c_sample *item.rate_c + s_sample*item.rate_s + slg_sample * item.rate_slg }} </div>
+      </ion-card>
+   
+
+       <!-- exchnge-->
+       <ion-card class="primary-color-dark text-white" *ngFor="let item of selectedOutlet">
+        <ion-title class="text-center ">EXCHANGE</ion-title>
+        <ion-row >
+          <ion-col >
+            <div> P</div>
+            <div>{{p_exchange}} </div>
+          </ion-col>
+          <ion-col>
+            <div> O</div>
+            <div>{{o_exchange}} </div>
+          </ion-col>
+          <ion-col>
+            <div> W</div>
+            <div>{{w_exchange}} </div>
+          </ion-col>
+          <ion-col>
+            <div> T</div>
+            <div>{{t_exchange}} </div>
+          </ion-col>
+          <ion-col>
+            <div> C</div>
+            <div>{{c_exchange}} </div>
+          </ion-col>
+          <ion-col>
+            <div> S</div>
+            <div>{{s_exchange}} </div>
+          </ion-col>
+          <ion-col>
+            <div> Slg</div>
+            <div>{{slg_exchange}} </div>
+          </ion-col>
+          <ion-col>
+            <div>total</div>
+            <div>{{p_exchange + o_exchange + w_exchange + t_exchange 
+              + c_exchange + s_exchange + slg_exchange}} </div>
+          </ion-col>
+        </ion-row>
+        <div class="font-weight-bold"> ₦ {{p_exchange * item.rate_p + o_exchange * item.rate_o + w_exchange *item.rate_w + t_exchange *item.rate_t 
+          +c_exchange *item.rate_c + s_exchange*item.rate_s + slg_exchange * item.rate_slg }} </div>
+      </ion-card>
+   
+
+      
+       <!-- exchnge-->
+       <ion-card class="primary-color-dark text-white" *ngFor="let item of selectedOutlet">
+        <ion-title class="text-center ">RETURN</ion-title>
+        <ion-row >
+          <ion-col >
+            <div> P</div>
+            <div>{{p_return}} </div>
+          </ion-col>
+          <ion-col>
+            <div> O</div>
+            <div>{{o_return}} </div>
+          </ion-col>
+          <ion-col>
+            <div> W</div>
+            <div>{{w_return}} </div>
+          </ion-col>
+          <ion-col>
+            <div> T</div>
+            <div>{{t_return}} </div>
+          </ion-col>
+          <ion-col>
+            <div> C</div>
+            <div>{{c_return}} </div>
+          </ion-col>
+          <ion-col>
+            <div> S</div>
+            <div>{{s_return}} </div>
+          </ion-col>
+          <ion-col>
+            <div> Slg</div>
+            <div>{{slg_return}} </div>
+          </ion-col>
+          <ion-col>
+            <div>total</div>
+            <div>{{p_return + o_return + w_return + t_return 
+              + c_return + s_return + slg_return}} </div>
+          </ion-col>
+        </ion-row>
+        <div class="font-weight-bold"> ₦ {{p_return * item.rate_p + o_return * item.rate_o + w_return *item.rate_w + t_return *item.rate_t 
+          +c_return *item.rate_c + s_return*item.rate_s + slg_return * item.rate_slg }} </div>
+      </ion-card>
+
+        <!-- loading.. -->
+<div *ngIf="loading" class="spinner">
+  <div class="loader"></div>
+</div>
+  </ion-content>

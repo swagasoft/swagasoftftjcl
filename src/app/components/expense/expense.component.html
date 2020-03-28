@@ -8,20 +8,27 @@
       EXPENSES
     </div>
   </ion-toolbar>
-</ion-header>
+</ion-header> 
 
 <ion-content>
   <!-- <h6 class="text-center text-dark"> expense records</h6> -->
   <ion-row>
-    <ion-badge  color="dark"><h5> balance : ₦{{balance | number}}</h5> </ion-badge>
-    <ion-button [disabled]="userService.getUserRole() !=='DIRECTOR'"
+  <ion-badge  color="dark"><h5> balance : ₦{{balance | number}}</h5> </ion-badge>
+    <ion-button
     color="success" (click)="addBalance()">ADD  ₦ </ion-button>
+    <ion-col>
+     
+    </ion-col>
   </ion-row>
+  <ion-chip  color="dark" class="font-weight-bold" outline>{{lastCredit?.admin}} </ion-chip>
+  <ion-chip color="dark" class="font-weight-bold" outline>₦ {{lastCredit?.balance | number}} </ion-chip>
+  
+
 
   <div *ngIf="!showExpenseInput" >
   <div  class="pt-3">
    <!-- select options -->
-   <ion-card class="p-0 p-0">
+   <!-- <ion-card class="p-0 p-0">
    <ion-item color="light" >
     <ion-label class="text-center">select option</ion-label>
     <ion-select select="success" interface="popover" (ngModelChange)="selectChange($event)" 
@@ -30,7 +37,7 @@
       <ion-select-option  value="false">UNVERIFIED</ion-select-option>
     </ion-select>
   </ion-item>
-</ion-card>
+</ion-card> -->
 
  <!-- month/year picker -->
  <ion-card class="p-0 m-0 " *ngIf="!showExpenseInput" color="light">
@@ -39,15 +46,16 @@
 </ion-card>
 
 
-<form #dateform="ngForm"  (submit)=" submitDate(dateform)" class="card form-inline p-0 m-0">
+<form #dateform="ngForm"  (submit)=" submitDate(dateform)" (keydown.enter)="submitDate(dateform)"
+ class="card form-inline p-0 m-0">
   <div class="form-group">
     <div class="input-group">
       <input class="form-control" placeholder="yyyy-mm-dd"
-             name="dp" [(ngModel)]="calModel" ngbDatepicker #d="ngbDatepicker">
+             name="dp" [(ngModel)]="Calmodel" ngbDatepicker #d="ngbDatepicker">
       <div class="input-group-append">
         <button class="btn btn-outline-secondary" (click)="d.toggle()"
          type="button"><ion-icon name="apps"></ion-icon> </button>
-        <button class="btn btn-success" [disabled]="!calModel"
+        <button class="btn btn-success" [disabled]="!Calmodel"
          (click)="submitDate(dateform)" type="submit">
         <ion-icon name="search"></ion-icon></button>
       </div>
@@ -74,55 +82,61 @@
   </ion-row>
 </ion-card>
 
-    <ion-card class="p-1 text-center"  *ngFor="let item of expense; index as i">
-        <ion-row class="blue-gradient text-white">
-          <ion-card-header class="text-white"> {{item.created_at | date:'short'}}</ion-card-header>
+    <ion-card  *ngFor="let item of expense; index as i"
+     color="light" class="p-1 text-center font-weight-bold" 
+     [ngClass]="{'primary-color-dark text-white': item.return}">
+        <ion-row [ngClass]="{'success-color-dark text-white': !item.return}">
+          <small class="text-white"> {{item.created_at | date:'medium'}}</small>
           <ion-card-header class=" text-white font-weight-bold">{{item.admin}} </ion-card-header>
           <ion-button (click)="editExpense(item._id, item.description,item.product,
           item.amountPaid,item.receiver,item.information)"
            size="small" color="light"[disabled]="item.confirm || item.verified" >edit</ion-button>
           <ion-col>
-           
           </ion-col>
-          <!-- <ion-card-header class="font-weight-bold text-white">{{i+1}} </ion-card-header> -->
         </ion-row>
+
         <ion-row >
+          <div class="font-weight-bold">{{i+1}}</div>
           <ion-col>
-            <div class="blue-gradient text-white">Product</div>
+            <small class="">item</small>
             <div> {{item.product}} </div>
           </ion-col> 
           <ion-col>
-            <div class="blue-gradient text-white">Amount</div>
+            <small class="">Amount</small>
             <div>  {{item.amountPaid}} </div>
           </ion-col> 
           <ion-col>
-            <div class="blue-gradient text-white">Receiver</div>
+            <small *ngIf="!item.return" class="">Receiver</small>
+            <small *ngIf="item.return" class="">Returnee</small>
             <div>  {{item.receiver}} </div>
           </ion-col>
         </ion-row>
+
         <ion-row >
           <ion-col>
-            <div>{{item.information}}</div>
+            <small>{{item.information}}</small>
           </ion-col>
         </ion-row>
+        <ion-col>
+          <small class="text-warning">edit:{{item.edit}} </small>
+        </ion-col>
         <ion-row>
-          <div *ngIf="item.verified" class="text-success font-weight-bold">VERIFIED </div>
         <small *ngIf="!item.verified" class="text-danger font-weight-bold">AWAITING VERIFICATION </small>
-        </ion-row>
+       
+      </ion-row>
         <ion-row>
          <ion-col>
           <ion-button *ngIf="!item.verified" [disabled]="userService.getUserRole() !=='DIRECTOR'"
           (click)="verify(item._id)" size="small" color="light"> verify</ion-button>
          <ion-button *ngIf="item.verified" [disabled]="userService.getUserRole() !=='DIRECTOR'"
           (click)="disproveAlert(item._id)" size="small" color="success">
-          disprove
+          verified
          </ion-button>
          </ion-col>
+       
          <ion-col>
-           <small class="text-primary">edit:{{item.edit}} </small>
-         </ion-col>
-         <ion-col>
-           <ion-button *ngIf="item.confirm"  color="success">ok</ion-button>
+           <ion-button  (click)="UnokRecord(item._id)" size="small"
+            *ngIf="item.confirm"  color="success">ok</ion-button>
           <ion-button *ngIf="!item.confirm"  [disabled]="userService.getUserRole() !=='DILIGENT'"
           (click)="okRecord(item._id)" size="small" color="light"> ok</ion-button>
       
@@ -136,8 +150,9 @@
 
   <!-- add expense -->
   <div class="pt-5">
-  <ion-card *ngIf="showExpenseInput" class="pt-5 aqua-gradient">
-    <form #expense="ngForm"  (submit)="expense.valid && submitExpense(expense)">
+  <ion-card *ngIf="showExpenseInput" class="pt-5 success-color-dark">
+    <form #expense="ngForm" (keydown.enter)="expense.valid && submitExpense(expense)"
+     (submit)="expense.valid && submitExpense(expense)">
       <!--  form data -->
       <ion-row>
         <ion-col>
@@ -165,31 +180,36 @@
       <ion-row >
         <ion-col>
           <ion-item class="bg-dark">
-            <ion-label position="floating">Product</ion-label>
+            <ion-label position="floating">Item</ion-label>
             <ion-input  type="text" #product="ngModel" name="product" 
             [(ngModel)]="expenseModel.product" required="true"></ion-input>
           </ion-item>
-      <small class="text-danger" *ngIf="expense.submitted && !product.value">product is required</small>
+      <small class="text-danger" *ngIf="expense.submitted && !product.value">item is required</small>
         </ion-col>
 
         <ion-col>
           <ion-item class="bg-dark">
             <ion-label position="floating">Amount</ion-label>
-            <ion-input  type="text" #amount="ngModel" name="amount" 
+            <ion-input  type="number" #amount="ngModel" name="amount" 
             [(ngModel)]="expenseModel.amountPaid" required="true"></ion-input>
           </ion-item>
       <small class="text-danger" *ngIf="expense.submitted && !amount.value">amount is required</small>
         </ion-col>
       </ion-row>
-
-      <ion-item class="bg-dark">
-        <textarea rows="4" cols="60" class="m-0 p-0" type="text" #information name="information"
-         clearInput [(ngModel)]="expenseModel.information" placeholder="additional information"
-            required ></textarea>
-      </ion-item>
+        <ion-col>
+          
+          <ion-item class="bg-dark">
+            <textarea rows="2" cols="60" class="m-0 p-0" type="text" #information name="information"
+            clearInput [(ngModel)]="expenseModel.information" placeholder="additional information"
+                required ></textarea>
+          </ion-item>
       <small class="text-danger" *ngIf="expense.submitted && !information.value"> information is required!</small>
+</ion-col>
       <!-- end form data -->
-         <ion-button type="submit" class="mt-3" color="success" > SUBMIT EXPENSE</ion-button>
+        <div class="d-flex justify-content-center">
+          <ion-button type="submit" class="mt-3" [disabled]="amount.value < 0"
+          color="success"> SUBMIT EXPENSE</ion-button>
+        </div>
      
     </form>
   </ion-card>
@@ -217,10 +237,10 @@
   </ion-fab-button>
   <ion-fab-list side="top">
      <ion-button color="light" [routerLink]="['/credit']">
-     <div>CREDIT LIST</div>
+     <div>CREDIT RECORD</div>
     </ion-button>
-     <ion-button color="light" [routerLink]="['/credit']">
-     <div>SUBMIT</div>
+     <ion-button color="light" (click)="returnStock()">
+     <div>RETURN</div>
     </ion-button>
     <ion-button  color="light"  (click)="addExpense()">
       <div>ADD EXPENSE</div>

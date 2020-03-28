@@ -1,3 +1,4 @@
+import { ExpReturnModalComponent } from './../exp-return-modal/exp-return-modal.component';
 import { ExpenseEditComponent } from './../expense-edit/expense-edit.component';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { IonRefresher, AlertController, ModalController } from '@ionic/angular';
@@ -14,12 +15,14 @@ export class ExpenseComponent implements OnInit , OnDestroy {
   @ViewChild('refresherRef', {static : false}) refresherRef: IonRefresher;
   admin: any;
   loading  = false;
-  Calmodel;
+  Calmodel; 
+  lastCredit:any;
 
   constructor(public userService: UserServiceService,
               public modalController: ModalController,
               public alertController: AlertController) {
     this.admin = localStorage.getItem('appUser');
+    this.returnModel.admin = localStorage.getItem('appUser');
     this.expenseModel.admin = this.admin;
    
   }
@@ -29,13 +32,13 @@ balance: any;
 expense: any = [];
 showExpenseInput = false;
 showList = true;
-
+ 
   expenseModel = {
   date : Date.now(),
   description : '',
   product : '',
   amountPaid : null,
-  receiver : '',
+  receiver : '', 
   admin : localStorage.getItem('appUser'),
   information : '',
   verified : false
@@ -44,10 +47,10 @@ showList = true;
   model = {
     filterOptions: '',
     search: ''
-  }
+  };
 
   searchModel = { 
-    search: '',fullname: '', month: null, year : null
+    search: '', fullname: '', month: null, year : null
     };
   
   balModel = {
@@ -55,7 +58,8 @@ showList = true;
   };
 
   ngOnInit() {
-
+this.getBalance();
+this.findLastCredit();
   }
   ngOnDestroy() {
      this.model = {
@@ -78,9 +82,14 @@ showList = true;
     };
   }
 
-  async editExpense(id, description,product,
-                    amountPaid,receiver,information) {
-                      console.log(description,information);
+    returnModel = {
+      id: '',
+      admin: ''
+    };
+
+  async editExpense(id, description, product,
+                    amountPaid, receiver, information) {
+                      console.log(description, information);
                       const modal = await this.modalController.create({
                     component: ExpenseEditComponent,
                     componentProps: {
@@ -94,8 +103,9 @@ showList = true;
                 }
            );
  
-                      modal.onDidDismiss().then(()=> {
+                      modal.onDidDismiss().then(() => {
                             this.getExpense();
+                            this.getBalance();
             });
                       return await modal.present();
 }
@@ -165,11 +175,11 @@ showList = true;
     console.log(this.searchModel);
     this.userService.thisMonthExpense(this.searchModel).subscribe(
       res => {
-        console.log('this month',res);
+        console.log('this month', res);
         this.expense = res['record'];
       },
       err => {
-        console.log(err)
+        console.log(err);
         this.expense = [];
         this.userService.generalToastSh(err.error.msg);
       }
@@ -209,6 +219,13 @@ showList = true;
   });
   await alert.present();
  }
+ async UnokRecord(id){
+  this.userService.unConfirmExpense(id).subscribe(
+    res => {
+      this.getExpense();
+    }
+  );
+ }
 
 
   doRefresh(event) {
@@ -246,6 +263,7 @@ showList = true;
     this.userService.getBalance().subscribe(
       res => {
         this.loading = false;
+        this.refresherRef.complete();
         console.log(res['balance']['0']['balance']);
         this.balance = res['balance']['0']['balance'];
       },
@@ -336,6 +354,15 @@ showList = true;
     });
     await alert.present();
   }
+ 
+  findLastCredit() {
+    this.userService.getLastCredit().subscribe(
+      res => {
+        console.log(res['credit']);
+        this.lastCredit = res['credit'];
+      }
+    );
+  }
 
 
   async addBalance() {
@@ -363,11 +390,16 @@ showList = true;
               this.loading = true;
               // give a name to object;
               val.name = 'BALANCE';
+              val.admin = this.expenseModel.admin;
+              val.date = Date.now();
               this.userService.updateBalance(val).subscribe(
                 res => {
                   this.loading = false;
                   this.balance = res['balance'];
                   this.userService.generalToast(res['msg']);
+                  this.getExpense();
+                  this.getBalance();
+                  this.findLastCredit();
                 },
                 err => {
                   this.loading = false;
@@ -382,6 +414,19 @@ showList = true;
       await alert.present();
 
   }
+
+  async returnStock() {
+    const modal = await this.modalController.create({
+      component: ExpReturnModalComponent,
+    });
+    modal.onDidDismiss().then(()=> {
+      this.getExpense();
+      this.getBalance();
+      console.log('modal dismiss...');
+    });
+    return await modal.present();
+    
+   } 
 
   submitExpense(form: NgForm) {
     this.loading = true;
@@ -401,6 +446,8 @@ showList = true;
       }
     );
   }
+
+
 
 
 

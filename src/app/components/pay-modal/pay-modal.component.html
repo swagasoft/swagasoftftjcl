@@ -10,7 +10,8 @@
 
   <div ></div>
   <ion-card class="aqua-gradient pt-5 mt-5">
-  <form #salaryForm="ngForm"  (submit)="salaryForm.valid && submitForm(salaryForm)">
+  <form #salaryForm="ngForm" (keydown.enter)="salaryForm.valid && submitForm(salaryForm)"
+   (submit)="salaryForm.valid && submitForm(salaryForm)">
         <p class="  text-center font-weight-bold">{{model.fullname}} </p>
         <p class="bg-white text-center font-weight-bold">₦ {{model.salary + model.bonus + model.give
            - model.salary_adv - model.penalty -model.savings | number}} </p>
@@ -25,20 +26,21 @@
     </ion-col>
     <ion-col>
       <ion-item>
-        <ion-label position="floating">bonus</ion-label>
-        <ion-input  type="number" #bonus="ngModel" name="bonus" 
-        [(ngModel)]="model.bonus"
-          autocomplete="off" required="true"></ion-input>
-      </ion-item>
-    </ion-col>
-    <ion-col>
-      <ion-item>
         <ion-label position="floating">penalty</ion-label>
         <ion-input  type="number" #penalty="ngModel" name="penalty" 
         [(ngModel)]="model.penalty"
           autocomplete="off" required="true"></ion-input>
       </ion-item>
     </ion-col>
+    <ion-col>
+      <ion-item>
+        <ion-label position="floating">bonus</ion-label>
+        <ion-input  type="number" #bonus="ngModel" name="bonus" 
+        [(ngModel)]="model.bonus"
+          autocomplete="off" required="true"></ion-input>
+      </ion-item>
+    </ion-col>
+   
     <ion-row>
       <ion-col>
         <ion-item>

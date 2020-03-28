@@ -75,6 +75,8 @@ totalAmount = 0;
       },
       err => {
         this.loading = false;
+        this.totalAmount = 0;
+        this.totalBottles = 0;
         console.log(err);
         this.userService.generalToastSh(err.error.msg);
       }
@@ -83,18 +85,28 @@ totalAmount = 0;
 
   dateNavigate($event: NgbDatepickerNavigateEvent) {
     this.merchRecord = [];
+    this.totalAmount = 0;
+    this.totalBottles = 0;
     this.searchModel.month = $event.next.month;
     this.searchModel.year = $event.next.year;
     console.log(this.searchModel);
+    this.loading = true;
     this.outletService.findmerchantByMonth(this.searchModel).subscribe(
       res => {
         console.log(res);
+        this.loading = false;
         this.merchRecord = res['record'];
-        // this.salesRecord = res['record'];
+        this.merchRecord.forEach((record)=> {
+          this.totalBottles += record.bottles;
+          this.totalAmount += record.amountSold;
+        });
       },
       err => {
         console.log(err);
-        // this.salesRecord = [];
+        this.merchRecord = [];
+        this.loading = false;
+        this.totalAmount = 0;
+        this.totalBottles = 0;
         this.userService.generalToastSh(err.error.msg);
       } 
     );

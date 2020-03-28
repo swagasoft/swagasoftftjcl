@@ -17,8 +17,6 @@
       <ngb-datepicker  (navigate)=" thisMonthRecord($event)" 
       class="datepicker-only-month-select"></ngb-datepicker>
     </ion-card>
-    
-
   <form #dateform="ngForm"  (submit)=" submitDate(dateform)" class="form-inline">
     <div class="form-group">
       <div class="input-group">
@@ -81,21 +79,31 @@
       </ion-row>
       <ion-row>
         <ion-button color="medium">
-          <ion-button size="small" (click)="editRecord(item._id,item.user_id,item.amount,item.reason)"
+          <ion-button  size="small"
+           (click)="editRecord(item._id,item.user_id,item.amount,item.reason)"
            >EDIT</ion-button>
-          <ion-button size="small" color="warning" [disabled]="userService.role != 'DIRECTOR'" 
+          <ion-button size="small" color="warning" *ngIf="userService.role == 'DIRECTOR'"
            size="small"(click)="waveRecord(item._id)" >WAVE</ion-button>
-          <ion-button [disabled]="userService.role != 'DIRECTOR'"
+          <ion-button *ngIf="userService.role == 'DIRECTOR'"
            size="small" color="danger" size="small"(click)="deleteRecord(item._id)" >DELETE</ion-button>
+           <ion-button [disabled]="userService.role !='DILIGENT'" *ngIf="!item.confirm"
+           (click)="confirmPenalty(item._id)" size="small" color="light">ok</ion-button>
+           <ion-button [disabled]="userService.role !='DILIGENT'"  *ngIf="item.confirm"
+           (click)="unConfirmPenalty(item._id)" size="small" color="success">ok</ion-button>
+           <ion-button [disabled]="userService.role !='DIRECTOR'" *ngIf="!item.verify"
+           (click)="verifyPenalty(item._id)" size="small" color="light">verify</ion-button>
+           <ion-button [disabled]="userService.role !='DIRECTOR'"  *ngIf="item.verify"
+           (click)="unVerifyPenalty(item._id)" size="small" color="success">verified</ion-button>
         </ion-button>
+ 
       </ion-row>
       
   
     </ion-card>
     <!-- loading.. -->
-<div *ngIf="loading" class="spinner">
+<!-- <div *ngIf="loading" class="spinner">
   <div class="loader"></div>
-</div>
+</div> -->
 
 
 <ion-fab horizontal="start" vertical="bottom" slot="fixed">

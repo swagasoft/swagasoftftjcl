@@ -39,8 +39,8 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
     return this.http.post(environment.apiBaseUrl + '/search-outlet',name);
   }
 
-  editOutlet(id){
-    return this.http.get(environment.apiBaseUrl + `/edit-outlet${id}`);
+  editOutlet(outlet){
+    return this.http.post(environment.apiBaseUrl + `/edit-outlet`,outlet);
   }
 
   getAllMercahnt(){
@@ -63,6 +63,9 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
   verifySaleRecord(id){
     return this.http.get(environment.apiBaseUrl + `/verify-sales-record${id}`);
   }
+  disproveRecord(id){
+    return this.http.get(environment.apiBaseUrl + `/disprove-sales-record${id}`);
+  }
 
   getMerchantRecord(name){
     return this.http.post(environment.apiBaseUrl + '/get-merchant-record', name);
@@ -73,5 +76,13 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
   }
    findmerchantByDay(ref){
     return this.http.post(environment.apiBaseUrl + '/merchant-date-day', ref);
+  }
+
+  updateMerchantRate(outlet){
+    return this.http.post(environment.apiBaseUrl + '/update-merchant-rate', outlet);
+  }
+
+  findOutletSaleByCode(search){
+    return this.http.post(environment.apiBaseUrl + '/find-outlet-sales', search);
   }
 }

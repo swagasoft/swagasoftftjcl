@@ -1,3 +1,14 @@
+import { ProdEditModalComponent } from './components/prod-edit-modal/prod-edit-modal.component';
+import { EditSupplyComponent } from './components/edit-supply/edit-supply.component';
+import { EditBadStockComponent } from './components/edit-bad-stock/edit-bad-stock.component';
+import { EditProductionComponent } from './components/edit-production/edit-production.component';
+import { EditExpenseTwoComponent } from './components/edit-expense-two/edit-expense-two.component';
+import { ExpenseTwoComponent } from './components/expense-two/expense-two.component';
+import { SupplyRecordComponent } from './components/supply-record/supply-record.component';
+import { ExpReturnModalComponent } from './components/exp-return-modal/exp-return-modal.component';
+import { ExchangeModalComponent } from './components/exchange-modal/exchange-modal.component';
+import { ReturnModalComponent } from './components/return-modal/return-modal.component';
+import { PayRecordComponent } from './components/pay-record/pay-record.component';
 import { ExpenseEditComponent } from './components/expense-edit/expense-edit.component';
 import { MerchantComponent } from './components/merchant/merchant.component';
 import { FruiteditComponent } from './components/fruitedit/fruitedit.component';
@@ -39,26 +50,43 @@ import { PayoutComponent } from './components/payout/payout.component';
 import { MerchantModalComponent } from './components/merchant-modal/merchant-modal.component';
 import { ViewByOutletComponent } from './components/view-by-outlet/view-by-outlet.component';
 import { ViewMerchantComponent } from './components/view-merchant/view-merchant.component';
+import { SpecialComponent } from './components/special/special.component';
+import { ProdRecordComponent } from './components/prod-record/prod-record.component';
 
 @NgModule({
   declarations: [AppComponent,ProductionComponent,
     SalaryAdvComponent,
     PayModalComponent,
     FruitmodalComponent,
+    SupplyRecordComponent,
+    ProdRecordComponent,
+    ExpenseTwoComponent,
     MerchantComponent,
     ExpenseComponent,
+    ReturnModalComponent,
+    EditExpenseTwoComponent,
+    ExchangeModalComponent,
     ViewByOutletComponent,
     ViewMerchantComponent,
     ExpenseEditComponent,
+    SpecialComponent,
     FruitComponent,
     FruiteditComponent,
     PayoutComponent,
+    EditProductionComponent,
+    EditBadStockComponent,
+    PayRecordComponent,
+    ExpReturnModalComponent,
     MerchantModalComponent,
+    EditSupplyComponent,
+    ProdEditModalComponent,
     PenaltyComponent,
     SettingComponent,
     SupplyComponent, PayRollComponent],
-  entryComponents: [ PayModalComponent,MerchantModalComponent,
-    ExpenseEditComponent, FruitmodalComponent, FruiteditComponent],
+  entryComponents: [ PayModalComponent,MerchantModalComponent, ReturnModalComponent,
+    ExpReturnModalComponent, EditExpenseTwoComponent,EditProductionComponent,
+    EditBadStockComponent,EditSupplyComponent,ProdEditModalComponent,
+    ExpenseEditComponent, FruitmodalComponent, FruiteditComponent,ExchangeModalComponent ],
   imports: [BrowserModule,
     NgbModule,
      IonicModule.forRoot(),

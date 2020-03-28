@@ -39,7 +39,7 @@
     </ion-toolbar>
   </ion-header>
   <ion-content > 
-    <ion-list color="light">
+    <ion-list color="dark">
       <ion-menu-toggle  auto-hide="false" *ngFor="let p of appPages">
         <ion-item color="dark" [routerDirection]="'root'" [routerLink]="[p.url]" routerLinkActive="router-link-active">
           <ion-icon slot="start" [name]="p.icon"></ion-icon>
@@ -49,16 +49,13 @@
         </ion-item>
       </ion-menu-toggle>
 
-      <ion-menu-toggle class="p-0 m-0" 
-        [routerLink]="['/payout']" routerLinkActive="router-link-active"  >
-        <ion-item color="dark" class="p-0 m-0">
-        <ion-icon name="basket"></ion-icon>
-        <ion-label  class="ml-4">PAYOUT </ion-label>
+      <ion-menu-toggle class="p-0 m-0" *ngIf="userService.getUserRole() =='DIRECTOR'" [routerLink]="['/expense-two']" routerLinkActive="router-link-active"  >
+        <ion-item color="dark">
+        <ion-icon name="list"></ion-icon>
+        <ion-label  class="ml-4">EXPENSE 2</ion-label>
       </ion-item>
     </ion-menu-toggle>
-       
-
-      <ion-menu-toggle class="p-0 m-0" *ngIf="userService.getUserRole() =='DIRECTOR'" [routerLink]="['/manager']" routerLinkActive="router-link-active"  >
+    <ion-menu-toggle class="p-0 m-0" *ngIf="userService.getUserRole() =='DIRECTOR'" [routerLink]="['/manager']" routerLinkActive="router-link-active"  >
         <ion-item color="dark">
         <ion-icon name="build"></ion-icon>
         <ion-label  class="ml-4">APP USER</ion-label>

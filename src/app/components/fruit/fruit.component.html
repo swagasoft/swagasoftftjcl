@@ -17,6 +17,12 @@
   </ion-refresher-content>
 </ion-refresher>
 
+ <!-- month/year picker -->
+ <ion-card color="medium">
+  <ngb-datepicker  (navigate)=" thisMonthRecord($event)" 
+  class="datepicker-only-month-select"></ngb-datepicker>
+</ion-card>
+
 
 <!-- add button -->
  <ion-fab  (click)="presentModal()"  vertical="top" horizontal="end" slot="fixed">
@@ -25,7 +31,8 @@
   </ion-fab-button>
 </ion-fab>
 
-<form #dateform="ngForm"  (submit)=" submitDate(dateform)" class="form-inline">
+<form #dateform="ngForm" (keydown.enter)=" submitDate(dateform)"
+ (submit)=" submitDate(dateform)" class="form-inline">
   <div class="form-group">
     <div class="input-group">
       <input class="form-control" placeholder="yyyy-mm-dd"
@@ -41,7 +48,9 @@
   </div>
 </form>
 <div class="pt-5">
-  <ion-card *ngFor="let item of fruit index as i">
+
+
+  <ion-card class="font-weight-bold"  *ngFor="let item of fruit index as i">
     <ion-row>
       <ion-col>
         <div class="font-weight-bold">{{i+1}} -{{item.product}} </div>
@@ -52,6 +61,8 @@
           <img *ngIf="item.product == 'sugarcane'" src="../../../assets/fruits/sugarcane.jpg" alt="sugarcane" style="width:80px;">
           <img *ngIf="item.product == 'tigernut'" src="../../../assets/fruits/tigernuts.PNG" alt="tigernut" style="width:80px;">
           <img *ngIf="item.product == 'watermelon'" src="../../../assets/fruits/watermelon.jpg" alt="watermelon" style="width:80px;">
+          <img *ngIf="item.product == 'lime'" src="../../../assets/fruits/limes.jpg" alt="lime" style="width:80px;">
+          <img *ngIf="item.product == 'ginger'" src="../../../assets/fruits/ginger.jpg" alt="ginger" style="width:80px;">
          </div>
       </ion-col>
      <ion-col>
@@ -59,60 +70,76 @@
      </ion-col> <ion-col>
       <small class="text-primary">edited :{{item.edit}} </small>
       <small class="pl-1">{{item.admin}} </small>
-      <ion-button [disabled]="item.verify || item.confirm" (click)="editRecord(item._id,item.product,item.very_big,item.big,
-      item.medium,item.small,item.very_small,item.amount,item.kilo,item.supplier,item.driver)"
+      <ion-button [disabled]="item.verify || item.confirm"
+       (click)="editRecord(item._id,item.product,item.damage,item.assist_buyer,item.paid_for
+       ,item.amount,item.kilo,item.supplier,item.driver,
+       item.quantity,item.confirmed_by,item.buyer,item.size, item.remark)"
        color="light">EDIT</ion-button>
      </ion-col>
     </ion-row> 
-    <ion-row  color="light">
-      <ion-col>
-        <small class="mr-1">V_BIG</small>
-        <small>{{item.very_big}}</small>
+    <ion-row>
+      <ion-col >
+        <div>{{item.quantity}}</div>
       </ion-col>
       <ion-col>
-        <small class="mr-1">BIG</small>
-        <small>{{item.big}}</small>
+        <small class="mr-1">buyer</small>
+        <div>{{item.buyer}}</div>
       </ion-col>
       <ion-col>
-        <small class="mr-1">MEDIUM</small>
-        <small>{{item.medium}}</small>
+        <small class="mr-1">asst_buy</small>
+        <div>{{item.assist_buyer}}</div>
       </ion-col>
       <ion-col>
-        <small class="mr-1">SMALL</small>
-        <small>{{item.small}}</small>
+        <small class="mr-1">confirm</small>
+        <div>{{item.confirmed_by}}</div>
       </ion-col>
       <ion-col>
-        <small class="mr-1">V_SMALL</small>
-        <small>{{item.very_small}}</small>
+        <small class="mr-1">damage</small>
+        <div>{{item.damage}}</div>
       </ion-col>
       <ion-col>
-        <small>{{item.kilo | number}}KG</small>
+        <small class="mr-1">bottles</small>
+        <div>{{item.bottles}}</div>
       </ion-col>
     </ion-row>
     <ion-row  color="light">
       <ion-col>
-        supplier > {{item.supplier}}
+        <small>supplier</small>
+         <div> {{item.supplier}}</div>
       </ion-col>
        <ion-col>
-        driver > {{item.driver}}
+         <small>driver</small>
+          <div>{{item.driver}}</div>
+      </ion-col>
+      <ion-col>
+        <div>{{item.kilo | number}}KG</div>
+      </ion-col>
+      <ion-col>
+        <small>size</small>
+        <div>{{item.size}}</div>
       </ion-col>
        <ion-col>
        <div class="font-weight-bold"> ₦{{item.amount | number}}</div>
       </ion-col>
     </ion-row>
+   <ion-row>
+    <div class="text-danger text-center">remark: {{item.remark}} </div>
+    <ion-chip  color="success" outline>{{item.paid_for}}</ion-chip>
+   </ion-row>
     <ion-row  color="light">
       <ion-col>
-        <div *ngIf="item.confirm" class="font-weight-bold text-success">OK</div>
         <ion-button *ngIf="!item.confirm" size="small" [disabled]="userService.getUserRole() != 'DILIGENT'"
         (click)="okRecord(item._id)" color="light">ok</ion-button>
+        <ion-button [disabled]="userService.getUserRole() != 'DILIGENT'"  *ngIf="item.confirm" (click)="UnokRecord(item._id)"
+        size="small" color="success">ok</ion-button>
       </ion-col>
       <ion-col>
-        <small *ngIf="item.verify" class="font-weight-bold text-success">VERIFIED</small>
-        <small *ngIf="!item.verify" class="font-weight-bold text-warning">NOT VERIFIED</small>
+        <!-- <small *ngIf="item.verify" class="font-weight-bold text-success">VERIFIED</small>
+        <small *ngIf="!item.verify" class="font-weight-bold text-warning">NOT VERIFIED</small> -->
         <ion-button *ngIf="!item.verify" size="small" [disabled]="userService.getUserRole() != 'DIRECTOR'"
-        (click)="verify(item._id)" color="success">verify</ion-button>
+        (click)="verify(item._id)" color="light">verify</ion-button>
          <ion-button *ngIf="item.verify" size="small" [disabled]="userService.getUserRole() != 'DIRECTOR'"
-        (click)="disprove(item._id)" color="warning">disprove</ion-button>
+        (click)="disprove(item._id)" color="success">verified</ion-button>
       </ion-col>
     </ion-row>
   </ion-card>

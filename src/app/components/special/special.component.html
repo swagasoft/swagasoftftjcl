@@ -1,0 +1,101 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons> 
+    <div class="row d-flex justify-content-center font-weight-bold">
+      PAYOUT
+    </div> 
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <!-- referesh -->
+    <ion-refresher #refresherRef (ionRefresh)="doRefresh($event)" slot="fixed" >
+      <ion-refresher-content>
+      </ion-refresher-content>
+    </ion-refresher>
+
+     <!-- department pick -->
+     <ion-card>
+      <ion-item color="light">
+      <ion-label class="text-center">select by department</ion-label>
+      <ion-select select="success" interface="popover" name="accountType"
+       (ngModelChange)="selectCategory($event)"  [(ngModel)]="model.department"
+     >
+     <ion-select-option  value="ADMINISTRATOR">ADMINISTRATOR</ion-select-option>
+     <ion-select-option  value="ADMIN-ASSIST">ADMIN-ASSIST</ion-select-option>
+     <ion-select-option  value="TECHNICAL">TECHNICAL</ion-select-option>
+     <ion-select-option  value="PRODUCTION">PRODUCTION</ion-select-option>
+     <ion-select-option  value="CLEANER">CLEANER</ion-select-option>
+     <ion-select-option  value="CLEANER">DRIVER</ion-select-option>
+     <ion-select-option  value="SECURITY">SECURITY</ion-select-option>
+     <ion-select-option  value="MERCHANDISER">MERCHANDISER</ion-select-option>
+     <ion-select-option  value="MANAGEMENT">MANAGEMENT</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-card>
+
+  <ion-row>
+    <ion-col>
+      <ion-badge color="light"> ₦{{totalSalary | number}} </ion-badge>
+    </ion-col>
+    <ion-col>
+      <ion-badge color="light">TOTAL: {{totalStaff}} </ion-badge>
+    </ion-col>
+
+  </ion-row>
+  
+
+  <ion-card color="success" *ngFor="let item of allPayout">
+    <div class="text-center fint-weight-bold">{{item.fullname}} </div>
+    <ion-row>
+      <ion-col>
+        <small>salary</small>
+        <div>{{item.salary}} </div>
+      </ion-col>
+      <ion-col>
+        <small>bonus</small>
+        <div>{{item.bonus}} </div>
+      </ion-col>
+       <ion-col>
+        <small>penalty</small>
+        <div>{{item.penalty}} </div>
+      </ion-col>
+      <ion-col>
+        <small>savings</small>
+        <div>{{item.savings}} </div>
+      </ion-col>
+      <ion-col>
+        <small>salary_adv</small>
+        <div>{{item.advance_salary}} </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <small>bank</small>
+        <div>{{item.bankAccountName}} </div>
+      </ion-col>
+       <ion-col>
+        <small>acc No.</small>
+        <div>{{item.bankNumber}} </div>
+      </ion-col> 
+      <ion-col>
+        <small>Acc Type.</small>
+        <div>{{item.bankAccountType}} </div>
+      </ion-col> 
+      <ion-col>
+        <small>Paid</small>
+        <h5 class="font-weight-bold">₦{{item.AmountPaid | number}} </h5>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+
+     <!-- loading.. -->
+<div *ngIf="loading" class="spinner">
+  <div class="loader"></div>
+</div>
+
+</ion-content>

@@ -12,15 +12,16 @@
 
 <ion-content>
 
-  <h4 class="p-3 text-center"> TODAY'S PRODUCTION</h4>
+  <h4 class="p-3 text-center"> NEW PRODUCTION</h4>
 
  
-  <form #prod="ngForm"  (submit)="prod.valid && submitProd(prod)">
+  <form #prod="ngForm" (keydown.enter)="prod.valid && submitProd(prod)"
+    (submit)="prod.valid && submitProd(prod)">
     <ion-row>
       
         <ion-col>
           <ion-card>
-          <ion-item color="medium">
+          <ion-item color="dark">
             <ion-label position="floating">Pineapple</ion-label>
             <ion-input  type="number" #pineapple="ngModel" name="pineapple" 
             [(ngModel)]="model.pineapple" required="true"></ion-input>
@@ -86,16 +87,26 @@
     <small class="text-danger text-center" *ngIf="prod.submitted && !sugarcane.value">enter sugarcane</small>
       </ion-col>
     </ion-row>
+   <ion-row>
     <ion-col>
       <ion-card>
       <ion-item color="medium">
-        <ion-label position="floating">Sugarcane/lime and ginger</ion-label>
+        <ion-label position="floating">Slg</ion-label>
         <ion-input  type="number" #slg="ngModel" name="slg" 
         [(ngModel)]="model.slg" required="true"></ion-input>
       </ion-item>
     </ion-card>
   <small class="text-danger text-center" *ngIf="prod.submitted && !slg.value">enter slg</small>
     </ion-col>
+    <ion-col>
+      <ion-card>
+      <ion-item color="success">
+        <div> TOTAL : {{pineapple.value + orange.value + watermelon.value + tigernut.value 
+          +carrot.value + sugarcane.value + slg.value}} </div>
+      </ion-item>
+    </ion-card>
+    </ion-col>
+   </ion-row>
     <!-- <ion-button type="submit" class="mt-3" color="success" > SUBMIT</ion-button> -->
     <ion-button color="success" type="submit" expand="block">SUBMIT PRODUCTION</ion-button>
   </form>

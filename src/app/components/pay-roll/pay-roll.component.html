@@ -44,7 +44,7 @@
      <ion-select-option  value="TECHNICAL">TECHNICAL</ion-select-option>
      <ion-select-option  value="PRODUCTION">PRODUCTION</ion-select-option>
      <ion-select-option  value="CLEANER">CLEANER</ion-select-option>
-     <ion-select-option  value="CLEANER">DRIVER</ion-select-option>
+     <ion-select-option  value="DRIVER">DRIVER</ion-select-option>
      <ion-select-option  value="SECURITY">SECURITY</ion-select-option>
      <ion-select-option  value="MERCHANDISER">MERCHANDISER</ion-select-option>
      <ion-select-option  value="MANAGEMENT">MANAGEMENT</ion-select-option>
@@ -56,7 +56,8 @@
     <ion-card>
       <ion-row>
         <ion-item>
-        <ion-input name="search" #search placeholder="search name"  [(ngModel)]="model.search"></ion-input> 
+        <ion-input name="search" #search placeholder="search name"
+        (keydown.enter)="searchName()"  [(ngModel)]="model.search"></ion-input> 
         <ion-button color="success" size="medium" (click)="searchName()" [disabled]="!search.value">
           <ion-icon name="search" size="large"></ion-icon>
         </ion-button> 
@@ -78,9 +79,9 @@
     <div *ngFor="let item of allStaff; index as i" >
      <ion-card  
      [ngClass]="{'bg-danger text-white': item.not_paid}">
-        <ion-row>
-          <ion-checkbox *ngIf="item.settled" (click)="undoRecord($event, item._id)" checked color="success"></ion-checkbox>
-          <ion-checkbox  *ngIf="!item.settled"  (click)="processRecord($event, item._id)"  color="primary"></ion-checkbox>
+        <ion-row> 
+          <ion-checkbox *ngIf="item.settled" (click)="undoRecord($event, item._id, item.department)" checked color="success"></ion-checkbox>
+          <ion-checkbox  *ngIf="!item.settled"  (click)="processRecord($event, item._id,item.department)"  color="primary"></ion-checkbox>
           <ion-col (click)="presentModal(item._id,item.fullname,item.salary,item.bonus,item.penalty,
           item.savings,item.advance_salary,item.give,item.AmountPaid)">
            
@@ -88,9 +89,10 @@
             <div  [ngClass]="{'success-color-dark text-white': item.settled}" >DEPARTMENT :  {{item.department}} </div>
           </ion-col>
         
-          <ion-button *ngIf="!item.settled"  size="small" (click)="notpaid(item._id)" color="success">!</ion-button>
+          <ion-button *ngIf=" item.not_paid"  size="small"  color="danger">not paid</ion-button>
+          <ion-button *ngIf="!item.settled"  size="small" (click)="notpaid(item._id,item.department)" color="success">!</ion-button>
         </ion-row>
-        <ion-card color="" [ngClass]="{'bg-danger text-white': item.not_paid}" >
+        <ion-card class="font-weight-bold" [ngClass]="{'bg-danger text-white': item.not_paid}" >
           <ion-row>
             <ion-col>
               <small>salary</small>
@@ -116,14 +118,29 @@
               <div>{{item.advance_salary}} </div>
             </ion-col>
           </ion-row>
+
           <ion-row>
-            <ion-col>
-              <small>Paid</small>
-              <h5 class="font-weight-bold">₦{{item.AmountPaid | number}} </h5>
-            </ion-col>
             <ion-col>
               <ion-icon *ngIf="item.penalize" size="large" color="dark" name="cut"></ion-icon>
             </ion-col>
+            <ion-row>
+              <ion-col>
+                <small>bank</small>
+                <div>{{item.bankAccountName}} </div>
+              </ion-col>
+               <ion-col>
+                <small>acc No.</small>
+                <div>{{item.bankNumber}} </div>
+              </ion-col> 
+              <ion-col>
+                <small>Acc Type.</small>
+                <div>{{item.bankAccountType}} </div>
+              </ion-col> 
+              <ion-col>
+                <small>Paid</small>
+                <h5 class="font-weight-bold">₦{{item.AmountPaid | number}} </h5>
+              </ion-col>
+            </ion-row>
           </ion-row>
         </ion-card>
       </ion-card>
@@ -147,15 +164,14 @@
     <ion-icon name="alert"></ion-icon>
   </ion-fab-button>
   <ion-fab-list side="top">
-    <ion-button color="danger" > 
-      <a class=" info text-white" ><ion-icon name="chatbubbles"></ion-icon> RESET </a>
+    <ion-button color="danger" (click)="resetPayroll()" > 
+      <a class=" info text-white" ><ion-icon name="cog"></ion-icon> RESET </a>
+    </ion-button> <ion-button color="success"  [routerLink]="['/pay-record']" > 
+      <a ><ion-icon name="chatbubbles"></ion-icon> PAYOUT RECORD </a>
     </ion-button>
      <ion-button color="success" [routerLink]="['/payout']">
       <a class="info text-white" ><ion-icon name="reader"></ion-icon>Payout </a>
     </ion-button>
-    <!-- <ion-button *ngIf="!products?.open_p" color="success" [routerLink]="['/production']">
-      <a class="info text-white" > <ion-icon name="list"></ion-icon>Submit Production </a>
-    </ion-button> -->
   </ion-fab-list>
 </ion-fab>
 

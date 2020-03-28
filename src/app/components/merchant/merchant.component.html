@@ -11,11 +11,19 @@
 </ion-header>
 
       <!-- loading -->
-      <div *ngIf="loading" class="spinner">
+      <!-- <div *ngIf="loading" class="spinner">
         <div class="loader"></div>
-      </div>
+      </div> -->
       
 <ion-content>
+
+  
+    <!-- referesh -->
+    <ion-refresher #refresherRef (ionRefresh)="doRefresh($event)" slot="fixed" >
+      <ion-refresher-content>
+      </ion-refresher-content>
+    </ion-refresher>
+
   <div class="pb-5">
 
 <ion-card color="light">
@@ -69,7 +77,8 @@
       <small >admin:{{item.admin}}</small>
     </ion-col>
       <ion-col>
-      <h6 class="font-weight-bold"> ₦{{item.amountSold | number}}</h6>
+      <h6 class="font-weight-bold" *ngIf="userService.getUserRole() 
+      == 'DIRECTOR'"> ₦{{item.amountSold | number}}</h6>
     </ion-col>
   </ion-row>
   <ion-row>
@@ -83,11 +92,11 @@
       <ion-button  *ngIf="!item.verify"  [disabled]="userService.getUserRole() != 'DIRECTOR'" size="small" 
       color="light" (click)="clickVerify(item._id)">verify</ion-button>
       <ion-button [disabled]="userService.getUserRole() != 'DIRECTOR'"
-       *ngIf="item.verify" size="small" color="success">verified</ion-button>
+       *ngIf="item.verify"(click)="disprove(item._id)"  size="small" color="success">verified</ion-button>
       
     </ion-col>
      <ion-col>
-      <ion-button [disabled]="userService.getUserRole() != 'DIRECTOR'"
+      <ion-button [disabled]="item.verify || item.confirm"
        size="small" color="danger" (click)="delete(item._id)">delete</ion-button>
     </ion-col>
 
@@ -102,13 +111,12 @@
     <ion-icon name="alert"></ion-icon>
   </ion-fab-button>
   <ion-fab-list side="top">
+    <ion-button color="light" [routerLink]="['/view-outlet-sales']">
+      <a class=" " ><ion-icon name="cube"></ion-icon>VIEW OUTLET SALES </a>
+    </ion-button>
     <ion-button color="light"  [routerLink]="['/view-merchant-sales']">
       <a class=" " ><ion-icon name="arrow-dropdown-circle"></ion-icon>VIEW MERCHANT SALES </a>
     </ion-button>
-     <ion-button color="light" [routerLink]="['/view-outlet-sales']">
-      <a class=" " ><ion-icon name="cube"></ion-icon>VIEW SALES BY OUTLET </a>
-    </ion-button>
-    
     <ion-button color="light" (click)="merchantModal()"> 
       <a class=" " ><ion-icon name="chatbubbles"></ion-icon>ENTER SALES </a>
     </ion-button>

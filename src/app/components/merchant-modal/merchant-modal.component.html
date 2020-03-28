@@ -21,7 +21,7 @@
       <th class="text-center text- text-uppercase">{{singleOutlet?.name}} </th>
       <div class="ml-4">{{singleOutlet?.location}} </div>
       <div class="ml-4 text-dark font-weight-bold"> AXIS :{{singleOutlet?.axis}} </div>
-      <div class="ml-4 text-dark font-weight-bold"> RATE :  ₦{{model.outletRate}} </div>
+      <div *ngIf="userService.getUserRole() == 'DIRECTOR'" class="ml-4 text-dark font-weight-bold"> RATE :  ₦{{model.outletRate}} </div>
     </ion-row>
   </ion-list>
   </ion-card>
@@ -37,7 +37,8 @@
 
   
 
-    <form #merchant="ngForm"  (submit)="merchant.valid && submitForm(merchant)">
+    <form #merchant="ngForm" (keydown.enter)="merchant.valid && submitForm(merchant)"
+     (submit)="merchant.valid && submitForm(merchant)">
       <ion-row>
         <ion-col>
           <ion-item class="bg-dark">
@@ -49,13 +50,12 @@
         </ion-col>
 
 
-
+ 
         <ion-col>
-          <ion-item class="bg-dark">
-            <ion-label position="floating"> ₦ value</ion-label>
-            <ion-input  type="number" #amount="ngModel" name="amount" 
-            [value]="model.outletRate * bottles.value" readonly
-            [(ngModel)]="model.amountSold" required="true"></ion-input>
+          <ion-item class="bg-dark" >
+          
+            <div *ngIf="userService.getUserRole() == 'DIRECTOR'"
+            >{{model.outletRate * model.bottleSold | number}} </div>
           </ion-item>
         </ion-col>
       </ion-row>
@@ -63,7 +63,7 @@
         <ion-chip outline color="dark">
           <ion-icon name="user" color="primary"></ion-icon>
           <ion-label class="font-weight-bold">{{item}} </ion-label>
-          <div class="text-center text-success font-weight-bold pl-2">=  ₦{{model.outletRate *  bottles.value / model.merchant.length }} </div>
+          <div *ngIf="userService.getUserRole() == 'DIRECTOR'" class="text-center text-success font-weight-bold pl-2">=  ₦{{model.outletRate *  bottles.value / model.merchant.length }} </div>
         </ion-chip>
       </div>
      <div class="row d-flex justify-content-center">
@@ -73,7 +73,7 @@
      </div>
     <div class="row d-flex justify-content-center">
       <ion-button type="submit" color="success" [disabled]="!bottles.value 
-      || !amount.value || !singleOutlet || model.merchant.length == 0 || loading">SUBMIT</ion-button>
+       || !singleOutlet || model.merchant.length == 0 || loading">SUBMIT</ion-button>
     </div>
     </form>
 

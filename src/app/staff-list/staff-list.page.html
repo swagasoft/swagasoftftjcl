@@ -14,8 +14,10 @@
 
 
 
-  <ion-fab *ngIf="showList" (click)="addStaff()"  vertical="top" horizontal="end" slot="fixed">
-    <ion-fab-button   color="success">
+  <ion-fab *ngIf="showList"
+     vertical="top" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="addStaff()" [disabled]="userService.getUserRole() !='DIRECTOR' ||
+     userService.getUserRole() !='DILIGENT'"   color="success">
       <ion-icon  name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
@@ -29,20 +31,33 @@
   <!-- staff list  -->
     <div *ngIf="showList" class="pt-5">
 
+         <!-- search by name -->
+<ion-card>
+  <ion-row>
+    <ion-item>
+    <ion-input name="search" #search placeholder="search by name"
+    (keydown.enter)="searchStaff()"  [(ngModel)]="searchModel.search"></ion-input> 
+    <ion-button color="success" size="medium" (click)="searchStaff()" [disabled]="!search.value">
+      <ion-icon name="search" size="large"></ion-icon>
+    </ion-button> 
+  </ion-item>
+  </ion-row>
+</ion-card>
+
       <ion-col>
         <!-- select options -->
         <ion-card>
           <ion-item color="light">
           <ion-label class="text-center">select by department</ion-label>
           <ion-select select="success" interface="popover" name="accountType"
-           (ngModelChange)="selectCategory($event)"  [(ngModel)]="model.department"
+           (ngModelChange)="selectStaffDepartment($event)"  [(ngModel)]="model.department"
          >
          <ion-select-option  value="ADMINISTRATOR">ADMINISTRATOR</ion-select-option>
          <ion-select-option  value="ADMIN-ASSIST">ADMIN-ASSIST</ion-select-option>
          <ion-select-option  value="TECHNICAL">TECHNICAL</ion-select-option>
          <ion-select-option  value="PRODUCTION">PRODUCTION</ion-select-option>
          <ion-select-option  value="CLEANER">CLEANER</ion-select-option>
-         <ion-select-option  value="CLEANER">DRIVER</ion-select-option>
+         <ion-select-option  value="DRIVER">DRIVER</ion-select-option>
          <ion-select-option  value="SECURITY">SECURITY</ion-select-option>
          <ion-select-option  value="MERCHANDISER">MERCHANDISER</ion-select-option>
          <ion-select-option  value="MANAGEMENT">MANAGEMENT</ion-select-option>
@@ -51,53 +66,60 @@
       </ion-card>
        </ion-col>
 
-      <ion-card *ngFor="let item of staffList" class="m-2 p-0 mb-5 font-weight-bold">
-        <ion-card-title class="text-center text-white bg-dark">{{item.fullname}} </ion-card-title>
-        <ion-col>
-          
-        </ion-col>
+       <ion-chip color=dark outline>{{staffList.length}} </ion-chip>
+
+      <ion-card *ngFor="let item of staffList"
+       class=" primary-color-dark text-white" color="light">
+        <h5 class="text-center text-white font-weight-bold 
+        text-uppercase pt-2">{{item.fullname}} </h5>
         <ion-row>
           <ion-col>
-            <div class="text-white success-color-dark">phone</div>
+            <small class="">phone</small>
             <div>{{item.phone}}</div>
           </ion-col>
            <ion-col>
-            <div class="text-white success-color-dark">Department</div>
+            <small class="">Department</small>
             <div>{{item.department}}</div>
           </ion-col>
         </ion-row>
 
         <ion-row>
           <ion-col>
-            <div class="text-white success-color-dark">Account N0</div>
+            <small class="">Account N0</small>
             <div>{{item.bankNumber}} </div>
           </ion-col> 
           <ion-col>
-            <div class="text-white success-color-dark">Account Type</div>
+            <small class="">Account Type</small>
             <div>{{item.bankAccountType}} </div>
           </ion-col>
           <ion-col>
-            <div class="text-white success-color-dark">Account Name</div>
+            <small class="">Account Name</small>
             <div>{{item.bankAccountName}} </div>
           </ion-col>
         </ion-row>
         
         <ion-row>
           <ion-col>
-        <small class="text-white text-center success-color-dark">{{item.created_at | date:'short'}} </small>
+        <small class="">{{item.created_at | date:'medium'}} </small>
         
           </ion-col>
           <ion-col>
-            <ion-icon (click)="penalizeStaff(item._id, item.fullname)"
-             color="info" size="large" name="cut"></ion-icon>
+            <ion-button size="small" color="light" 
+            (click)="penalizeStaff(item._id, item.fullname, item.department)">
+              <ion-icon 
+              size="small" name="cut"></ion-icon>
+            </ion-button>
           </ion-col>
           <ion-col>
-            <ion-icon (click)="deleteStaff(item._id, item.fullname)"
-             color="danger"  size="large" name="trash"></ion-icon>
+            <ion-button (click)="salaryAdAlert(item._id, item.fullname, item.department)"
+            color="light" size="small">Salary_Adv</ion-button>
           </ion-col>
           <ion-col>
-            <ion-button (click)="salaryAdAlert(item._id, item.fullname)"
-             color="success" size="small">Salary_Av</ion-button>
+           
+              <ion-icon  *ngIf="userService.getUserRole() == 'DIRECTOR' ||
+               userService.getUserRole() == 'DILIGENT'"
+               (click)="deleteStaff(item._id, item.fullname)"
+              color="danger"  size="large" name="trash"></ion-icon>
           </ion-col>
          
         </ion-row>
@@ -109,7 +131,8 @@
     <ion-card *ngIf="showform" class="aqua-gradient text-white">
       <ion-card-header class="text-center bg-dark text-white">CREATE STAFF</ion-card-header>
       <ion-card-content>
-        <form #staffForm="ngForm"  (submit)="staffForm.valid && submitStaff(staffForm)">
+        <form #staffForm="ngForm"  
+         (submit)="staffForm.valid && submitStaff(staffForm)">
           
           <ion-col >
             <ion-item class="bg-dark">
@@ -213,7 +236,7 @@
                <ion-select-option  value="TECHNICAL">TECHNICAL</ion-select-option>
                <ion-select-option  value="PRODUCTION">PRODUCTION</ion-select-option>
                <ion-select-option  value="CLEANER">CLEANER</ion-select-option>
-               <ion-select-option  value="CLEANER">DRIVER</ion-select-option>
+               <ion-select-option  value="DRIVER">DRIVER</ion-select-option>
                <ion-select-option  value="SECURITY">SECURITY</ion-select-option>
                <ion-select-option  value="MERCHANDISER">MERCHANDISER</ion-select-option>
                <ion-select-option  value="MANAGEMENT">MANAGEMENT</ion-select-option>
@@ -223,8 +246,9 @@
           </ion-card>
              </ion-col>
 
-             <ion-row class="pt-3">
-              <ion-button  [disabled]="!model.department || !model.accountType"
+             <ion-row class="pt-3" 
+             >
+              <ion-button   *ngIf="!model.department || !model.accountType "
               color="success" type="submit">SUBMIT</ion-button>
               <ion-button type="reset"(click)="resetForm()" >RESET</ion-button>
             </ion-row>

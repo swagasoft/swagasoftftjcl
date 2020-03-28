@@ -15,33 +15,43 @@ export class FruiteditComponent implements OnInit {
                public userService: UserServiceService,
                private recordService: RecordService) { 
                }
-  fruitModel = {
-    product: '',
-    id:'',
-    very_big: 0,
-    big: 0,
-    medium:0,
-    small:0,
-    very_small: 0,
-    amount: 0,
-    kg:undefined,
-    supplier:'',
-    driver:'',
-    admin:''
-  }
+
+               fruitModel = {
+                id:'',
+                quantity:'',
+                buyer:'',
+                assist_buyer:'',
+                confirmed_by:'',
+                bottles:'',
+                remark:'',
+                paid_for:'',
+                damage:'',
+                product: '',
+                size: '',
+                amount: 0,
+                kg:undefined,
+                supplier:'',
+                driver:'',
+                admin:'',
+                date: Date.now()
+              }
+
   ngOnInit() {
+    
+
     this.fruitModel.admin =localStorage.getItem('appUser');
     this.fruitModel.id = this.navParams.get('id');
     this.fruitModel.product = this.navParams.get('product');
-    this.fruitModel.very_big = this.navParams.get('very_big');
-    this.fruitModel.big = this.navParams.get('big');
-    this.fruitModel.medium = this.navParams.get('medium');
-    this.fruitModel.small = this.navParams.get('small');
-    console.log(this.fruitModel.medium);
-    this.fruitModel.very_big = this.navParams.get('very_big');
-    this.fruitModel.big = this.navParams.get('big');
-    this.fruitModel.medium = this.navParams.get('medium');
-    this.fruitModel.small = this.navParams.get('small');
+    this.fruitModel.damage = this.navParams.get('damage');
+    this.fruitModel.assist_buyer = this.navParams.get('assist_buyer');
+    this.fruitModel.paid_for = this.navParams.get('paid_for');
+    this.fruitModel.buyer = this.navParams.get('buyer');
+    this.fruitModel.size = this.navParams.get('size');
+    this.fruitModel.remark = this.navParams.get('remark');
+    this.fruitModel.confirmed_by = this.navParams.get('confirmed_by');
+    this.fruitModel.quantity = this.navParams.get('quantity');
+
+
     this.fruitModel.amount = this.navParams.get('amount');
     this.fruitModel.kg = this.navParams.get('kilo');
     this.fruitModel.supplier = this.navParams.get('supplier');
@@ -54,10 +64,14 @@ export class FruiteditComponent implements OnInit {
     console.log('i clicked close')
   }
 
-  
   selectChange( $event) {
     console.log($event);
     this.fruitModel.product = $event;
+        } 
+
+  selectSize( $event) {
+    console.log($event);
+    this.fruitModel.size = $event;
         }
 
    submitFruit(){

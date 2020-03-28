@@ -13,7 +13,7 @@ export class PayoutComponent implements OnInit {
   @ViewChild('refresherRef', {static : false}) refresherRef: IonRefresher;
 allPayout = [];
 loading = true;
-totalSalary = 0
+totalSalary = 0 
 totalStaff = 0;
 
   constructor(private payrollService: PayrollService,

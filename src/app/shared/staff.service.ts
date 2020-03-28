@@ -63,6 +63,10 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
     getAllStaff(){
       return this.http.get(environment.apiBaseUrl + '/get-all-staff');
     }
+
+    searchStaff(staff){
+      return this.http.post(environment.apiBaseUrl + '/search-staff-name', staff);
+    }
      getLimitStaff(){
       return this.http.get(environment.apiBaseUrl + '/get-limit-staff');
     }
@@ -106,6 +110,21 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
 
     settleSalary(salary){
       return this.http.post(environment.apiBaseUrl + '/settle-salary', salary);
+    }
+
+    verifyPenal(id){
+      return this.http.get(environment.apiBaseUrl + `/verify-penalty${id}`);
+    }
+    unVerifyPenal(id){
+      return this.http.get(environment.apiBaseUrl + `/un-verify-penalty${id}`);
+    }
+
+    confirmPenal(id){
+      return this.http.get(environment.apiBaseUrl + `/confirm-penalty${id}`);
+    }
+    
+    unConfirmPenal(id){
+      return this.http.get(environment.apiBaseUrl + `/un-confirm-penalty${id}`);
     }
    
 

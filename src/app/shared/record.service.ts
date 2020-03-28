@@ -30,9 +30,16 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
   okFruitRecord(id){
     return this.http.get(environment.apiBaseUrl + `/ok-fruit-record${id}`);
   }
+  UnOkFruitRecord(id){
+    return this.http.get(environment.apiBaseUrl + `/un-ok-fruit-record${id}`);
+  }
 
   findBydate(date){
     return this.http.post(environment.apiBaseUrl + '/find-fruit-by-date', date);
+  }
+
+  thisMonthFruit(month){
+    return this.http.post(environment.apiBaseUrl + '/this-month-fruit', month);
   }
 
   getSomeData(date){

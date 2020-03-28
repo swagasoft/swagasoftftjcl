@@ -40,7 +40,7 @@ searchModel = {
     this.findBydate();
   }
 
-  doRefresh(){
+  doRefresh(event){
     this.loading = true;
     this.getAll();
       this.loading = false;
@@ -108,7 +108,7 @@ searchModel = {
       );
   }
 
-  async editRecord(id, user_id, amount, reason){
+  async deleteRecord(id, user_id, amount, reason){
     const alert = await this.alertController.create({
       header: `DELETE THIS RECORD?`,
     

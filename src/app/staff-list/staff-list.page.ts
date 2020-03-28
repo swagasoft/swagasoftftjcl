@@ -14,7 +14,7 @@ showform = false;
 showList = true;
 staffList = [];
 loading = false;
-admin: any;
+admin: any; 
 
   constructor(private staffService: StaffService,
               public userService: UserServiceService,
@@ -32,8 +32,13 @@ admin: any;
     accountNumber: '',
     booking: '',
     accountType: '',
-    admin:''
+    admin:'',
+    date: Date.now()
   }
+
+  searchModel = { 
+    search: '',fullname: '', month: null, year : null
+    };
 
 
   ngOnInit() {
@@ -44,6 +49,25 @@ admin: any;
 
   ngOnDestroy(){
     this.staffList = [];
+  }
+
+  
+  searchStaff(){
+    console.log(this.searchModel.search);
+    this.loading = true;
+    this.staffService.searchStaff(this.searchModel).subscribe(
+      res=> {
+        this.loading = false;
+        console.log(res);
+        this.staffList = res['staff']; 
+      },
+      err=>{
+        this.loading = false;
+        this.staffList = [];
+        this.userService.generalToastSh(err.error.msg);
+        console.warn(err);
+      }
+    );
   }
 
   async deleteStaff(id, fullname){
@@ -82,10 +106,10 @@ admin: any;
     await alert.present();
   }
 
-  async penalizeStaff(id, fullname){
+  async penalizeStaff(id, fullname,department){
+    console.log('click')
     const alert = await this.alertController.create({
       header: `Penalize ${fullname}`,
-      message : `<p class="text-danger"> penalize user</p>`,
       inputs: [
         {
           name: 'amount',
@@ -119,6 +143,7 @@ admin: any;
             let body = {
                 values: values,
                 admin: this.admin,
+                date: Date.now(),
                 id : id
             }
             console.log(body);
@@ -140,7 +165,9 @@ admin: any;
     await alert.present();
   }
 
- async salaryAdAlert(id, fullname){
+ async salaryAdAlert(id, fullname, department){
+   this.model.department = department;
+   console.log(department);
     const alert = await this.alertController.create({
       header: `Salary Advance`,
       message : `<p> salary advance for <div class="font-weight-bold">${fullname}</div>  </p>`,
@@ -178,6 +205,7 @@ admin: any;
             let body = {
                 values: values,
                 admin : this.admin,
+                date:Date.now(),
                 id : id
             }
             console.log(body);
@@ -211,7 +239,8 @@ admin: any;
       accountNumber: '',
       booking: '',
       accountType: '',
-      admin: this.admin
+      admin: this.admin,
+      date: Date.now()
     }
   }
 
@@ -265,7 +294,7 @@ this.showList = false;
   getLimitStaff(){
     console.log('getting the limit')
     this.loading = true;
-    this.staffService.getLimitStaff().subscribe(
+    this.staffService.getAllStaff().subscribe(
       res => {
         this.loading = false;
         console.log(res);
@@ -278,7 +307,7 @@ this.showList = false;
     ); 
   }
 
-  selectCategory(cat){
+  selectStaffDepartment(cat){
     console.log(cat);
     this.loading = true;
     this.staffService.getStaffByDepartment(cat).subscribe(

@@ -18,17 +18,41 @@
     <ion-refresher-content>
     </ion-refresher-content>
   </ion-refresher>
+
+  <ion-row>
+
+      <ion-chip outline>prod : {{products?.who_create}} </ion-chip>
+
+      <ion-chip outline>bad : {{products?.who_bad_stock}} </ion-chip>
+      <ion-col>
+        <ion-button [disabled]="userService.getUserRole() == 'ADMIN'"
+       (click)="confirmProd(products._id)" size="small"
+       *ngIf="!products?.confirm" color="light"> <ion-icon  name="lock"></ion-icon></ion-button>
+      <ion-button  [disabled]="userService.getUserRole() == 'ADMIN' "
+       (click)="unconfirmProd(products._id)" size="small"
+       *ngIf="products?.confirm" color="success"> <ion-icon  name="lock"></ion-icon></ion-button>
+
+      </ion-col>
+    <ion-button (click)="editProduction(products?._id,products?.prod_p, products?.prod_o,
+    products?.prod_w,products?.prod_t,products?.prod_c,products?.prod_s,products?.prod_slg)"
+     [disabled]="products?.confirm" size="small" color="light">prd</ion-button>
+    <ion-button  [disabled]="products?.confirm" (click)="editBadStock(products?._id,products?.bad_p, products?.bad_o,
+    products?.bad_w,products?.bad_t,products?.bad_c,products?.bad_s,products?.bad_slg)" size="small" color="light">bad</ion-button>
+      
+  
+  </ion-row>
+
      <!-- distribution table.. -->
      <div class="table-responsive text-nowrap " *ngIf="!showbadStockForm">
       <table class="table blue-gradient text-white" id="dist">
         <thead>
           <tr>
-            <th scope="col-sm">#</th>
-            <th scope="col-sm">O/S</th>
-            <th scope="col-sm">P/S</th>
-            <th scope="col-sm">BAD</th>
-            <th scope="col-sm">S/S</th>
-            <th scope="col-sm">B/S</th>
+            <th scope="col">#</th>
+            <th scope="col">O/S</th>
+            <th scope="col">PRD</th>
+            <th scope="col">BAD</th>
+            <th scope="col">SUP</th>
+            <th scope="col">BAL</th>
           
           </tr>
         </thead>
@@ -39,7 +63,7 @@
             <td>{{ products?.prod_p}} </td>
             <td>{{products?.bad_p}} </td>
             <td>{{products?.sup_p}} </td>
-            <td>{{products?.open_p + products?.prod_p - (products?.bad_p) - (products?.sup_p)}} </td>
+            <td>{{products?.bal_p}} </td>
            
           </tr>
           <tr>
@@ -48,7 +72,7 @@
             <td>{{ products?.prod_o}} </td>
             <td>{{products?.bad_o}} </td>
             <td>{{products?.sup_o}} </td>
-            <td>{{products?.open_o + products?.prod_o - products?.bad_o - products?.sup_o}} </td>
+            <td>{{products?.bal_o}} </td>
           </tr>
           <tr>
             <th scope="row">W</th>
@@ -56,7 +80,7 @@
             <td>{{ products?.prod_w}} </td>
             <td>{{products?.bad_w}} </td>
             <td>{{products?.sup_w}} </td>
-            <td>{{products?.open_w + products?.prod_w - products?.bad_w - products?.sup_w}} </td>
+            <td>{{products?.bal_w}} </td>
           </tr>
            <tr>
             <th scope="row">T</th>
@@ -64,7 +88,7 @@
             <td>{{ products?.prod_t}} </td>
             <td>{{products?.bad_t}} </td>
             <td>{{products?.sup_t}} </td>
-            <td>{{products?.open_t + products?.prod_t  - (products?.bad_t) - products?.sup_t}} </td>
+            <td>{{products?.bal_t}} </td>
           </tr>
           <tr>
             <th scope="row">C</th>
@@ -72,7 +96,7 @@
             <td>{{ products?.prod_c}} </td>
             <td>{{products?.bad_c}} </td>
             <td>{{products?.sup_c}} </td>
-            <td>{{products?.open_c + products?.prod_c - products?.bad_c - products?.sup_c}} </td>
+            <td>{{products?.bal_c}} </td>
           </tr>
           <tr>
             <th scope="row">S</th>
@@ -80,7 +104,7 @@
             <td>{{ products?.prod_s}} </td>
             <td>{{products?.bad_s}} </td>
             <td>{{products?.sup_s}} </td>
-            <td>{{products?.open_s + products?.prod_s - products?.bad_s - products?.sup_s}} </td>
+            <td>{{products?.bal_s}} </td>
           </tr>
           <tr>
             <th scope="row">Slg</th>
@@ -88,87 +112,153 @@
             <td>{{ products?.prod_slg}} </td>
             <td>{{products?.bad_slg}} </td>
             <td>{{products?.sup_slg}} </td>
-            <td>{{products?.open_slg + products?.prod_slg - products?.bad_slg - products?.sup_slg}} </td>
+            <td>{{products?.bal_slg}} </td>
           </tr>
           <tr>
-            <th scope="row">T</th>
+            <!-- total all table col -->
+            <th scope="row">TOT</th>
             <td>{{products?.open_p + products?.open_o + products?.open_w + products?.open_t + products?.open_c + products?.open_s + products?.open_slg}}</td>
             <td>{{products?.prod_p + products?.prod_o + products?.prod_w + products?.prod_t + products?.prod_c + products?.prod_s + products?.prod_slg}}</td>
             <td>{{products?.bad_p + products?.bad_o + products?.bad_w + products?.bad_t + products?.bad_c + products?.bad_s + products?.bad_slg}}</td>
             <td>{{products?.sup_p + products?.sup_o + products?.sup_w + products?.sup_t + products?.sup_c + products?.sup_s + products?.sup_slg}}</td>
 
-
-            <td>{{products?.open_slg + products?.open_s + products?.open_c + products?.open_t 
-              + products?.open_w + products?.open_o + products?.open_p + products?.prod_p 
-               + products?.prod_o +products?.prod_w + products?.prod_t 
-               + products?.prod_c + products?.prod_s + products?.prod_slg 
-              - products?.bad_p - products?.sup_p - products?.bad_o - products?.sup_o
-                - products?.bad_w - products?.sup_w - products?.bad_t - products?.sup_t
-                 - products?.bad_c - products?.sup_c - products?.bad_s - products?.sup_s
-                    - products?.bad_slg - products?.sup_slg}} </td>
+            <!-- balance stock total -->
+            <td>{{products?.bal_p + products?.bal_o + products?.bal_w 
+              + products?.bal_t +products?.bal_c + products?.bal_s + products?.bal_slg }} </td>
           </tr>
         </tbody>
       </table>
     </div>
 
     <!-- list of supplies -->
-    <div class="mb-5">
+    <div class="mb-1 mb-5"  *ngIf="!showbadStockForm">
       <p class="text-center font-weight-bold"> SUPPLY LIST</p>
-    <ion-card class="blue-gradient text-white" *ngFor="let item of supplies">
-      <ion-row class="mb-0 pb-0">
-        <p><th class="pt-3">{{item?.outlet}} </th></p>
-        <!-- <p>{{item?.admin}} </p> -->
-        <ion-col>
-        <ion-row>
-          <ion-col>
-            <th>P</th>
-            <div>{{item?.pineapple}} </div>
-            <div>{{item?.p_samp}} </div>
-          </ion-col> 
-           <ion-col>
-            <th>O</th>
-            <div>{{item?.orange}} </div>
-            <div>{{item?.o_samp}} </div>
-          </ion-col> 
-           <ion-col>
-            <th>W</th>
-            <div>{{item?.watermelon}} </div>
-            <div>{{item?.w_samp}} </div>
-          </ion-col>
-          <ion-col>
-            <th>T</th>
-            <div>{{item?.tigernut}} </div>
-            <div>{{item?.t_samp}} </div>
-          </ion-col>
-          <ion-col>
-            <th>C</th>
-            <div>{{item?.carrot}} </div>
-            <div>{{item?.c_samp}} </div>
-          </ion-col>
-           <ion-col>
-            <th>S</th>
-            <div>{{item?.sugarcane}} </div>
-            <div>{{item?.s_samp}} </div>
-          </ion-col>
-           <ion-col>
-            <th>SLG</th>
-            <div>{{item?.slg}} </div>
-            <div>{{item?.slg_samp}} </div>
-          </ion-col>
-          
-        </ion-row>
-      </ion-col>
+     <ion-card class="primary-color-dark text-white ml-0 pb-3 " *ngFor="let item of supplies">
+      <ion-row class="table primary-color-dark text-white">
+        <div class=" ml-1 mr-2 font-weight-bold">{{item?.outlet}}</div>
+        <small class="mr-4">{{item?.created_at | date:'medium'}}</small>
+        <small class="">{{item?.admin}}</small>
       </ion-row>
-      <small class="text-right ">AXIS ===> {{item?.axis}} </small>
-    </ion-card>
+      <table class="table text-white table-responsive text-nowrap" id="dist">
+        <thead>
+          <tr>
+            <th scope="col-sm">#</th>
+            <th scope="col-sm">P</th>
+            <th scope="col-sm">O</th>
+            <th scope="col-sm">W</th>
+            <th scope="col-sm">T</th>
+            <th scope="col-sm">C</th>
+            <th scope="col-sm">S</th>
+            <th scope="col-sm">SLG</th>
+            <th scope="col-sm">TOT</th>
+            <th scope="col-sm">val</th>
+          
+          </tr>
+        </thead>
+        <tbody>
+          <tr >
+            <th scope="row" > SU</th>
+            <td> {{item?.pineapple}}</td>
+            <td> {{item?.orange}}</td>
+            <td>{{item?.watermelon}}  </td>
+            <td>{{item?.tigernut}} </td>
+            <td>{{item?.carrot}}  </td>
+            <td>{{item?.sugarcane}}   </td>
+            <td> {{item?.slg}}</td>
+            <td> {{item?.pineapple + item?.orange + item?.watermelon 
+              + item?.tigernut + item?.carrot + item?.sugarcane  +item?.slg}}</td>
+              <!-- rate -->
+              <td> ₦ {{item?.pineapple*item?.rate_p + item?.orange*item?.rate_o + item?.watermelon*item?.rate_w
+                +item?.tigernut*item?.rate_t + item?.carrot*item?.rate_c + item?.sugarcane*item?.rate_s + 
+                item?.slg*item?.rate_slg | number}} </td>
+          </tr>
+          
+           <tr >
+            <th scope="row" > SA</th>
+            <td> {{item?.p_samp}}</td>
+            <td> {{item?.o_samp}}</td>
+            <td>{{item?.w_samp}}  </td>
+            <td>{{item?.t_samp}} </td>
+            <td>{{item?.c_samp}}  </td>
+            <td>{{item?.s_samp}}   </td>
+            <td> {{item?.slg_samp}}</td>
+            <td> {{item?.p_samp + item?.o_samp +item?.t_samp + item?.w_samp + item?.c_samp + item?.s_samp  +item?.slg_samp}}</td>
+             <!-- rate -->
+             <td> ₦ {{item?.p_samp*item?.rate_p + item?.o_samp*item?.rate_o + item?.w_samp*item?.rate_w
+              +item?.t_samp*item?.rate_t + item?.c_samp*item?.rate_c + item?.s_samp*item?.rate_s + 
+              item?.slg_samp *item?.rate_slg | number}} </td>
+          </tr>
+          <!--  return tray -->
+           <tr >
+            <th scope="row"> RE</th>
+            <td> {{item?.p_return}}</td>
+            <td> {{item?.o_return}}</td>
+            <td>{{item?.w_return}}  </td>
+            <td>{{item?.t_return}} </td>
+            <td>{{item?.c_return}}  </td>
+            <td>{{item?.s_return}}   </td>
+            <td> {{item?.slg_return}}</td>
+            <td> {{item?.p_return + item?.o_return + item?.w_return +
+               item?.c_return + item?.s_return  +item?.slg_return +item?.t_return}}</td>
+               <!-- rate value -->
+               <td> ₦ {{item?.p_return*item?.rate_p + item?.o_return*item?.rate_o + item?.w_return*item?.rate_w
+                +item?.t_return*item?.rate_t + item?.c_return*item?.rate_c + item?.s_return*item?.rate_s + 
+                item?.slg_return *item?.rate_slg | number}} </td>
+          </tr> <!--  exchange tray -->
+           <tr >
+            <th scope="row"> EX</th>
+            <td> {{item?.p_exg}}</td>
+            <td> {{item?.o_exg}}</td>
+            <td>{{item?.w_exg}}  </td>
+            <td>{{item?.t_exg}} </td>
+            <td>{{item?.c_exg}}  </td>
+            <td>{{item?.s_exg}}   </td>
+            <td> {{item?.slg_exg}}</td>
+            <td> {{item?.p_exg + item?.o_exg + item?.w_exg +
+               item?.c_exg + item?.s_exg +item?.t_exg +item?.slg_exg}}</td>
+              <!-- value -->
+               <td> ₦ {{item?.p_exg * item?.rate_p + item?.o_exg * item?.rate_o + item?.w_exg * item?.rate_w
+                +item?.t_exg * item?.rate_t + item?.c_exg * item?.rate_c + item?.s_exg * item?.rate_s + 
+                item?.slg_exg * item?.rate_slg | number}} </td>
+          </tr>
+        </tbody>
+      </table>
+      <ion-row>
+        <ion-col>
+          <ion-button [disabled]="item.confirm || item.verify"
+           (click)="editSupply(item._id,item.pineapple,item.tigernut, item.watermelon, item.carrot, item.orange,
+            item.sugarcane, item.slg, item.p_samp,item.c_samp, item.t_samp, item.w_samp, item.s_samp, item.o_samp,
+            item.slg_samp, item.p_exg, item.o_exg, item.w_exg, item.t_exg, item.c_exg,
+            item.s_exg, item.slg_exg, item.p_return, item.o_return, item.w_return, item.t_return, 
+             item.c_return, item.s_return, item.slg_return,item.prod_id,item.outlet, item.location)" 
+             size="small">edit</ion-button>
+        </ion-col>
+         <ion-col>
+          <ion-button *ngIf="!item.confirm" size="small" color="light"
+          [disabled]="userService.getUserRole() != 'DILIGENT'" (click)="confirmSupply(item._id)">ok</ion-button>
+          <ion-button *ngIf="item.confirm" size="small" color="success"
+          [disabled]="userService.getUserRole() != 'DILIGENT'" (click)="unConfirmSupply(item._id)">ok</ion-button>
+         </ion-col>
+         <ion-col>
+          <ion-button *ngIf="!item.verify" size="small" color="light"
+          [disabled]="userService.getUserRole() != 'DIRECTOR'" (click)="verifySupply(item._id)">verify</ion-button>
+          <ion-button *ngIf="item.verify" size="small" color="success" 
+          [disabled]="userService.getUserRole() != 'DIRECTOR'" (click)="unverifySupply(item._id)">verified</ion-button>
+         </ion-col>
+      </ion-row>
+     </ion-card>
+
+
   </div>
 <!-- end supply list -->
 
 
 
-    <form *ngIf="showbadStockForm" #badstock="ngForm"
-      (submit)="badstock.valid && sunmitBadstock(badstock)">
+    <form *ngIf="showbadStockForm" class="mb-5 "
+     #badstock="ngForm" (keydown.enter)="badstock.valid && sunmitBadstock()"
+      (submit)="badstock.valid && sunmitBadstock()">
       
+      <h5 class="text-center">ENTER BAD STOCK BELOW</h5>
       <ion-grid>
         <ion-row>
         <ion-item>
@@ -192,6 +282,8 @@
       [(ngModel)]="model.bad_w" required="true"></ion-input>
   </div>
 </ion-item>
+</ion-row>
+<ion-row>
 <ion-item>
   <div  class="text-input mb-1">
     <ion-label position="floating">tigernut</ion-label>
@@ -212,6 +304,9 @@
     <ion-input  type="number" #bad_s="ngModel" name="bad_s" 
     [(ngModel)]="model.bad_s" required="true"></ion-input>
 </div>
+</ion-item>
+</ion-row>
+<ion-row>
 <ion-item>
   <div  class="text-input mb-1">
     <ion-label position="floating">slg</ion-label>
@@ -219,11 +314,15 @@
     [(ngModel)]="model.bad_slg" required="true"></ion-input>
 </div>
 </ion-item>
+<ion-item color="warning">
+  <div>{{bad_p.value + bad_o.value + bad_w.value + bad_c.value + bad_t.value 
+      + bad_s.value + bad_slg.value}} </div>
 </ion-item>
 </ion-row>
 </ion-grid>
 <div class="row d-flex justify-content-center">
-<ion-button type="submit"  color="success"> SUBMIT</ion-button>
+<ion-button type="submit" [disabled]="loading"  color="success"> SUBMIT</ion-button>
+<ion-button type="reset"  color="warning" (click)="cancelBadStockForm()" > CANCEL</ion-button>
 </div>
     </form>
  
@@ -235,21 +334,32 @@
 
 
 <ion-fab horizontal="start" vertical="bottom" slot="fixed">
-  <ion-fab-button color="success">
+  <ion-fab-button color="light">
     <ion-icon name="alert"></ion-icon>
   </ion-fab-button>
   <ion-fab-list side="top">
-    <ion-button color="medium" (click)="closeRecord(model.id)"> 
-      <a class=" info text-white" ><ion-icon name="chatbubbles"></ion-icon>Close Record </a>
+    <ion-button *ngIf="userService.getUserRole() == 'DIRECTOR' || userService.getUserRole() == 'DILIGENT'"
+    size="small" color="danger" (click)="closeRecord(model.id)"> 
+     <a class="" ><ion-icon name="close"></ion-icon>Close Record </a>
+   </ion-button>
+    <ion-button  size="small" color="light" [routerLink]="['/supply-record']" >
+      <a>supply record </a>
     </ion-button>
-    <ion-button color="danger" (click)="badStockForm()">
-      <a class="info text-white" ><ion-icon name="help"></ion-icon>Register Bad stock </a>
+    <ion-button [routerLink]="['/prod-record']" size="small" color="light" >
+      <a>production record </a>
     </ion-button>
-     <ion-button color="success" [routerLink]="['/supply']">
-      <a class="info text-white" ><ion-icon name="reader"></ion-icon>Supply Outlet </a>
+   
+    <ion-button *ngIf="userService.getUserRole() == 'DIRECTOR' || userService.getUserRole() == 'DILIGENT'"
+     size="small" color="warning" (click)="badStockForm()">
+      <a>enter Bad stock </a>
     </ion-button>
-    <ion-button *ngIf="!products?.open_p" color="success" [routerLink]="['/production']">
-      <a class="info text-white" > <ion-icon name="list"></ion-icon>Submit Production </a>
+  
+     <ion-button  size="small" color="light" [routerLink]="['/supply']">
+      <div>Supply Outlet </div>
+    </ion-button>
+ 
+    <ion-button size="small"  color="light" [routerLink]="['/production']">
+      <a > new Production </a>
     </ion-button>
   </ion-fab-list>
 </ion-fab>

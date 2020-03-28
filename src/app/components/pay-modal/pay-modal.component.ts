@@ -58,9 +58,7 @@ export class PayModalComponent implements OnInit {
   }
 
   closeModal(){
-    this.navCtrl.pop();
     this.modalController.dismiss();
-    console.log('i clicked close')
   } 
 
   submitForm(form : NgForm){

@@ -38,6 +38,10 @@ export class PayrollService {
      return this.http.get(environment.apiBaseUrl  + `/set-payment-true${id}`);
    }
 
+   resetPayroll(){
+     return this.http.get(environment.apiBaseUrl + '/reset-payroll');
+   }
+
    
    notPaidStaff(id){
     return this.http.get(environment.apiBaseUrl + `/not-paid${id}`);
@@ -45,6 +49,14 @@ export class PayrollService {
 
   searchName(name){
     return this.http.post(environment.apiBaseUrl + '/search-staff-name', name);
+  }
+
+  getPayRecord(date){
+    return this.http.post(environment.apiBaseUrl + '/get-pay-record', date);
+  }
+
+  recordByDepartment(department){
+    return this.http.post(environment.apiBaseUrl + '/record-department', department);
   }
 
    logDate(event){

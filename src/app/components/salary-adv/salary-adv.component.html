@@ -75,7 +75,7 @@ SALARY ADVANCE    </div>
       </ion-col>
        
          <ion-button size="small" color="danger" [disabled]="userService.getUserRole() != 'DIRECTOR'"
-          (click)="editRecord(item._id,item.user_id,item.amount, item.reason)">DELETE</ion-button>
+          (click)="deleteRecord(item._id,item.user_id,item.amount, item.reason)">DELETE</ion-button>
     
     </ion-row>
     <div class="text-center">{{item.reason}} </div> <br>

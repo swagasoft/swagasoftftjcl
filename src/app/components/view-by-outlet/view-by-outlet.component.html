@@ -1,3 +1,77 @@
-<p>
-  view-by-outlet works!
-</p>
+<ion-header>
+  <ion-toolbar color="dark">
+    
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <div class="row d-flex justify-content-center font-weight-bold">
+      OUTLET SALES
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ngb-datepicker  (navigate)="theMonthNavigate($event)" 
+    class="datepicker-only-month-select "></ngb-datepicker>
+  </ion-card>
+
+  <ion-card class="p-1 aqua-gradient tezt-white">
+    <!-- select filter -->
+    <ion-item color="light" >
+      <ion-label color="dark" class="text-center">select outlet</ion-label>
+      <select (change)="selectOutlet($event)"  >
+        <option *ngFor="let item of allOutlet" [value]="item.code">{{item.code}}</option>
+       
+      </select>
+    </ion-item>
+  </ion-card>
+
+  <ion-row>
+    <ion-col>
+      <ion-chip class="font-weight-bold" color="primary" outline> bottles : {{bottles}} </ion-chip>
+    </ion-col> 
+    <ion-col>
+      <ion-chip class="font-weight-bold" *ngIf="userService.getUserRole() == 'DIRECTOR'"
+       outline color="primary">₦ {{amountSold | number}} </ion-chip>
+    </ion-col>
+  </ion-row>
+
+  <!-- list -->
+  <ion-card *ngFor="let item of outletSales" class="primary-color-dark text-white">
+    <ion-row>
+      <ion-col>
+        <div  class="font-weight-bold"> {{item.merchantName}} </div>
+      </ion-col>
+       <ion-col>
+        <div  class="font-weight-bold"> {{item.outletCode}} </div>
+      </ion-col>
+       <ion-col>
+        <small> {{item.created_at | date:'medium'}} </small>
+      </ion-col>
+    </ion-row>
+    <!-- col 2 -->
+    <ion-row>
+      <ion-col>
+        <h6>bottle(s):{{item.bottles}} </h6>
+      </ion-col>
+        <ion-col>
+        <small>attendant:{{item.attendant}}</small>
+      </ion-col>
+        <ion-col>
+        <small >admin:{{item.admin}}</small>
+      </ion-col>
+        <ion-col>
+        <h6 class="font-weight-bold" *ngIf="userService.getUserRole() 
+        == 'DIRECTOR'"> ₦{{item.amountSold | number}}</h6>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+
+
+
+
+  <div *ngIf="loading" class="spinner">
+    <div class="loader"></div>
+  </div>
+</ion-content>

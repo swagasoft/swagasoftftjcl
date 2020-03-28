@@ -1,3 +1,7 @@
+import { ExpenseTwoComponent } from './components/expense-two/expense-two.component';
+import { SupplyRecordComponent } from './components/supply-record/supply-record.component';
+import { SpecialGuard } from './special.guard';
+import { PayRecordComponent } from './components/pay-record/pay-record.component';
 import { ViewMerchantComponent } from './components/view-merchant/view-merchant.component';
 import { MerchantComponent } from './components/merchant/merchant.component';
 import { FruitComponent } from './components/fruit/fruit.component';
@@ -15,6 +19,7 @@ import { AuthGuard } from './auth.guard';
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes, CanActivate } from '@angular/router';
 import { ViewByOutletComponent } from './components/view-by-outlet/view-by-outlet.component';
+import { ProdRecordComponent } from './components/prod-record/prod-record.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'distributions', pathMatch: 'full' },
@@ -22,16 +27,20 @@ const routes: Routes = [
 canActivate:[AuthGuard]},
   {
     path: 'expenses', 
-    component : ExpenseComponent,canActivate:[AuthGuard]
+    component : ExpenseComponent,canActivate:[AuthGuard, ]
   },
   {
     path: 'payout', 
-    component : PayoutComponent,canActivate:[AuthGuard]
+    component : PayoutComponent,canActivate:[DirectorGuard]
+  },
+  {
+    path: 'pay-record', 
+    component : PayRecordComponent,canActivate:[DirectorGuard, ]
   },
   {
     path: 'manager',
     loadChildren: () => import('./manager/manager.module').then( m => m.ManagerPageModule),
-     canActivate:[AuthGuard, DirectorGuard]
+     canActivate:[ DirectorGuard, ]
   },
   {
     path: 'distributions',
@@ -41,14 +50,29 @@ canActivate:[AuthGuard]},
   {
     path: 'production',
    component : ProductionComponent,canActivate:[AuthGuard]
+  },{
+    path: 'special',
+   component : ProductionComponent,canActivate:[AuthGuard]
   },
   {
     path: 'setting',
    component : SettingComponent,canActivate:[AuthGuard]
   },
+  {
+    path: 'supply-record',
+   component : SupplyRecordComponent,canActivate:[AuthGuard]
+  },
+  {
+    path: 'prod-record',
+   component : ProdRecordComponent,canActivate:[AuthGuard]
+  },
    {
     path: 'supply',
    component : SupplyComponent,canActivate:[AuthGuard]
+  },
+   {
+    path: 'expense-two',
+   component : ExpenseTwoComponent,canActivate:[AuthGuard,DirectorGuard]
   },
   {
     path: 'admin', 
@@ -81,11 +105,11 @@ canActivate:[AuthGuard]},
   },
   {
     path: 'fruit',
-    component : FruitComponent, canActivate: [AuthGuard]
+    component : FruitComponent, canActivate: [AuthGuard ]
   },
   {
     path: 'merchandisers',
-    component : MerchantComponent, canActivate: [AuthGuard]
+    component : MerchantComponent, canActivate: [AuthGuard ]
   }, 
   {
     path: 'view-merchant-sales',
@@ -97,7 +121,7 @@ canActivate:[AuthGuard]},
   }, 
   {
     path: 'pay-roll',
-    component : PayRollComponent, canActivate: [AuthGuard, DirectorGuard]
+    component : PayRollComponent, canActivate: [DirectorGuard]
   }, 
   {
     path: 'salary_adv',

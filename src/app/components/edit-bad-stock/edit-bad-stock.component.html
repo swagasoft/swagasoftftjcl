@@ -1,0 +1,81 @@
+<ion-header>
+  <ion-button color="light" (click)="closeModal()">
+    <button >
+      <ion-icon color="danger" name="close"></ion-icon>
+    </button>
+  </ion-button>
+</ion-header>
+
+<ion-content>
+
+  
+  <form 
+  #badstock="ngForm" (keydown.enter)="badstock.valid && updateBadStock()"
+   (submit)="badstock.valid && updateBadStock()">
+   
+   <h5 class="text-center">ENTER BAD STOCK BELOW</h5>
+   <ion-grid>
+     <ion-row>
+     <ion-item>
+     <div  class="text-input mb-1">
+       <ion-label position="floating">Pineapple</ion-label>
+       <ion-input  type="number" #bad_p="ngModel" name="bad_p" 
+       [(ngModel)]="model.bad_p" required="true"></ion-input>
+   </div>
+ </ion-item>
+ <ion-item>
+   <div  class="text-input mb-1">
+     <ion-label position="floating">Orange</ion-label>
+     <ion-input  type="number" #bad_o="ngModel" name="bad_o" 
+     [(ngModel)]="model.bad_o" required="true"></ion-input>
+ </div>
+</ion-item>
+<ion-item>
+ <div  class="text-input mb-1">
+   <ion-label position="floating">watermelon</ion-label>
+   <ion-input  type="number" #bad_w="ngModel" name="bad_w" 
+   [(ngModel)]="model.bad_w" required="true"></ion-input>
+</div>
+</ion-item>
+<ion-item>
+  <div  class="text-input mb-1">
+    <ion-label position="floating">tigernut</ion-label>
+    <ion-input  type="number" #bad_t="ngModel" name="bad_t" 
+    [(ngModel)]="model.bad_t" required="true"></ion-input>
+ </div>
+ </ion-item>
+<ion-item>
+<div  class="text-input mb-1">
+ <ion-label position="floating">carrot</ion-label>
+ <ion-input  type="number" #bad_c="ngModel" name="bad_c" 
+ [(ngModel)]="model.bad_c" required="true"></ion-input>
+</div>
+</ion-item>
+<ion-item>
+<div  class="text-input mb-1">
+ <ion-label position="floating">sugarcane</ion-label>
+ <ion-input  type="number" #bad_s="ngModel" name="bad_s" 
+ [(ngModel)]="model.bad_s" required="true"></ion-input>
+</div>
+</ion-item>
+<ion-row>
+  <ion-item>
+    <div  class="text-input mb-1">
+      <ion-label position="floating">slg</ion-label>
+      <ion-input  type="number" #bad_slg="ngModel" name="bad_slg" 
+      [(ngModel)]="model.bad_slg" required="true"></ion-input>
+  </div>
+  </ion-item>
+  <ion-item color="warning">
+    <div>{{bad_p.value + bad_o.value + bad_w.value + bad_c.value + bad_t.value 
+        + bad_s.value + bad_slg.value}} </div>
+  </ion-item>
+  </ion-row>
+</ion-row>
+</ion-grid>
+<div class="row d-flex justify-content-center">
+<ion-button [disabled]="loading" type="submit"  color="success"> SUBMIT</ion-button>
+</div>
+ </form>
+
+</ion-content>

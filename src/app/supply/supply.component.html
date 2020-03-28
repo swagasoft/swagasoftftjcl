@@ -1,5 +1,5 @@
-<ion-header>
-  <ion-toolbar color="primary">
+<ion-header> 
+  <ion-toolbar color="dark">
     
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
@@ -11,7 +11,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-card class="p-3 aqua-gradient tezt-white">
+  <ion-card class="p-1 aqua-gradient tezt-white">
     <!-- select filter -->
     <ion-item color="light" >
       <ion-label color="dark" class="text-center">select outlet</ion-label>
@@ -24,16 +24,16 @@
 <ion-card  class="aqua-gradient text-white mb-5">
   <ion-row>
   <th class="text-center text-uppercase text-danger font-weight-bold">{{singleOutlet?.name}} </th>
-  <div class="ml-4 text-danger font-weight-bold">{{singleOutlet?.location}} </div>
-  <div class="ml-4 text-danger font-weight-bold"> AXIS :{{singleOutlet?.axis}} </div>
+  <div class="ml-4 text-danger font-weight-bold"> location : {{singleOutlet?.location}} </div>
 </ion-row>
 <hr>
-<form  #badstock="ngForm" (submit)="badstock.valid && submitForm()">
+<form  #badstock="ngForm"  (keydown.enter)="badstock.valid && submitForm()"
+ (submit)="badstock.valid && submitForm()">
 
-  <ion-row>
+  <ion-row> 
     <ion-col>
   <ion-item>
-    <div  class="text-input mb-1">
+    <div  class="text-input ">
       <ion-label position="floating">Pineapple</ion-label>
       <ion-input  type="number" #pineapple="ngModel" name="pineapple" 
       [(ngModel)]="model.pineapple" required="true"></ion-input>
@@ -42,7 +42,7 @@
 </ion-col>
 <ion-col>
   <ion-item>
-    <div  class="text-input mb-1">
+    <div  class="text-input ">
       <ion-label position="floating">sample</ion-label>
       <ion-input  type="number" #p_samp="ngModel" name="p_samp" 
       [(ngModel)]="model.p_samp" required="true"></ion-input>
@@ -50,7 +50,7 @@
 </ion-item>
 </ion-col>
   <ion-col>
-      <div  class="text-input mb-1">
+      <div  class="text-input">
         <ion-label position="floating" color="success">capacity</ion-label>
         <p *ngIf="singleOutlet?.p_max">{{singleOutlet?.p_max | number}} pineapples</p>
     </div>
@@ -68,7 +68,7 @@
 </ion-col>
 <ion-col>
   <ion-item>
-    <div  class="text-input mb-1">
+    <div  class="text-input ">
       <ion-label position="floating">sample</ion-label>
       <ion-input  type="number" #o_samp="ngModel" name="o_samp" 
       [(ngModel)]="model.o_samp" required="true"></ion-input>
@@ -94,7 +94,7 @@
 </ion-col>
 <ion-col>
   <ion-item>
-    <div  class="text-input mb-1">
+    <div  class="text-input">
       <ion-label position="floating">sample</ion-label>
       <ion-input  type="number" #w_samp="ngModel" name="w_samp" 
       [(ngModel)]="model.w_samp" required="true"></ion-input>
@@ -120,7 +120,7 @@
 </ion-col>
 <ion-col>
   <ion-item>
-    <div  class="text-input mb-1">
+    <div  class="text-input">
       <ion-label position="floating">sample</ion-label>
       <ion-input  type="number" #t_samp="ngModel" name="t_samp" 
       [(ngModel)]="model.t_samp" required="true"></ion-input>
@@ -146,7 +146,7 @@
 </ion-col>
 <ion-col>
   <ion-item>
-    <div  class="text-input mb-1">
+    <div  class="text-input ">
       <ion-label position="floating">sample</ion-label>
       <ion-input  type="number" #c_samp="ngModel" name="c_samp" 
       [(ngModel)]="model.c_samp" required="true"></ion-input>
@@ -172,7 +172,7 @@
 </ion-col>
 <ion-col>
   <ion-item>
-    <div  class="text-input mb-1">
+    <div  class="text-input ">
       <ion-label position="floating">sample</ion-label>
       <ion-input  type="number" #s_samp="ngModel" name="s_samp" 
       [(ngModel)]="model.s_samp" required="true"></ion-input>
@@ -198,7 +198,7 @@
 </ion-col>
 <ion-col>
   <ion-item>
-    <div  class="text-input mb-1">
+    <div  class="text-input ">
       <ion-label position="floating">sample</ion-label>
       <ion-input  type="number" #slg_samp="ngModel" name="slg_samp" 
       [(ngModel)]="model.slg_samp" required="true"></ion-input>
@@ -213,6 +213,117 @@
 </ion-col>
 </ion-row>
 
+<ion-title class="text-center pt-3" color="dark"> EXCHANGE EXCHANGE</ion-title>
+<ion-row>
+  <ion-col>
+    <ion-item>
+        <ion-label position="floating">P </ion-label>
+        <ion-input  type="number" #p_exg="ngModel" name="p_exg" 
+        [(ngModel)]="model.p_exg" required="true"></ion-input>
+  </ion-item>
+  </ion-col>
+  <ion-col>
+    <ion-item>
+        <ion-label position="floating">O </ion-label>
+        <ion-input  type="number" #o_exg="ngModel" name="o_exg" 
+        [(ngModel)]="model.o_exg" required="true"></ion-input>
+  </ion-item>
+  </ion-col>
+  <ion-col>
+    <ion-item>
+        <ion-label position="floating">W </ion-label>
+        <ion-input  type="number" #w_exg="ngModel" name="w_exg" 
+        [(ngModel)]="model.w_exg" required="true"></ion-input>
+  </ion-item>
+  </ion-col>
+  <ion-col>
+    <ion-item>
+        <ion-label position="floating">T </ion-label>
+        <ion-input  type="number" #t_exg="ngModel" name="t_exg" 
+        [(ngModel)]="model.t_exg" required="true"></ion-input>
+  </ion-item>
+  </ion-col>
+</ion-row>
+<ion-row>
+  <ion-col>
+    <ion-item>
+        <ion-label position="floating">C </ion-label>
+        <ion-input  type="number" #c_exg="ngModel" name="c_exg" 
+        [(ngModel)]="model.c_exg" required="true"></ion-input>
+  </ion-item>
+  </ion-col>
+  <ion-col>
+    <ion-item>
+        <ion-label position="floating">S </ion-label>
+        <ion-input  type="number" #s_exg="ngModel" name="s_exg" 
+        [(ngModel)]="model.s_exg" required="true"></ion-input>
+  </ion-item>
+  </ion-col>
+  <ion-col>
+    <ion-item>
+        <ion-label position="floating">Slg </ion-label>
+        <ion-input  type="number" #slg_exg="ngModel" name="slg_exg" 
+        [(ngModel)]="model.slg_exg" required="true"></ion-input>
+  </ion-item>
+  </ion-col>
+</ion-row>
+
+
+<ion-title class="text-center pt-3" color="dark"> RETURN STOCK</ion-title>
+<ion-row>
+  <ion-col>
+    <ion-item>
+        <ion-label position="floating">P </ion-label>
+        <ion-input  type="number" #p_return="ngModel" name="p_return" 
+        [(ngModel)]="model.p_return" required="true"></ion-input>
+  </ion-item>
+  </ion-col>
+  <ion-col>
+    <ion-item>
+        <ion-label position="floating">O </ion-label>
+        <ion-input  type="number" #o_return="ngModel" name="o_return" 
+        [(ngModel)]="model.o_return" required="true"></ion-input>
+  </ion-item>
+  </ion-col>
+  <ion-col>
+    <ion-item>
+        <ion-label position="floating">W </ion-label>
+        <ion-input  type="number" #w_return="ngModel" name="w_return" 
+        [(ngModel)]="model.w_return" required="true"></ion-input>
+  </ion-item>
+  </ion-col>
+  <ion-col>
+    <ion-item>
+        <ion-label position="floating">T </ion-label>
+        <ion-input  type="number" #t_return="ngModel" name="t_return" 
+        [(ngModel)]="model.t_return" required="true"></ion-input>
+  </ion-item>
+  </ion-col>
+</ion-row>
+<ion-row>
+  <ion-col>
+    <ion-item>
+        <ion-label position="floating">C </ion-label>
+        <ion-input  type="number" #c_return="ngModel" name="c_return" 
+        [(ngModel)]="model.c_return" required="true"></ion-input>
+  </ion-item>
+  </ion-col>
+  <ion-col>
+    <ion-item>
+        <ion-label position="floating">S </ion-label>
+        <ion-input  type="number" #s_return="ngModel" name="s_return" 
+        [(ngModel)]="model.s_return" required="true"></ion-input>
+  </ion-item>
+  </ion-col>
+  <ion-col>
+    <ion-item>
+        <ion-label position="floating">Slg </ion-label>
+        <ion-input  type="number" #slg_return="ngModel" name="slg_return" 
+        [(ngModel)]="model.slg_return" required="true"></ion-input>
+  </ion-item>
+  </ion-col>
+</ion-row>
+
 <div class="row d-flex justify-content-center">
   <ion-button [disabled]="!singleOutlet?.name || loading" type="submit"  color="success"> SUBMIT</ion-button>
   </div>
@@ -220,9 +331,9 @@
 </ion-card>
 
        <!-- loading -->
-<div *ngIf="loading" class="spinner">
+<!-- <div *ngIf="loading" class="spinner">
   <div class="loader"></div>
-</div>
+</div> -->
 
 <!-- 
 <div class="spinner">

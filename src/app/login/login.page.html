@@ -7,14 +7,15 @@
 <ion-content>
   <div class="content">
 
-    <div class="p-1">
+    <div class="p-2">
     
-      <ion-card >
+      <ion-card style="margin-bottom: 30%;">
       
         
-  <form  class="mt-1 form fixed" #loginForm="ngForm" name="form"  (submit)="loginForm.valid && login(loginForm)">
+  <form  class="mt-1 form fixed" #loginForm="ngForm" name="form" (keydown.enter)="loginForm.valid && login(loginForm)"
+   (submit)="loginForm.valid && login(loginForm)">
     <!-- <img class="" height="250" width="50"  src="../../assets/icon/farm_logo2.png"> -->
-    <img class="" height="250" width="50"  src="../../assets/icon/farm_logo.png">
+    <img class="" height="250" width="50"  src="../../assets/icon/logo.jpg">
 
          <div *ngIf="loading"><ion-progress-bar type="indeterminate"></ion-progress-bar></div>
 
@@ -30,11 +31,12 @@
            
           <ion-item class="text-input mb-1">
               <ion-label   position="stacked">Password</ion-label>
-          <ion-input class="ml-3" type="password" input #password name="password" minlength="6"
-           [(ngModel)]="model.password" clearInput required="true">
-            <ion-icon (click)="password.type=password.type=='password'?'text':'password'" size="medium" name="eye"></ion-icon>
-
-          </ion-input>
+                <ion-input class="ml-3" type="password" input #password name="password" minlength="6"
+                [(ngModel)]="model.password"  required="true">
+                <ion-icon (click)="password.type=password.type=='password'?'text':'password'" size="large" name="eye"></ion-icon> </ion-input>
+               
+              
+         
         </ion-item>
         <div *ngIf="loginForm.submitted && !password.value">
           <small class="error">password is required</small>
@@ -60,4 +62,7 @@
         <!-- Circles -->
         <div class="loader"></div>
       </div>
+
+
+
 </ion-content>

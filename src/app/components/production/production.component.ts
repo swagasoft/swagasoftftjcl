@@ -23,10 +23,12 @@ loading = false;
     tigernut: null,
     carrot : null,
     sugarcane : null,
-    slg : null
+    slg : null,
+    admin:'',
+    date: Date.now()
   }
   ngOnInit() {
-
+    this.model.admin = localStorage.getItem('appUser');
   }
   ngOnDestroy(){
     this.resetProd();
@@ -39,7 +41,7 @@ loading = false;
 
   async confirmProd(){
     const alert = await this.alertController.create({
-      header: 'CONFIRM PRODUCTION COUNT',
+      header: 'CONFIRM PRODUCTION',
       message :`<p class="lead text-left">PINEAPPLE :${this.model.pineapple}</p>
                <p class="lead text-left">ORANGE : ${this.model.orange}</p>
                <p class="lead text-left">WATERMELON : ${this.model.watermelon}</p>
@@ -94,7 +96,9 @@ loading = false;
       tigernut: null,
       carrot : null,
       sugarcane : null,
-      slg : null
+      admin: localStorage.getItem('appUser'),
+      slg : null,
+      date: null
     }
   }
 }

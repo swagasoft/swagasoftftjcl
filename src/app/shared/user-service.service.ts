@@ -55,9 +55,24 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
     resetPassword(password){
       return this.http.post(environment.apiBaseUrl + '/change-password', password);
     }
+     getExpenseTwo(date){
+      return this.http.post(environment.apiBaseUrl + '/get-expense-two', date);
+    }
+
+    getExpense2ByDate(date){
+      return this.http.post(environment.apiBaseUrl + '/expense-two-by-date', date);
+    }
+
+    submitExpense2(expense){
+      return this.http.post(environment.apiBaseUrl + '/submit-expense-two', expense);
+    }
 
     updateBalance(amount){
       return this.http.post(environment.apiBaseUrl + '/update-balance', amount);
+    }
+
+    getLastCredit(){
+      return this.http.get(environment.apiBaseUrl + '/last-credit');
     }
 
     submitExpense(list){
@@ -65,6 +80,9 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
     }
     confirmExpense(id){
       return this.http.get(environment.apiBaseUrl +`/confirm-expense${id}`);
+    }
+    unConfirmExpense(id){
+      return this.http.get(environment.apiBaseUrl +`/un-confirm-expense${id}`);
     }
 
     getExpenses(){
@@ -81,6 +99,13 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
 
     updateExpense(expense){
       return this.http.put(environment.apiBaseUrl + '/update-expense', expense);
+    }
+    updateExpenseTwo(expense){
+      return this.http.post(environment.apiBaseUrl + '/update-expense-two', expense);
+    }
+
+    expenseReturn(body){
+      return this.http.post(environment.apiBaseUrl +`/return-expense`, body);
     }
 
     getCredit(){
@@ -116,6 +141,7 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
     disableUser(id){
       return this.http.get(environment.apiBaseUrl + `/disable-user${id}`);
     }
+
     activateUser(id){
       return this.http.get(environment.apiBaseUrl + `/activate-user${id}`);
     }
@@ -183,7 +209,7 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
         header: 'Info ',
         message: `${message}`,
         position: 'middle',
-        duration: 3000
+        duration: 1000
       });
       toast.present();
       
@@ -192,7 +218,7 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
         header: 'Info ',
         message: `${message}`,
         position: 'middle',
-        duration: 1000
+        duration: 500
       });
       toast.present();
     }

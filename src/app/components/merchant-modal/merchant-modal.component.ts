@@ -26,7 +26,7 @@ admin: any; singleOutlet: any; saleRecords : any;
               
 model = {
   admin:'', outletCode : '', outletName:'', outletRate: 0,
-  amountSold: null, bottleSold : null, merchant: [],
+  amountSold: null, bottleSold : null, merchant: []
 }
 
   ngOnInit() {
@@ -36,7 +36,7 @@ model = {
   ngOnDestroy(){
     this.model = {
       admin:'', outletCode : '', outletName:'', outletRate: 0,
-      amountSold: null, bottleSold : null, merchant: [],
+      amountSold: null, bottleSold : null, merchant: []
     }
     this.allOutlet = [];  this.allMerchant = [];
     this.singleOutlet = [] ;
@@ -48,13 +48,15 @@ model = {
   submitForm(form: NgForm){
     console.log(form.value);
     this.loading = true;
+    this.model.amountSold = this.model.outletRate * this.model.bottleSold;
     this.model.merchant.forEach((user)=> {
     let  myRecord = {
         admin : this.admin,
         merchantName : user,
         attendant: this.model.merchant.length,
         outletCode: this.model.outletCode,
-        bottles: this.model.bottleSold,
+        bottles: this.model.bottleSold /this.model.merchant.length,
+        date: Date.now(),
         amountSold : this.model.outletRate * this.model.bottleSold / this.model.merchant.length,
       }
 
@@ -67,6 +69,7 @@ model = {
           this.userService.generalToastSh(res['msg']);
         },
         err => {
+          this.loading = false;
           console.log(err);
           this.userService.generalToast(err.error.msg);
         }

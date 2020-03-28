@@ -59,8 +59,19 @@ searchModel = {
     }
   
     doRefresh(event){
-      this.loading = true;
-      this.getAll();
+      this.staffService.thisMonthPenalty(this.searchModel).subscribe(
+        res => {
+          console.log('this month',res);
+          this.penalize = res['record'];
+          this.refresherRef.complete();
+        },
+        err => {
+          this.refresherRef.complete();
+          console.log(err)
+          this.penalize = [];
+          this.userService.generalToastSh(err.error.msg);
+        }
+      );
       this.loading = false;
     }
 
@@ -83,20 +94,17 @@ searchModel = {
   
     getAll() {
       this.loading = true;
-      this.staffService.getAllPenalty().subscribe(
+      this.staffService.thisMonthPenalty(this.searchModel).subscribe(
         res => {
-          this.loading = false;
-          console.log(res);
-          this.penalize = res['users'];
+          console.log('this month',res);
+          this.penalize = res['record'];
           this.refresherRef.complete();
         },
         err => {
-          this.loading = false;
           this.refresherRef.complete();
+          console.log(err)
+          this.penalize = [];
           this.userService.generalToastSh(err.error.msg);
-          
-          console.log(err);
-  
         }
       );
     }
@@ -165,15 +173,12 @@ searchModel = {
             cssClass : 'danger',
             handler: (values) => {
               console.log(id);
-              this.loading = true;
               this.staffService.wavePenalty(id).subscribe(
               res => {
-                this.loading = false;
                 this.userService.generalToastSh(res['msg']);
                 this.getAll();
               },
               err => {
-                this.loading = false;
                 this.userService.generalToast(err.error.msg);
               }
             );
@@ -221,8 +226,7 @@ searchModel = {
     }
 
      thisMonthRecord(event){
-       let month = event.next.month;
-       let year = event.next.year;
+     
        this.searchModel.month = event.next.month;
        this.searchModel.year = event.next.year;
        console.log(this.searchModel);
@@ -237,6 +241,41 @@ searchModel = {
            this.userService.generalToastSh(err.error.msg);
          }
        );
+    }
+
+    verifyPenalty(id){
+      this.staffService.verifyPenal(id).subscribe(
+        res=> {
+          this.userService.generalToastSh(res['msg']);
+          this.getAll();
+        }
+      );
+    }
+
+    unVerifyPenalty(id){
+      this.staffService.unVerifyPenal(id).subscribe(
+        res=> {
+          this.userService.generalToastSh(res['msg']);
+          this.getAll();
+        }
+      );
+    }
+    confirmPenalty(id){
+      this.staffService.confirmPenal(id).subscribe(
+        res=> {
+          this.userService.generalToastSh(res['msg']);
+          this.getAll();
+        }
+      );
+    }
+
+    unConfirmPenalty(id){
+      this.staffService.unConfirmPenal(id).subscribe(
+        res=> {
+          this.userService.generalToastSh(res['msg']);
+          this.getAll();
+        }
+      );
     }
   
 }
