@@ -19,5 +19,17 @@
    
 form{
    
-    padding-top: 3%; 
+    padding-top: 5%; 
  }
+
+//  image
+.container {
+  width: 200px;
+  height: 90px;
+}
+
+/* resize images */
+.container img {
+  width: 200%;
+  height: auto;
+}

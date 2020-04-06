@@ -1,8 +1,9 @@
+
 import { UserServiceService } from './shared/user-service.service';
 import { Component } from '@angular/core';
-
+import {Plugins} from '@capacitor/core';
+const {SplashScreen} = Plugins;
 import { Platform } from '@ionic/angular';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { timer } from 'rxjs';
 
@@ -12,6 +13,7 @@ import { timer } from 'rxjs';
   styleUrls: ['app.component.scss']
 })
 export class AppComponent {
+
 app_user : any;
 showSlash = true;
 userRole : any;
@@ -62,7 +64,6 @@ userRole : any;
   ]
   constructor(
     private platform: Platform,
-    private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     public userService: UserServiceService
   ) {
@@ -74,7 +75,7 @@ userRole : any;
   initializeApp() {
     this.platform.ready().then(() => {
       this.statusBar.show();
-      this.splashScreen.hide();
+      SplashScreen.hide();
       timer(2000).subscribe(()=> this.showSlash = false);
       this.app_user = localStorage.getItem('appUser');
       this.userRole = localStorage.getItem('user-role');

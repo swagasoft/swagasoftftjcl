@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">farm2juice</string>
+    <string name="title_activity_main">farm2juice</string>
+    <string name="package_name">swagasoft.farm2juice</string>
+    <string name="custom_url_scheme">swagasoft.farm2juice</string>
+</resources>

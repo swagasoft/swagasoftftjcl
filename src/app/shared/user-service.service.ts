@@ -213,7 +213,8 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
       });
       toast.present();
       
-    }  async generalToastSh(message) {
+    }
+      async generalToastSh(message) {
       const toast = await this.toastController.create({
         header: 'Info ',
         message: `${message}`,
