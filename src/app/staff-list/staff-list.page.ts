@@ -44,7 +44,8 @@ admin: any;
   ngOnInit() {
     this.admin = localStorage.getItem('appUser');
     this.model.admin = this.admin;
-    this.getLimitStaff();
+    const admin = 'ADMINISTRATOR'
+    this.selectStaffByDepartment(admin);
   }
 
   ngOnDestroy(){
@@ -168,7 +169,7 @@ admin: any;
  async salaryAdAlert(id, fullname, department){
    this.model.department = department;
    console.log(department);
-    const alert = await this.alertController.create({
+   const alert = await this.alertController.create({
       header: `Salary Advance`,
       message : `<p> salary advance for <div class="font-weight-bold">${fullname}</div>  </p>`,
       inputs: [
@@ -224,7 +225,7 @@ admin: any;
         }
       ]
     });
-    await alert.present();
+   await alert.present();
   }
 
 
@@ -249,13 +250,16 @@ admin: any;
     this.model.accountType = event;
     console.log(this.model.accountType);
   } 
+
   selectDepartment(event){
     console.log(event);
     this.model.department = event;
     console.log(this.model.department); 
   }
 
-  selectFormEvent(car){
+  selectFormEvent(event){
+    console.log(event);
+    this.model.department = event;
   }
 
   addStaff(){
@@ -307,10 +311,10 @@ this.showList = false;
     ); 
   }
 
-  selectStaffDepartment(cat){
-    console.log(cat);
+  selectStaffByDepartment(department){
+    console.log(department);
     this.loading = true;
-    this.staffService.getStaffByDepartment(cat).subscribe(
+    this.staffService.getStaffByDepartment(department).subscribe(
       res => {
         console.log(res);
         this.loading = false;

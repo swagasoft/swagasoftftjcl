@@ -52,14 +52,14 @@
 
  
         <ion-col>
-          <ion-item class="bg-dark" >
+          <ion-item class="bg-dark" > 
           
             <div *ngIf="userService.getUserRole() == 'DIRECTOR'"
             >{{model.outletRate * model.bottleSold | number}} </div>
           </ion-item>
         </ion-col>
       </ion-row>
-      <div *ngFor="let item of model.merchant">
+      <div *ngFor="let item of model.merchant"> 
         <ion-chip outline color="dark">
           <ion-icon name="user" color="primary"></ion-icon>
           <ion-label class="font-weight-bold">{{item}} </ion-label>

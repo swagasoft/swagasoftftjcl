@@ -49,7 +49,7 @@
           <ion-item color="light">
           <ion-label class="text-center">select by department</ion-label>
           <ion-select select="success" interface="popover" name="accountType"
-           (ngModelChange)="selectStaffDepartment($event)"  [(ngModel)]="model.department"
+           (ngModelChange)="selectStaffByDepartment($event)"  [(ngModel)]="model.department"
          >
          <ion-select-option  value="ADMINISTRATOR">ADMINISTRATOR</ion-select-option>
          <ion-select-option  value="ADMIN-ASSIST">ADMIN-ASSIST</ion-select-option>
@@ -92,7 +92,7 @@
             <div>{{item.bankAccountType}} </div>
           </ion-col>
           <ion-col>
-            <small class="">Account Name</small>
+            <small class="">bank</small>
             <div>{{item.bankAccountName}} </div>
           </ion-col>
         </ion-row>
@@ -121,6 +121,9 @@
               color="danger"  size="large" name="trash"></ion-icon>
           </ion-col>
          
+        </ion-row>
+        <ion-row>
+          <ion-col> <small>{{item.admin}}  </small> </ion-col>
         </ion-row>
       </ion-card>
     </div>
@@ -185,7 +188,7 @@
               <ion-item class="bg-dark">
                 <div  class="text-input mb-1">
                 <ion-label position="floating">account number</ion-label>
-                <ion-input  type="text" #accountNumber="ngModel" name="accountNumber" 
+                <ion-input  type="number" #accountNumber="ngModel" name="accountNumber" 
                 [(ngModel)]="model.accountNumber"
                   autocomplete="off" required="true"></ion-input>
             </div>
@@ -247,7 +250,7 @@
 
              <ion-row class="pt-3" 
              >
-              <ion-button   *ngIf="!model.department || !model.accountType "
+              <ion-button   *ngIf="model.department  ||  model.accountType  "
               color="success" type="submit">SUBMIT</ion-button>
               <ion-button type="reset"(click)="resetForm()" >RESET</ion-button>
             </ion-row>

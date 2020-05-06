@@ -27,7 +27,7 @@ admin: any; singleOutlet: any; saleRecords : any;
 model = {
   admin:'', outletCode : '', outletName:'', outletRate: 0,
   amountSold: null, bottleSold : null, merchant: []
-}
+} 
 
   ngOnInit() {
     this.admin = localStorage.getItem('appUser');
@@ -76,7 +76,7 @@ model = {
       );
     });
   }
-
+ 
   selectedVal(event){
     console.log(event);
     console.log(event.detail.value);

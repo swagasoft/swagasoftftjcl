@@ -38,7 +38,7 @@
       </ion-row>
     </ion-card>
 
-     <ion-card class="primary-color-dark text-white" *ngFor="let item of selectedOutlet">
+     <ion-card class="font-weight-bold primary-color-dark text-white" >
       <ion-title class="text-center ">SUPPLY</ion-title>
       <ion-row >
         <ion-col >
@@ -74,12 +74,12 @@
           <div>{{total_p + total_o + total_w + total_c + total_t + total_s + total_slg}} </div>
         </ion-col>
       </ion-row>
-      <div class="font-weight-bold"> ₦ {{total_p * item.rate_p + total_o * item.rate_o + total_w *item.rate_w + total_t *item.rate_t 
-        +total_c *item.rate_c + total_s*item.rate_s + total_slg * item.rate_slg }} </div>
+      <div class="font-weight-bold"> ₦ {{total_p * rate_p + total_o * rate_o + total_w *rate_w + total_t *rate_t 
+        +total_c * rate_c + total_s* rate_s + total_slg * rate_slg }} </div>
     </ion-card>
 
       <!-- samples -->
-      <ion-card class="primary-color-dark text-white" *ngFor="let item of selectedOutlet">
+      <ion-card class="font-weight-bold primary-color-dark text-white">
         <ion-title class="text-center ">SAMPLES</ion-title>
         <ion-row >
           <ion-col >
@@ -115,13 +115,13 @@
             <div>{{p_sample + o_sample + w_sample + t_sample + c_sample + s_sample + slg_sample}} </div>
           </ion-col>
         </ion-row>
-        <div class="font-weight-bold"> ₦ {{p_sample * item.rate_p + o_sample * item.rate_o + w_sample *item.rate_w + t_sample *item.rate_t 
-          +c_sample *item.rate_c + s_sample*item.rate_s + slg_sample * item.rate_slg }} </div>
+        <div class="font-weight-bold"> ₦ {{p_sample * rate_p + o_sample * rate_o + w_sample *rate_w + t_sample *rate_t 
+          +c_sample *rate_c + s_sample*rate_s + slg_sample * rate_slg }} </div>
       </ion-card>
    
 
        <!-- exchnge-->
-       <ion-card class="primary-color-dark text-white" *ngFor="let item of selectedOutlet">
+       <ion-card class="font-weight-bold primary-color-dark text-white">
         <ion-title class="text-center ">EXCHANGE</ion-title>
         <ion-row >
           <ion-col >
@@ -158,14 +158,14 @@
               + c_exchange + s_exchange + slg_exchange}} </div>
           </ion-col>
         </ion-row>
-        <div class="font-weight-bold"> ₦ {{p_exchange * item.rate_p + o_exchange * item.rate_o + w_exchange *item.rate_w + t_exchange *item.rate_t 
-          +c_exchange *item.rate_c + s_exchange*item.rate_s + slg_exchange * item.rate_slg }} </div>
+        <div class="font-weight-bold"> ₦ {{p_exchange * rate_p + o_exchange * rate_o + w_exchange *rate_w + t_exchange *rate_t 
+          +c_exchange *rate_c + s_exchange*rate_s + slg_exchange * rate_slg }} </div>
       </ion-card>
    
 
       
        <!-- exchnge-->
-       <ion-card class="primary-color-dark text-white" *ngFor="let item of selectedOutlet">
+       <ion-card class="font-weight-bold primary-color-dark text-white" >
         <ion-title class="text-center ">RETURN</ion-title>
         <ion-row >
           <ion-col >
@@ -202,8 +202,8 @@
               + c_return + s_return + slg_return}} </div>
           </ion-col>
         </ion-row>
-        <div class="font-weight-bold"> ₦ {{p_return * item.rate_p + o_return * item.rate_o + w_return *item.rate_w + t_return *item.rate_t 
-          +c_return *item.rate_c + s_return*item.rate_s + slg_return * item.rate_slg }} </div>
+        <div class="font-weight-bold"> ₦ {{p_return * rate_p + o_return * rate_o + w_return *rate_w + t_return *rate_t 
+          +c_return *rate_c + s_return*rate_s + slg_return * rate_slg }} </div>
       </ion-card>
 
         <!-- loading.. -->

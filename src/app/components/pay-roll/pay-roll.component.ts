@@ -33,7 +33,8 @@ totalStaff = 0;
   }
 
   ngOnInit() {
-    this.getAllStaff();
+    const admin = 'ADMINISTRATOR';
+    this.selectStaffByDepartment(admin);
   }
   ngOnDestroy(){
     this.allStaff = [];
@@ -49,7 +50,8 @@ totalStaff = 0;
 
   doRefresh(event){
     this.loading = true;
-    this.getAllStaff();
+    const admin = 'ADMINISTRATOR';
+    this.selectDepartment(admin);
     this.loading = false;
   }
 
@@ -274,6 +276,30 @@ totalStaff = 0;
       err => {
         this.loading = false;
         this.refresherRef.complete();
+      }
+    );
+  }
+
+  
+  selectStaffByDepartment(department){
+    this.totalSalary = 0;
+    this.totalStaff = 0;
+    this.loading = true;
+    this.staffService.getStaffByDepartment(department).subscribe(
+      res => {
+        console.log(res);
+        this.loading = false;
+        this.allStaff = res['staff'];
+        this.refresherRef.complete();
+        this.totalStaff = this.allStaff.length;
+
+        this.allStaff.forEach((one)=>{
+          this.totalSalary += one.AmountPaid;
+        });
+      },
+      err => {
+        this.loading = false;
+        console.log(err);
       }
     );
   }

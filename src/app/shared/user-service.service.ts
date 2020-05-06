@@ -1,6 +1,6 @@
 import { environment } from 'src/environments/environment';
 // import { Observable, observable } from 'rxjs';
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 
@@ -14,24 +14,28 @@ import { Observable } from 'rxjs';
 export class UserServiceService {
   messsageFromServer : any;
   token: any;
-  public appUser: any;
+  public appUser: any; 
   public role: any;
   username: any;
   networkDisconnet = false;
+  loadingExpense = false;
+  expense: Array<any> = [];
 
 
   noAuthHeader = {headers: new HttpHeaders({NoAuth: 'True'})};
 AuthHeader = {headers: new HttpHeaders().set('Authorization',
 `Bearer ${localStorage.getItem('token')}`)};
 
-  constructor(private http: HttpClient, 
-              public alertController: AlertController,
-              public toastController: ToastController,
-              private platform: Platform,
+  constructor(private http: HttpClient,  public alertController: AlertController,
+              public toastController: ToastController,  private platform: Platform,
               private router: Router) {
-
       
+            
+              
+             
      }
+
+    
 
      refreshDetails(){
     this.appUser =   localStorage.getItem('appUser');
@@ -89,12 +93,60 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
       return this.http.get(environment.apiBaseUrl + '/get-expenses');
     }
 
-    thisMonthExpense(month){
-      return this.http.post(environment.apiBaseUrl + '/this-month-expense', month);
+    thisMonthExpense(model){
+      console.log('search from service');
+     
+      if(this.expense.length == 0){
+        this.loadingExpense = true;
+        this.http.post(environment.apiBaseUrl + '/this-month-expense', model).subscribe(
+          res => {
+            this.loadingExpense = false;
+            this.expense = res['record'];
+          },
+          err => {
+            this.loadingExpense = false;
+            console.log(err);
+            this.expense = [];
+            this.generalToastSh(err.error.msg);
+          }
+         );
+      }else{
+       console.log('expense already exist!');
+      }
+    
+    }
+
+    reloadExpense(model){
+      this.http.post(environment.apiBaseUrl + '/this-month-expense', model).subscribe(
+        res => {
+          this.loadingExpense = false;
+          console.log('this month', res);
+          this.expense = res['record'];
+        },
+        err => {
+          this.loadingExpense = false;
+          console.log(err);
+          this.expense = [];
+          this.generalToastSh(err.error.msg);
+        }
+       );
     }
 
     findExpenseByDate(date){
-      return this.http.post(environment.apiBaseUrl + '/find-by-date', date);
+      this.loadingExpense = true;
+      this.http.post(environment.apiBaseUrl + '/find-by-date', date).subscribe(
+        res => {
+          this.loadingExpense = false;
+          console.log(res);
+          this.expense = res['expenses'];
+        },
+        err => {
+          this.loadingExpense = false;
+          this.expense = [];
+          this.generalToastSh(err.error.msg);
+          console.log('my error',err);
+        }
+      );
     }
 
     updateExpense(expense){
@@ -131,7 +183,20 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
       return this.http.post(environment.apiBaseUrl + `/reverse-expense`, data);
     }
     searchExpense(search){
-      return this.http.post(environment.apiBaseUrl + '/search-expense',search);
+     this.http.post(environment.apiBaseUrl + '/search-expense',search).subscribe(
+        res => {
+          this.loadingExpense = false;
+          console.log(res);
+          this.expense = res['expenses'];
+        },
+        err => {
+          this.loadingExpense = false;
+          this.expense = [];
+          this.generalToastSh(err.error.msg);
+          console.log(err);
+        }
+      );
+
     }
 
     deleteCredit(id){

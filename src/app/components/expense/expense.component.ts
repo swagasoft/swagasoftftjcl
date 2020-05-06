@@ -17,13 +17,18 @@ export class ExpenseComponent implements OnInit , OnDestroy {
   loading  = false;
   Calmodel; 
   lastCredit:any;
+  myDate  = new Date();
+  myDayAndMonth:any  = new Date();
 
-  constructor(public userService: UserServiceService,
-              public modalController: ModalController,
+  constructor(public userService: UserServiceService, public modalController: ModalController,
               public alertController: AlertController) {
     this.admin = localStorage.getItem('appUser');
     this.returnModel.admin = localStorage.getItem('appUser');
     this.expenseModel.admin = this.admin;
+
+    let appDay = new Date().getDate();
+    this.searchModel.month =  new Date().getMonth() + 1;
+    this.searchModel.year = new Date().getFullYear() ;
    
   }
 
@@ -50,7 +55,7 @@ showList = true;
   };
 
   searchModel = { 
-    search: '', fullname: '', month: null, year : null
+    search: '', fullname: '', day: null, month: null, year : null
     };
   
   balModel = {
@@ -60,6 +65,7 @@ showList = true;
   ngOnInit() {
 this.getBalance();
 this.findLastCredit();
+this.userService.thisMonthExpense(this.searchModel);
   }
   ngOnDestroy() {
      this.model = {
@@ -87,104 +93,54 @@ this.findLastCredit();
       admin: ''
     };
 
-  async editExpense(id, description, product,
-                    amountPaid, receiver, information) {
-                      console.log(description, information);
-                      const modal = await this.modalController.create({
-                    component: ExpenseEditComponent,
+  async editExpense(id, description, product, amountPaid, receiver, information) {
+                      const modal = await this.modalController.create({ component: ExpenseEditComponent,
                     componentProps: {
-                      'id': id,
-                      'description':  description,
-                      'product': product,
-                      'amountPaid': amountPaid,
-                      'receiver': receiver,
-                      'information': information
-                    }
-                }
-           );
- 
-                      modal.onDidDismiss().then(() => {
-                            this.getExpense();
-                            this.getBalance();
-            });
+                      'id': id,  'description':  description,
+                      'product': product,  'amountPaid': amountPaid,
+                      'receiver': receiver, 'information': information
+                    } } );
+                      modal.onDidDismiss().then(() => {   this.userService.reloadExpense(this.searchModel);  this.getBalance(); });
                       return await modal.present();
 }
 
-  submitDate(form: NgForm) {
-    this.Calmodel = form.value;
-    console.log(this.Calmodel);
-    this.findBydate();
-  }
-
-  findBydate() {
-    this.loading = true;
-    this.userService.findExpenseByDate(this.Calmodel).subscribe(
-      res => {
-        this.loading = false;
-        this.expense = res['expenses'];
-        console.log(res);
-      },
-      err => {
-        this.loading = false;
-        console.log();
-        this.expense = [];
-        this.userService.generalToastSh(err.error.msg);
-      }
-    );
-  }
-
-  selectChange(event) {
-    console.log(event);
-    this.loading = true;
-    this.userService.selectExpenseByCategory(event).subscribe(
-      res => {
-        this.loading = false;
-        this.expense = res['expenses'];
-
-      },
-      err => {
-        this.loading = false;
-        this.userService.generalToast(err.error.msg);
-      }
-    );
-  }
 
   searchExpense() {
     this.loading = true;
-    this.userService.searchExpense(this.searchModel).subscribe(
-      res => {
-        this.loading = false;
-        console.log(res);
-        this.expense = res['expenses'];
-      },
-      err => {
-        this.loading = false;
-        this.expense = [];
-        this.userService.generalToastSh(err.error.msg);
-        console.log(err);
-      }
-    );
-
+    this.userService.searchExpense(this.searchModel);
   }
 
-  thisMonthRecord(event){
-    let month = event.next.month;
-    let year = event.next.year;
-    this.searchModel.month = event.next.month;
-    this.searchModel.year = event.next.year;
+  monthAndYear(){
+    this.searchModel.month = null, this.searchModel.year = null;
+    this.searchModel.month = new Date(this.myDate).getMonth() + 1;
+    this.searchModel.year = new Date(this.myDate).getFullYear() ;
     console.log(this.searchModel);
-    this.userService.thisMonthExpense(this.searchModel).subscribe(
-      res => {
-        console.log('this month', res);
-        this.expense = res['record'];
-      },
-      err => {
-        console.log(err);
-        this.expense = [];
-        this.userService.generalToastSh(err.error.msg);
-      }
-    );
+    this.userService.reloadExpense(this.searchModel);
+ 
  }
+//  Ccustom date picker
+      // tslint:disable-next-line: member-ordering
+      filter_Month_Year: any = {
+        buttons: [{
+          text: 'CANCEL',
+          handler: (event) => console.log('calender cancelled')
+        }, {
+          text: 'SEARCH',
+          handler: (event) => {
+           this.searchModel.month = event.month.value;
+           this.searchModel.year = event.year.value;
+           this.userService.reloadExpense(this.searchModel);
+          }
+        }]
+      };
+
+      submitDate(form: NgForm){
+        console.log(this.model);
+        this.userService.findExpenseByDate(this.model);
+      }
+    
+       
+    
 
  async okRecord(id){
   const alert = await this.alertController.create({
@@ -200,15 +156,15 @@ this.findLastCredit();
         cssClass : 'danger',
         handler: (values) => {
           console.log(id);
-          this.loading = true;
+          this.userService.loadingExpense = true;
           this.userService.confirmExpense(id).subscribe(
           res => {
-            this.loading = false;
+            this.userService.loadingExpense = false;
             this.userService.generalToastSh(res['msg']);
-            this.getExpense();
+            this.userService.reloadExpense(this.searchModel);
           },
           err => {
-            this.loading = false;
+            this.userService.loadingExpense = false;
             this.userService.generalToast(err.error.msg);
           }
         );
@@ -222,41 +178,20 @@ this.findLastCredit();
  async UnokRecord(id){
   this.userService.unConfirmExpense(id).subscribe(
     res => {
-      this.getExpense();
+      this.userService.reloadExpense(this.searchModel);
     }
   );
  }
 
 
   doRefresh(event) {
-    this.loading = true;
-    this.getExpense();
+    this.userService.reloadExpense(this.searchModel);
     this.getBalance();
-    this.loading = false;
+
   }
 
 
 
-  getExpense() {
-    this.loading = true;
-    this.userService.getExpenses().subscribe(
-      res => {
-        this.loading = false;
-        this.expense = res['expenses'];
-        this.refresherRef.complete();
-        console.log(res);
-        this.expense.forEach(element => {
-          console.log(element);
-        });
-      },
-      err => {
-        this.loading = false;
-        this.refresherRef.complete();
-        console.log(err);
-        this.userService.generalToast(err.error.msg);
-      }
-    );
-  }
 
   getBalance(): void {
     this.loading = true;
@@ -292,21 +227,17 @@ this.findLastCredit();
           cssClass : 'danger',
           handler: () => {
             console.log(id);
-            this.loading = true;
-            const data = {admin : this.expenseModel.admin,
-                      id};
-
+            this.userService.loadingExpense = true;
+            const data = {admin : this.expenseModel.admin, id};
             this.expenseModel.admin;
             this.userService.reverseExpense(data).subscribe(
               res => {
-                this.loading = false;
-                console.log(res);
+                this.userService.loadingExpense = false;
                 this.userService.generalToast(res['msg']);
-                this.getExpense();
+                this.userService.reloadExpense(this.searchModel);
               },
               err => {
-                this.loading = false;
-                console.log(err);
+                this.userService.loadingExpense = false;
                 this.userService.generalToast(err.error.msg);
               }
             );
@@ -335,15 +266,16 @@ this.findLastCredit();
           cssClass : 'danger',
           handler: () => {
             console.log(id);
-            this.loading = true;
+            this.userService.loadingExpense = true;
             this.userService.verifyExpense(id).subscribe(
               res => {
                 console.log(res);
                 this.userService.generalToast(res['msg']);
-                this.loading = false;
-                this.getExpense();
+                this.userService.loadingExpense = false;
+                this.userService.reloadExpense(this.searchModel);
               },
               err => {
+                this.userService.loadingExpense = false;
                 this.userService.generalToast(err.error.msg);
               }
             );
@@ -358,7 +290,7 @@ this.findLastCredit();
   findLastCredit() {
     this.userService.getLastCredit().subscribe(
       res => {
-        console.log(res['credit']);
+        // console.log(res['credit']);
         this.lastCredit = res['credit'];
       }
     );
@@ -387,22 +319,22 @@ this.findLastCredit();
             text: 'Confirm',
             cssClass : 'success',
             handler: (val) => {
-              this.loading = true;
+              this.userService.loadingExpense = true;
               // give a name to object;
               val.name = 'BALANCE';
               val.admin = this.expenseModel.admin;
               val.date = Date.now();
               this.userService.updateBalance(val).subscribe(
                 res => {
-                  this.loading = false;
+                  this.userService.loadingExpense = false;
                   this.balance = res['balance'];
                   this.userService.generalToast(res['msg']);
-                  this.getExpense();
+                  this.userService.reloadExpense(this.searchModel);
                   this.getBalance();
                   this.findLastCredit();
                 },
                 err => {
-                  this.loading = false;
+                  this.userService.loadingExpense = false;
                   this.userService.generalToast(err.error.msg);
                 }
               );
@@ -420,7 +352,7 @@ this.findLastCredit();
       component: ExpReturnModalComponent,
     });
     modal.onDidDismiss().then(()=> {
-      this.getExpense();
+      this.userService.reloadExpense(this.searchModel);
       this.getBalance();
       console.log('modal dismiss...');
     });
@@ -429,7 +361,7 @@ this.findLastCredit();
    } 
 
   submitExpense(form: NgForm) {
-    this.loading = true;
+    this.userService.loadingExpense = true;
     console.log(this.expenseModel);
     this.userService.submitExpense(this.expenseModel).subscribe(
       res => {
@@ -437,12 +369,11 @@ this.findLastCredit();
         this.cancelForm();
         console.log(res);
         this.getBalance();
-        this.getExpense();
+        this.userService.reloadExpense(this.searchModel);
         this.clearModel();
       },
       err => {
-        this.loading = false;
-        console.log(err);
+        this.userService.loadingExpense = false;
       }
     );
   }

@@ -23,6 +23,7 @@ export class DistributionsPage implements OnInit, OnDestroy {
               public modalController: ModalController,
               public userService: UserServiceService) {
                 userService.getUserRole();
+                userService.isLogedIn();
    }
 
 allOutlet : any;

@@ -9,22 +9,31 @@
 
     <div class="p-2 mt-5">
     
-      <ion-card style="margin-bottom: 20%;">
+      <ion-card style="margin-bottom: 20%;" >
       
         <div class="container">
           <img class="" src="./../../assets/icon/logo.jpg">
          </div>
-  <form  class=" form fixed" #loginForm="ngForm" name="form" (keydown.enter)="loginForm.valid && login(loginForm)"
+  <form  class=" form fixed  " #loginForm="ngForm" name="form" (keydown.enter)="loginForm.valid && login(loginForm)"
    (submit)="loginForm.valid && login(loginForm)">
     <!-- <img class="" height="250" width="50"  src="../../assets/icon/farm_logo2.png"> -->
  
          <div *ngIf="loading"><ion-progress-bar type="indeterminate"></ion-progress-bar></div>
+         <ion-grid>
+           <ion-row>
+             <ion-col>
 
-          <ion-item  class="text-input mb-1">
-              <ion-label class="ml-3" position="stacked">Phone</ion-label>
-              <ion-input class="ml-3" type="tel" #number name="number" clearInput [(ngModel)]="model.number"
+            <ion-item  class="text-input mb-1">
+              <ion-label class="ml-3 " position="stacked">Phone</ion-label>
+              <ion-input class="ml-3 " type="tel" #number name="number" clearInput [(ngModel)]="model.number"
                 autocomplete="off"  minlength="11"  required="true"  ></ion-input>
           </ion-item>
+        </ion-col>
+           </ion-row>
+           
+
+         </ion-grid>
+         
           <div *ngIf="loginForm.submitted && !number.value">
               <small class="error">phone is required</small>
           </div>

@@ -37,8 +37,21 @@ export class FruitComponent implements OnInit {
 
     doRefresh(event){
       this.loading = true;
-      this.getRecord();
-      this.loading = false;
+      this.recordService.thisMonthFruit(this.searchModel).subscribe(
+        res => {
+          this.loading = false;
+          console.log('this month',res);
+          this.fruit = res['record'];
+          this.refresherRef.complete();
+        },
+        err => {
+          this.loading = false;
+          console.log(err)
+          this.fruit = [];
+          this.userService.generalToastSh(err.error.msg);
+          this.refresherRef.complete();
+        }
+      );
     }
   
 
@@ -46,12 +59,15 @@ export class FruitComponent implements OnInit {
       this.searchModel.month = event.next.month;
       this.searchModel.year = event.next.year;
       console.log(this.searchModel);
+      this.loading = true;
       this.recordService.thisMonthFruit(this.searchModel).subscribe(
         res => {
+          this.loading = false;
           console.log('this month',res);
           this.fruit = res['record'];
         },
         err => {
+          this.loading = false;
           console.log(err)
           this.fruit = [];
           this.userService.generalToastSh(err.error.msg);
@@ -118,7 +134,7 @@ export class FruitComponent implements OnInit {
  
 
     async editRecord(id,product,damage,assist_buyer,paid_for,
-      amount,kilo,supplier,driver,quantity,confirmed_by,buyer, size,remark){
+      amount,kilo,supplier,driver,quantity,confirmed_by,buyer, size,remark, bottles){
         const modal = await this.modalController.create({
           component: FruiteditComponent,
           componentProps: {
@@ -136,6 +152,7 @@ export class FruitComponent implements OnInit {
             'size': size,
             'supplier': supplier,
             'driver': driver,
+            'bottles': bottles
           }
         });
         modal.onDidDismiss().then(()=> {

@@ -73,7 +73,7 @@
       <ion-button [disabled]="item.verify || item.confirm"
        (click)="editRecord(item._id,item.product,item.damage,item.assist_buyer,item.paid_for
        ,item.amount,item.kilo,item.supplier,item.driver,
-       item.quantity,item.confirmed_by,item.buyer,item.size, item.remark)"
+       item.quantity,item.confirmed_by,item.buyer,item.size, item.remark, item.bottles)"
        color="light">EDIT</ion-button>
      </ion-col>
     </ion-row> 
@@ -111,13 +111,6 @@
          <small>driver</small>
           <div>{{item.driver}}</div>
       </ion-col>
-      <ion-col>
-        <div>{{item.kilo | number}}KG</div>
-      </ion-col>
-      <ion-col>
-        <small>size</small>
-        <div>{{item.size}}</div>
-      </ion-col>
        <ion-col>
        <div class="font-weight-bold"> ₦{{item.amount | number}}</div>
       </ion-col>
@@ -125,6 +118,16 @@
    <ion-row>
     <div class="text-danger text-center">remark: {{item.remark}} </div>
     <ion-chip  color="success" outline>{{item.paid_for}}</ion-chip>
+   </ion-row>
+   <ion-row>
+      <ion-col>
+        <ion-chip color="primary">kg : {{item.kilo }}</ion-chip>
+      </ion-col>
+   </ion-row>
+   <ion-row>
+      <ion-col>
+        <ion-chip color="primary">size : {{item.size}}</ion-chip>
+      </ion-col>
    </ion-row>
     <ion-row  color="light">
       <ion-col>

@@ -50,6 +50,7 @@ export class FruiteditComponent implements OnInit {
     this.fruitModel.remark = this.navParams.get('remark');
     this.fruitModel.confirmed_by = this.navParams.get('confirmed_by');
     this.fruitModel.quantity = this.navParams.get('quantity');
+    this.fruitModel.bottles = this.navParams.get('bottles');
 
 
     this.fruitModel.amount = this.navParams.get('amount');

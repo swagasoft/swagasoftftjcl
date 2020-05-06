@@ -9,7 +9,7 @@
     </div>
   </ion-toolbar>
 </ion-header>
-
+ 
       <!-- loading -->
       <!-- <div *ngIf="loading" class="spinner">
         <div class="loader"></div>
@@ -17,20 +17,21 @@
       
 <ion-content>
 
-  
+  <ion-card color="light">
+    <ion-item color="primary">
+      <ion-label  class="ion-text-center font-weight-bold">PICK A MONTH</ion-label>
+      <ion-datetime  [pickerOptions]="filter_Month_Year" displayFormat="MMMM YYYY"  [(ngModel)]="myDate" ></ion-datetime>
+    </ion-item>
+  </ion-card>
+
     <!-- referesh -->
     <ion-refresher #refresherRef (ionRefresh)="doRefresh($event)" slot="fixed" >
       <ion-refresher-content>
       </ion-refresher-content>
     </ion-refresher>
 
+
   <div class="pb-5">
-
-<ion-card color="light">
-    <ngb-datepicker #dateClass  (navigate)="dateNavigate($event)" 
-    class="datepicker-only-month-select "></ngb-datepicker>
-  </ion-card> 
-
     <form #dateform="ngForm"   (submit)=" submitDate(dateform)" class="form-inline">
       <div class="form-group">
         <div class="input-group">
@@ -39,9 +40,9 @@
           <div class="input-group-append">
             <button class="btn btn-outline-secondary" (click)="d.toggle()"
              type="button"><ion-icon name="apps"></ion-icon> </button>
-            <button class="btn btn-success" [disabled]="!model"
+            <ion-button class="primary" [disabled]="!model"
              (click)="submitDate(dateform)" type="submit">
-            <ion-icon name="search"></ion-icon></button>
+            <ion-icon name="search"></ion-icon></ion-button>
           </div>
         </div>
       </div>
@@ -50,10 +51,9 @@
 
 
 
-
 <!-- sales list -->
 
-<ion-card *ngFor="let item of salesRecord" class="blue-gradient text-white">
+ <ion-card *ngFor="let item of recordService.salesRecord" class="blue-gradient text-white">
   <ion-row>
     <ion-col>
       <div  class="font-weight-bold"> {{item.merchantName}} </div>
@@ -65,7 +65,7 @@
       <small> {{item.created_at | date:'medium'}} </small>
     </ion-col>
   </ion-row>
-  <!-- col 2 -->
+
   <ion-row>
     <ion-col>
       <h6>bottle(s):{{item.bottles}} </h6>
@@ -96,12 +96,12 @@
       
     </ion-col>
      <ion-col>
-      <ion-button [disabled]="item.verify || item.confirm"
+      <ion-button [disabled]="userService.getUserRole() != 'DIRECTOR'" 
        size="small" color="danger" (click)="delete(item._id)">delete</ion-button>
     </ion-col>
 
   </ion-row>
-</ion-card>
+</ion-card> 
 
 
 </div>
@@ -127,9 +127,13 @@
 </ion-fab>
 
     <!-- loading.. -->
-    <div *ngIf="loading" class="spinner">
+    <div *ngIf="recordService.loading" class="spinner">
       <div class="loader"></div>
     </div>
+
+
+
+   
 
  
 </ion-content>

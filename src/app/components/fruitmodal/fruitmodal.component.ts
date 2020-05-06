@@ -10,6 +10,7 @@ import { ModalController } from '@ionic/angular';
 })
 export class FruitmodalComponent implements OnInit {
 loading = false;
+allSize = [];
   constructor( public modalController: ModalController,
                public userService: UserServiceService,
                private recordService: RecordService) { }
@@ -47,10 +48,8 @@ loading = false;
     this.fruitModel.product = $event;
         } 
 
-  selectSize( $event) {
-    console.log($event);
-    this.fruitModel.size = $event;
-        }
+
+      
 
    submitFruit(){
      this.loading = true;

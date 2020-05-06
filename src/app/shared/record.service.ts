@@ -1,3 +1,4 @@
+import { UserServiceService } from './user-service.service';
 import { Injectable } from '@angular/core';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
@@ -10,7 +11,10 @@ export class RecordService {
 AuthHeader = {headers: new HttpHeaders().set('Authorization',
 `Bearer ${localStorage.getItem('token')}`)};
 
-  constructor(private http: HttpClient) { }
+loading = false;
+salesRecord = [];
+myDate = new Date();
+  constructor(private http: HttpClient, private userService: UserServiceService) { }
 
   submitFruit(fruit){
     return this.http.post(environment.apiBaseUrl + '/submit-fruit', fruit);
@@ -42,9 +46,66 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
     return this.http.post(environment.apiBaseUrl + '/this-month-fruit', month);
   }
 
-  getSomeData(date){
-    return this.http.post(environment.apiBaseUrl + '/get-some-data', date);
+  merchantSales(date){
+    if(this.salesRecord.length == 0){
+      this.loading = true;
+      return this.http.post(environment.apiBaseUrl + '/merchant-sales', date).subscribe(
+        res => {
+          this.loading = false;
+          console.log(res);
+          this.loading = false;
+          this.salesRecord = res['record'];
+        },
+       
+        err => { 
+          this.loading = false;
+          console.log(err);
+          this.salesRecord = [];
+          this.userService.generalToast(err.error.msg);
+        }
+      );
+    }else{
+      console.log('MERCHANT ALREADY has datas');
+    }
   }
+
+
+  findmerchantByDay(ref){
+    this.salesRecord = [];
+    this.loading = true;
+    this.http.post(environment.apiBaseUrl + '/merchant-date-day', ref).subscribe(
+      res => {
+        this.loading = false;
+        this.salesRecord = res['record'];
+      },
+      err => { 
+        this.loading = false;
+        this.userService.generalToastSh(err.error.msg);
+      }
+    );
+  }
+
+
+  
+  reloadMerchantSales(date){
+    this.loading = true;
+    return this.http.post(environment.apiBaseUrl + '/merchant-sales', date).subscribe(
+      res => {
+        this.loading = false;
+        console.log(res);
+        this.loading = false;
+        this.salesRecord = res['record'];
+      },
+     
+      err => { 
+        console.log(err);
+        this.loading = false;
+        this.salesRecord = [];
+        this.userService.generalToast(err.error.msg);
+      }
+    );
+  }
+
 }
 
 

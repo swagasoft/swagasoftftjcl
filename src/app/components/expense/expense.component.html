@@ -27,25 +27,32 @@
 
   <div *ngIf="!showExpenseInput" >
   <div  class="pt-3">
-   <!-- select options -->
-   <!-- <ion-card class="p-0 p-0">
-   <ion-item color="light" >
-    <ion-label class="text-center">select option</ion-label>
-    <ion-select select="success" interface="popover" (ngModelChange)="selectChange($event)" 
-    [(ngModel)]="model.filterOptions">
-      <ion-select-option  value="true">VERIFIED</ion-select-option>
-      <ion-select-option  value="false">UNVERIFIED</ion-select-option>
-    </ion-select>
+ 
+<ion-card color="light">
+  <ion-item color="primary">
+    <ion-label  class="ion-text-center font-weight-bold">PICK A MONTH</ion-label>
+    <ion-datetime  [pickerOptions]="filter_Month_Year" displayFormat="MMMM YYYY"  [(ngModel)]="myDate" ></ion-datetime>
   </ion-item>
-</ion-card> -->
-
- <!-- month/year picker -->
- <ion-card class="p-0 m-0 " *ngIf="!showExpenseInput" color="light">
-  <ngb-datepicker  (navigate)=" thisMonthRecord($event)" 
-  class="datepicker-only-month-select"></ngb-datepicker>
 </ion-card>
 
+  <form #dateform="ngForm"   (submit)=" submitDate(dateform)" class="form-inline">
+    <div class="form-group">
+      <div class="input-group">
+        <input class="form-control"  placeholder="YYYY-MM-DD"
+               name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" (click)="d.toggle()"
+           type="button"><ion-icon name="apps"></ion-icon> </button>
+          <ion-button class="primary" [disabled]="!model"
+           (click)="submitDate(dateform)" type="submit">
+          <ion-icon name="search"></ion-icon></ion-button>
+        </div>
+      </div>
+    </div>
+  </form>
 
+
+<!-- 
 <form #dateform="ngForm"  (submit)=" submitDate(dateform)" (keydown.enter)="submitDate(dateform)"
  class="card form-inline p-0 m-0">
   <div class="form-group">
@@ -61,7 +68,7 @@
       </div>
     </div>
   </div> 
-</form>
+</form> -->
 <!-- end date -->
 
 <ion-refresher #refresherRef (ionRefresh)="doRefresh($event)" slot="fixed" >
@@ -75,28 +82,36 @@
   <ion-row class="p-0 m-0">
     <ion-item>
     <ion-input name="search" #search placeholder="search expense"  [(ngModel)]="searchModel.search"></ion-input> 
-    <ion-button color="success" size="medium" (click)="searchExpense()" [disabled]="!search.value">
+    <ion-button color="primary" size="medium" (click)="searchExpense()" [disabled]="!search.value">
       <ion-icon name="search" size="large"></ion-icon>
     </ion-button> 
   </ion-item>
   </ion-row>
 </ion-card>
 
-    <ion-card  *ngFor="let item of expense; index as i"
+    <ion-card  *ngFor="let item of userService.expense; index as i"
      color="light" class="p-1 text-center font-weight-bold" 
      [ngClass]="{'primary-color-dark text-white': item.return}">
         <ion-row [ngClass]="{'success-color-dark text-white': !item.return}">
-          <small class="text-white"> {{item.created_at | date:'medium'}}</small>
-          <ion-card-header class=" text-white font-weight-bold">{{item.admin}} </ion-card-header>
-          <ion-button (click)="editExpense(item._id, item.description,item.product,
+          <ion-col>
+            <div class="text-white"> {{item.created_at | date:'medium'}}</div>
+          </ion-col>
+           <ion-col>
+            <div class=" text-white font-weight-bold">{{item.admin}} </div>
+           </ion-col>
+           <ion-col>
+             
+          <ion-button class="ion-float-right" (click)="editExpense(item._id, item.description,item.product,
           item.amountPaid,item.receiver,item.information)"
            size="small" color="light"[disabled]="item.confirm || item.verified" >edit</ion-button>
-          <ion-col>
-          </ion-col>
+           </ion-col>
+           <ion-col>
+            <small class="text-warning">{{item.edit}}: EDIT </small>
+           </ion-col>
         </ion-row>
 
         <ion-row >
-          <div class="font-weight-bold">{{i+1}}</div>
+          <ion-chip outline color="dark" class="font-weight-bold">{{i+1}}</ion-chip>
           <ion-col>
             <small class="">item</small>
             <div> {{item.product}} </div>
@@ -114,12 +129,9 @@
 
         <ion-row >
           <ion-col>
-            <small>{{item.information}}</small>
+            <div>{{item.information}}</div>
           </ion-col>
         </ion-row>
-        <ion-col>
-          <small class="text-warning">edit:{{item.edit}} </small>
-        </ion-col>
         <ion-row>
         <small *ngIf="!item.verified" class="text-danger font-weight-bold">AWAITING VERIFICATION </small>
        
@@ -216,7 +228,7 @@
 </div>
 
 <!-- loading.. -->
-<div *ngIf="loading" class="spinner">
+<div *ngIf="userService.loadingExpense" class="spinner">
   <div class="loader"></div>
 </div>
 

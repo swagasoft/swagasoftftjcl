@@ -45,6 +45,15 @@ c_return = 0;
 s_return = 0;
 slg_return = 0;
 
+// rate
+rate_p = 0;
+rate_o = 0;
+rate_w = 0;
+rate_t = 0;
+rate_c = 0;
+rate_s = 0;
+rate_slg = 0;
+
   constructor(public userService:UserServiceService, 
               private outletService: OutletService,
                private distService: DistributionService) { }
@@ -66,6 +75,15 @@ this.searchByMonth();
 
   selectOutlet(event){
     // set all value = 0;
+
+    this.rate_p = 0;
+    this.rate_o = 0;
+    this.rate_w = 0;
+    this.rate_t = 0;
+    this.rate_c = 0;
+    this.rate_s = 0;
+    this.rate_slg = 0;
+
     this.total_p = 0;
     this.total_o = 0;
     this.total_w = 0;
@@ -110,6 +128,15 @@ this.searchByMonth();
         console.log(this.selectedOutlet);
         this.selectedOutlet.forEach((element)=> {
          
+          // get rate
+          this.rate_p = element.rate_p;
+          this.rate_o = element.rate_o;
+          this.rate_c = element.rate_c;
+          this.rate_w = element.rate_w;
+          this.rate_t = element.rate_t;
+          this.rate_s = element.rate_s;
+          this.rate_slg = element.rate_slg;
+
           this.total_p +=  element.pineapple;
           this.total_o +=  element.orange;
           this.total_c +=  element.carrot;
@@ -156,6 +183,15 @@ this.searchByMonth();
   }
 
   searchByMonth(){
+
+    this.rate_p = 0;
+    this.rate_o = 0;
+    this.rate_w = 0;
+    this.rate_t = 0;
+    this.rate_c = 0;
+    this.rate_s = 0;
+    this.rate_slg = 0;
+
     this.total_p = 0;
     this.total_o = 0;
     this.total_w = 0;
@@ -195,6 +231,15 @@ this.searchByMonth();
         console.log(this.selectedOutlet);
         this.selectedOutlet.forEach((element)=> {
          
+             // get rate
+             this.rate_p = element.rate_p;
+             this.rate_o = element.rate_o;
+             this.rate_c = element.rate_c;
+             this.rate_w = element.rate_w;
+             this.rate_t = element.rate_t;
+             this.rate_s = element.rate_s;
+             this.rate_slg = element.rate_slg;
+
           this.total_p +=  element.pineapple;
           this.total_o +=  element.orange;
           this.total_c +=  element.carrot;

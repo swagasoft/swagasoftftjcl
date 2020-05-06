@@ -3,7 +3,7 @@ import { RecordService } from 'src/app/shared/record.service';
 import { UserServiceService } from './../../shared/user-service.service';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NgbDatepickerNavigateEvent } from '@ng-bootstrap/ng-bootstrap';
-import { ModalController, AlertController, IonRefresher } from '@ionic/angular';
+import { ModalController, AlertController, IonRefresher, IonInfiniteScroll } from '@ionic/angular';
 import { OutletService } from 'src/app/shared/outlet.service';
 import { NgForm } from '@angular/forms';
 
@@ -15,126 +15,79 @@ import { NgForm } from '@angular/forms';
 export class MerchantComponent implements OnInit {
   @ViewChild('dateClass', {static : false}) dateClass: ElementRef;
   @ViewChild('refresherRef', {static : false}) refresherRef: IonRefresher;
-loading = false;
-salesRecord = [];
+  // @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
+
+page = 0;
 model;
+myDate  = new Date();
+
+
   constructor(public userService: UserServiceService, 
               public outletService: OutletService,
               public modalController: ModalController,
               public alertController: AlertController,
-              private recordService: RecordService ) {
+              public recordService: RecordService ) {
               
+                let appMonth = new Date().getMonth() + 1;
+                let appYear = new Date().getFullYear() ;
+                this.searchModel.month = appMonth;
+                this.searchModel.year = appYear;
                }
-yearModel = {
+searchModel = {
   month : null,
   year : null
 }
 
   ngOnInit() {
-    // this.getSalesRecord();
+    this.recordService.merchantSales(this.searchModel);
     
   }
 
+
+    // tslint:disable-next-line: member-ordering
+    filter_Month_Year: any = {
+      buttons: [{
+        text: 'CANCEL',
+        handler: (event) => console.log('calender cancelled')
+      }, {
+        text: 'SEARCH',
+        handler: (event) => {
+         console.log('clicked search..',event)
+         console.log(event.month.value);
+         this.searchModel.month = event.month.value;
+         this.searchModel.year = event.year.value;
+         this.recordService.reloadMerchantSales(this.searchModel);
+        }
+      }]
+    };
+
+
+
+
   submitDate(form: NgForm){
-    this.salesRecord = [];
     console.log(this.model);
-    this.loading = true;
-    this.outletService.findmerchantByDay(this.model).subscribe(
-      res => {
-        this.loading = false;
-        this.salesRecord = res['record'];
-      },
-      err => { 
-        this.loading = false;
-        this.userService.generalToastSh(err.error.msg);
-      }
-    );
+    this.recordService.findmerchantByDay(this.model);
   }
 
    
   doRefresh(event){ 
-    this.loading = true;
-    this.recordService.getSomeData(this.yearModel).subscribe(
-      res => {
-        console.log(res);
-        this.loading = false;
-        this.refresherRef.complete();
-        this.salesRecord = res['record'];
-      },
-      err => { 
-        console.log(err);
-        this.loading = false;
-        this.refresherRef.complete();
-        this.salesRecord = [];
-        this.userService.generalToast(err.error.msg);
-      }
-    );
+    this.recordService.reloadMerchantSales(this.searchModel)
+    setTimeout(()=> {
+      this.refresherRef.complete();
+    }, 2000);
   }
   
- 
-
-  dateNavigate($event: NgbDatepickerNavigateEvent) {
-    this.loading = true;
-    this.yearModel.month = $event.next.month;
-    this.yearModel.year = $event.next.year;
-    console.log(this.yearModel);
-    this.recordService.getSomeData(this.yearModel).subscribe(
-      res => {
-        console.log(res);
-        this.loading = false;
-        this.salesRecord = res['record'];
-      },
-      err => { 
-        console.log(err);
-        this.loading = false;
-        this.salesRecord = [];
-        this.userService.generalToast(err.error.msg);
-      }
-    );
-  }
-
 
   async merchantModal() {
- const modal = await this.modalController.create({
-   component: MerchantModalComponent,
- }
-
- );
- 
+ const modal = await this.modalController.create({ component: MerchantModalComponent});
  modal.onDidDismiss().then(()=> {
-  this.recordService.getSomeData(this.yearModel).subscribe(
-    res => {
-      console.log(res);
-      this.loading = false;
-      this.salesRecord = res['record'];
-    },
-    err => { 
-      console.log(err);
-      this.loading = false;
-      this.salesRecord = [];
-      this.userService.generalToast(err.error.msg);
-    }
-  );
+  this.recordService.reloadMerchantSales(this.searchModel);
    console.log('dismiss')
  });
  return await modal.present();
 }
 
-getSalesRecord(){
-  this.loading = true;
-  console.log('geting record');
-  this.outletService.getSaleRecord().subscribe(
-    res => {
-      this.loading = false;
-      console.log('response',res);
-      this.salesRecord = res['record'];
-    },
-    err => {
-      this.loading = false;
-      console.log(err);
-    }
-  );
-}
+
 async clickOk(id){
   const alert = await this.alertController.create({
     header: `OK RECORD?`,
@@ -150,15 +103,15 @@ async clickOk(id){
         cssClass : 'danger',
         handler: (values) => {
           console.log(id);
-          this.loading = true;
+          this.recordService.loading = true;
           this.outletService.okSaleRecord(id).subscribe(
             res => {
-              this.loading = false;
+              this.recordService.loading = false;
               this.userService.generalToastSh(res['msg']);
-              this.getSalesRecord();
+              this.recordService.reloadMerchantSales(this.searchModel);
             },
             err => {
-              this.loading = false;
+              this.recordService.loading = false;
               this.userService.generalToast(err.error.msg);
             }
           );
@@ -186,15 +139,15 @@ async delete(id){
         cssClass : 'danger',
         handler: (values) => {
           console.log(id);
-          this.loading = true;
+          this.recordService.loading = true;
           this.outletService.deleteRecord(id).subscribe(
             res => {
-              this.loading = false;
+              this.recordService.loading = false;
               this.userService.generalToastSh(res['msg']);
-              this.getSalesRecord();
+              this.recordService.reloadMerchantSales(this.searchModel);
             },
             err => {
-              this.loading = false;
+              this.recordService.loading = false;
               this.userService.generalToast(err.error.msg);
             }
           );
@@ -223,15 +176,15 @@ async clickVerify(id){
         cssClass : 'danger',
         handler: (values) => {
           console.log(id);
-          this.loading = true;
+          this.recordService.loading = true;
           this.outletService.verifySaleRecord(id).subscribe(
             res => {
-              this.loading = false;
+              this.recordService.loading = false;
               this.userService.generalToastSh(res['msg']);
-              this.getSalesRecord();
+              this.recordService.reloadMerchantSales(this.searchModel);
             },
             err => {
-              this.loading = false;
+              this.recordService.loading = false;
               this.userService.generalToast(err.error.msg);
             }
           );
@@ -257,15 +210,15 @@ async disprove(id){
         cssClass : 'danger',
         handler: (values) => {
           console.log(id);
-          this.loading = true;
+          this.recordService.loading = true;
           this.outletService.disproveRecord(id).subscribe(
             res => {
-              this.loading = false;
+              this.recordService.loading = false;
               this.userService.generalToastSh(res['msg']);
-              this.getSalesRecord();
+              this.recordService.reloadMerchantSales(this.searchModel);
             },
             err => {
-              this.loading = false;
+              this.recordService.loading = false;
               this.userService.generalToast(err.error.msg);
             }
           );

@@ -133,25 +133,27 @@
     <!-- list of supplies -->
     <div class="mb-1 mb-5"  *ngIf="!showbadStockForm">
       <p class="text-center font-weight-bold"> SUPPLY LIST</p>
-     <ion-card class="primary-color-dark text-white ml-0 pb-3 " *ngFor="let item of supplies">
+     <ion-card class="primary-color-dark  text-white ml-0 pb-3 " *ngFor="let item of supplies">
+     
       <ion-row class="table primary-color-dark text-white">
         <div class=" ml-1 mr-2 font-weight-bold">{{item?.outlet}}</div>
         <small class="mr-4">{{item?.created_at | date:'medium'}}</small>
         <small class="">{{item?.admin}}</small>
       </ion-row>
-      <table class="table text-white table-responsive text-nowrap" id="dist">
+     <div>
+      <table class="table text-white text-center table-responsive text-nowrap" id="dist">
         <thead>
           <tr>
-            <th scope="col-sm">#</th>
-            <th scope="col-sm">P</th>
-            <th scope="col-sm">O</th>
-            <th scope="col-sm">W</th>
-            <th scope="col-sm">T</th>
-            <th scope="col-sm">C</th>
-            <th scope="col-sm">S</th>
-            <th scope="col-sm">SLG</th>
-            <th scope="col-sm">TOT</th>
-            <th scope="col-sm">val</th>
+            <th scope="col">#</th>
+            <th scope="col">P</th>
+            <th scope="col">O</th>
+            <th scope="col">W</th>
+            <th scope="col">T</th>
+            <th scope="col">C</th>
+            <th scope="col">S</th>
+            <th scope="col">SLG</th>
+            <th scope="col">TOT</th>
+            <th scope="col">val</th>
           
           </tr>
         </thead>
@@ -222,30 +224,34 @@
                 item?.slg_exg * item?.rate_slg | number}} </td>
           </tr>
         </tbody>
+      
       </table>
-      <ion-row>
-        <ion-col>
-          <ion-button [disabled]="item.confirm || item.verify"
-           (click)="editSupply(item._id,item.pineapple,item.tigernut, item.watermelon, item.carrot, item.orange,
-            item.sugarcane, item.slg, item.p_samp,item.c_samp, item.t_samp, item.w_samp, item.s_samp, item.o_samp,
-            item.slg_samp, item.p_exg, item.o_exg, item.w_exg, item.t_exg, item.c_exg,
-            item.s_exg, item.slg_exg, item.p_return, item.o_return, item.w_return, item.t_return, 
-             item.c_return, item.s_return, item.slg_return,item.prod_id,item.outlet, item.location)" 
-             size="small">edit</ion-button>
-        </ion-col>
-         <ion-col>
-          <ion-button *ngIf="!item.confirm" size="small" color="light"
-          [disabled]="userService.getUserRole() != 'DILIGENT'" (click)="confirmSupply(item._id)">ok</ion-button>
-          <ion-button *ngIf="item.confirm" size="small" color="success"
-          [disabled]="userService.getUserRole() != 'DILIGENT'" (click)="unConfirmSupply(item._id)">ok</ion-button>
-         </ion-col>
-         <ion-col>
-          <ion-button *ngIf="!item.verify" size="small" color="light"
-          [disabled]="userService.getUserRole() != 'DIRECTOR'" (click)="verifySupply(item._id)">verify</ion-button>
-          <ion-button *ngIf="item.verify" size="small" color="success" 
-          [disabled]="userService.getUserRole() != 'DIRECTOR'" (click)="unverifySupply(item._id)">verified</ion-button>
-         </ion-col>
-      </ion-row>
+          <!-- confirmation -->
+            <ion-col>
+              <ion-button [disabled]="item.confirm || item.verify"
+               (click)="editSupply(item._id,item.pineapple,item.tigernut, item.watermelon, item.carrot, item.orange,
+                item.sugarcane, item.slg, item.p_samp,item.c_samp, item.t_samp, item.w_samp, item.s_samp, item.o_samp,
+                item.slg_samp, item.p_exg, item.o_exg, item.w_exg, item.t_exg, item.c_exg,
+                item.s_exg, item.slg_exg, item.p_return, item.o_return, item.w_return, item.t_return, 
+                 item.c_return, item.s_return, item.slg_return,item.prod_id,item.outlet, item.location)" 
+                 size="small">edit</ion-button>
+            </ion-col>
+             <ion-col>
+              <ion-button *ngIf="!item.confirm" size="small" color="light"
+              [disabled]="userService.getUserRole() != 'DILIGENT'" (click)="confirmSupply(item._id)">ok</ion-button>
+              <ion-button *ngIf="item.confirm" size="small" color="success"
+              [disabled]="userService.getUserRole() != 'DILIGENT'" (click)="unConfirmSupply(item._id)">ok</ion-button>
+             </ion-col>
+             <ion-col>
+              <ion-button *ngIf="!item.verify" size="small" color="light"
+              [disabled]="userService.getUserRole() != 'DIRECTOR'" (click)="verifySupply(item._id)">verify</ion-button>
+              <ion-button *ngIf="item.verify" size="small" color="success" 
+              [disabled]="userService.getUserRole() != 'DIRECTOR'" (click)="unverifySupply(item._id)">verified</ion-button>
+             </ion-col>
+         
+          <!-- end confirm -->
+    </div>
+
      </ion-card>
 
 
@@ -358,7 +364,8 @@
       <div>Supply Outlet </div>
     </ion-button>
  
-    <ion-button size="small"  color="light" [routerLink]="['/production']">
+    <ion-button *ngIf="userService.getUserRole() == 'DIRECTOR' || userService.getUserRole() == 'DILIGENT'"
+     size="small"  color="light" [routerLink]="['/production']">
       <a > new Production </a>
     </ion-button>
   </ion-fab-list>
