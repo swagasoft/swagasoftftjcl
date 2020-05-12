@@ -13,26 +13,32 @@
 <ion-content> 
 
   <!-- month/year picker -->
-    <ion-card color="medium">
-      <ngb-datepicker  (navigate)=" thisMonthRecord($event)" 
-      class="datepicker-only-month-select"></ngb-datepicker>
-    </ion-card>
-  <form #dateform="ngForm"  (submit)=" submitDate(dateform)" class="form-inline">
-    <div class="form-group">
-      <div class="input-group">
-        <input class="form-control" placeholder="yyyy-mm-dd"
-               name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker">
-        <div class="input-group-append">
-          <button class="btn btn-outline-secondary" (click)="d.toggle()"
-           type="button"><ion-icon name="apps"></ion-icon> </button>
-          <button class="btn btn-success" [disabled]="!model"
-           (click)="submitDate(dateform)" type="submit">
-          <ion-icon name="search"></ion-icon></button>
-        </div>
+   
+ 
+
+   
+ <ion-card color="light">
+  <ion-item color="primary">
+    <ion-label  class="ion-text-center font-weight-bold">PICK A MONTH</ion-label>
+    <ion-datetime  [pickerOptions]="filter_Month_Year" displayFormat="MMMM YYYY"  [(ngModel)]="myDate" ></ion-datetime>
+  </ion-item>
+</ion-card>
+
+<form #dateform="ngForm"  (submit)=" submitDate(dateform)" class="form-inline">
+  <div class="form-group">
+    <div class="input-group">
+      <input class="form-control" placeholder="yyyy-mm-dd"
+             name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker">
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" (click)="d.toggle()"
+         type="button"><ion-icon name="apps"></ion-icon> </button>
+        <button class="btn btn-success" [disabled]="!model"
+         (click)="submitDate(dateform)" type="submit">
+        <ion-icon name="search"></ion-icon></button>
       </div>
     </div>
-  </form>
-
+  </div>
+</form>
     <!-- search by name -->
 <ion-card>
   <ion-row>
@@ -53,7 +59,7 @@
     </ion-refresher>
 
 
-    <ion-card *ngFor="let item of penalize" class="bg-dark text-white">
+    <ion-card *ngFor="let item of staffService.penalize" class="bg-dark text-white">
       <ion-row class="font-weight-bold">
        <ion-col>
         <div>{{item.name}} </div>
@@ -61,12 +67,14 @@
       <ion-col>
         <div class="pl-4">₦ {{item.amount}} </div>
       </ion-col>
-      </ion-row>
-      <div class="text-center">{{item.reason}} </div> <br>
-      <ion-row>
-       <ion-col>
+      <ion-col>
         <small>{{item.created_at | date:'medium'}} </small>
        </ion-col>
+      </ion-row>
+      <ion-row>
+        <div class="text-center font-weight-bold">{{item.reason}} </div> 
+      </ion-row>
+      <ion-row>
         <ion-col>
           <small>{{item.admin}} </small>
         </ion-col>

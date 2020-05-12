@@ -10,103 +10,103 @@ import { NgForm } from '@angular/forms';
   templateUrl: './penalty.component.html',
   styleUrls: ['./penalty.component.scss'],
 })
-export class PenaltyComponent implements OnInit, OnDestroy {
+export class PenaltyComponent implements OnInit{
   @ViewChild('refresherRef', {static : false}) refresherRef: IonRefresher;
-  penalize = [];
+ 
   loading = false;
   admin: any;
   model;
+  myDate  = new Date();
 
 searchModel = { 
   search: '',fullname: '', month: null, year : null
   };
 
 
-    constructor(private staffService: StaffService,public alertController: AlertController,
+    constructor(public staffService: StaffService,public alertController: AlertController,
                 public userService: UserServiceService) {
+                  let appMonth = new Date().getMonth() + 1;
+                  let appYear = new Date().getFullYear() ;
+                  this.searchModel.month = appMonth;
+                  this.searchModel.year = appYear;
      }
   
     ngOnInit() {
       this.admin = localStorage.getItem('appUser');
       console.log(this.userService.role);
-    }
+      this.staffService.thisMonthPenalty(this.searchModel);
+    } 
   
-    ngOnDestroy(){
-      this.penalize = [];
-    }
+   
 
     submitDate(form: NgForm){
       console.log(form.value);
       console.log(this.model);
-      this.findBydate();
+      this.findByDay();
     }
 
-    findBydate(){
-      this.loading = true;
+
+    // tslint:disable-next-line: member-ordering
+    filter_Month_Year: any = {
+      buttons: [{
+        text: 'CANCEL',
+        handler: (event) => console.log('calender cancelled')
+      }, {
+        text: 'SEARCH',
+        handler: (event) => {
+        console.log('clicked search..',event)
+        console.log(event.month.value);
+        this.searchModel.month = event.month.value;
+        this.searchModel.year = event.year.value;
+        this.staffService.thisMonthPenalty(this.searchModel);
+        }
+      }]
+};
+
+    findByDay(){
+      this.staffService.loading = true;
       this.staffService.findPenaltyDate(this.model).subscribe(
         res => {
-          this.loading = false;
-          this.penalize = res['users']; 
+          this.staffService.loading = false;
+          this.staffService.penalize = res['users']; 
           console.log(res);
         },
         err => {
-          this.loading = false;
+          this.staffService.loading = false;
           console.log();
-          this.penalize =[]; 
+          this.staffService.penalize =[]; 
           this.userService.generalToastSh(err.error.msg);
         }
       );
     }
   
     doRefresh(event){
-      this.staffService.thisMonthPenalty(this.searchModel).subscribe(
-        res => {
-          console.log('this month',res);
-          this.penalize = res['record'];
-          this.refresherRef.complete();
-        },
-        err => {
-          this.refresherRef.complete();
-          console.log(err)
-          this.penalize = [];
-          this.userService.generalToastSh(err.error.msg);
-        }
-      );
-      this.loading = false;
+      this.staffService.thisMonthPenalty(this.searchModel);
+      setTimeout(()=> {
+        this.refresherRef.complete();
+      },1000);
+     
     }
 
     searchPenalty(){
       console.log(this.searchModel.search);
-      this.loading = true;
+      this.staffService.loading = true;
       this.staffService.searchPenalty(this.searchModel).subscribe(
         res=> {
-          this.loading = false;
+          this.staffService.loading = false;
           console.log(res);
-          this.penalize = res['users']; 
+          this.staffService.penalize = res['users']; 
         },
         err=>{
-          this.loading = false;
-          this.penalize = [];
+          this.staffService.loading = false;
+          this.staffService.penalize = [];
           console.warn(err);
         }
       )
     }
   
-    getAll() {
-      this.loading = true;
-      this.staffService.thisMonthPenalty(this.searchModel).subscribe(
-        res => {
-          console.log('this month',res);
-          this.penalize = res['record'];
-          this.refresherRef.complete();
-        },
-        err => {
-          this.refresherRef.complete();
-          console.log(err)
-          this.penalize = [];
-          this.userService.generalToastSh(err.error.msg);
-        }
-      );
+    getThisMonthPenalty() {
+      this.staffService.thisMonthPenalty(this.searchModel);
     }
   
     async editRecord(id,user_id,amount, reason){
@@ -130,7 +130,7 @@ searchModel = {
               if (values.amount == '' || values.reason == ''){
                 this.userService.generalToast("you did not enter amount/reasons");
               }else{
-              this.loading = true;
+              this.staffService.loading = true;
               let body = {
                   values: values,
                   admin: this.admin,
@@ -140,12 +140,12 @@ searchModel = {
               console.log(body);
               this.staffService.editPenalty(body).subscribe(
               res => {
-                this.loading = false;
+                this.staffService.loading = false;
                 this.userService.generalToastSh(res['msg']);
-                this.getAll();
+                this.staffService.reloadPenalty(this.searchModel);
               },
               err => {
-                this.loading = false;
+                this.staffService.loading = false;
                 this.userService.generalToast(err.error.msg);
               }
             );
@@ -176,7 +176,7 @@ searchModel = {
               this.staffService.wavePenalty(id).subscribe(
               res => {
                 this.userService.generalToastSh(res['msg']);
-                this.getAll();
+                this.staffService.reloadPenalty(this.searchModel);
               },
               err => {
                 this.userService.generalToast(err.error.msg);
@@ -208,12 +208,12 @@ searchModel = {
               this.loading = true;
               this.staffService.deletePenalty(id).subscribe(
               res => {
-                this.loading = false;
+                this.staffService.loading = false;
                 this.userService.generalToastSh(res['msg']);
-                this.getAll();
+                this.staffService.reloadPenalty(this.searchModel);
               },
               err => {
-                this.loading = false;
+                this.staffService.loading = false;
                 this.userService.generalToast(err.error.msg);
               }
             );
@@ -225,55 +225,63 @@ searchModel = {
       await alert.present();
     }
 
-     thisMonthRecord(event){
+    //  thisMonthRecord(event){
      
-       this.searchModel.month = event.next.month;
-       this.searchModel.year = event.next.year;
-       console.log(this.searchModel);
-       this.staffService.thisMonthPenalty(this.searchModel).subscribe(
-         res => {
-           console.log('this month',res);
-           this.penalize = res['record'];
-         },
-         err => {
-           console.log(err)
-           this.penalize = [];
-           this.userService.generalToastSh(err.error.msg);
-         }
-       );
-    }
+    //    this.searchModel.month = event.next.month;
+    //    this.searchModel.year = event.next.year;
+    //    console.log(this.searchModel);
+    //    this.staffService.thisMonthPenalty(this.searchModel).subscribe(
+    //      res => {
+    //        console.log('this month',res);
+    //        this.penalize = res['record'];
+    //      },
+    //      err => {
+    //        console.log(err)
+    //        this.penalize = [];
+    //        this.userService.generalToastSh(err.error.msg);
+    //      }
+    //    );
+    // }
 
     verifyPenalty(id){
+      this.staffService.loading = true;
       this.staffService.verifyPenal(id).subscribe(
         res=> {
+          this.staffService.loading = false;
           this.userService.generalToastSh(res['msg']);
-          this.getAll();
+          this.staffService.reloadPenalty(this.searchModel);
         }
       );
     }
 
     unVerifyPenalty(id){
+      this.staffService.loading = true;
       this.staffService.unVerifyPenal(id).subscribe(
         res=> {
+          this.staffService.loading = false;
           this.userService.generalToastSh(res['msg']);
-          this.getAll();
+          this.staffService.reloadPenalty(this.searchModel);
         }
       );
     }
     confirmPenalty(id){
+      this.staffService.loading = true;
       this.staffService.confirmPenal(id).subscribe(
         res=> {
+          this.staffService.loading = false;
           this.userService.generalToastSh(res['msg']);
-          this.getAll();
+          this.staffService.reloadPenalty(this.searchModel);
         }
       );
     }
 
     unConfirmPenalty(id){
+      this.staffService.loading = true;
       this.staffService.unConfirmPenal(id).subscribe(
         res=> {
+          this.staffService.loading = false;
           this.userService.generalToastSh(res['msg']);
-          this.getAll();
+          this.staffService.reloadPenalty(this.searchModel);
         }
       );
     }

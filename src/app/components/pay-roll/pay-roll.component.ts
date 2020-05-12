@@ -5,6 +5,7 @@ import { PayrollService } from './../../shared/payroll.service';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { AlertController, ModalController, IonRefresher } from '@ionic/angular';
 import { count } from 'rxjs/operators';
+import { setTimeout } from 'timers';
 
 @Component({
   selector: 'app-pay-roll',
@@ -48,15 +49,10 @@ totalStaff = 0;
     this.model.department = event;
   }
 
-  doRefresh(event){
-    this.loading = true;
-    const admin = 'ADMINISTRATOR';
-    this.selectDepartment(admin);
-    this.loading = false;
-  }
 
   
   selectCategory(cat){
+
     this.totalSalary = 0;
     this.totalStaff = 0;
     this.loading = true; 
@@ -68,9 +64,11 @@ totalStaff = 0;
         this.totalStaff = this.allStaff.length;
         this.allStaff.forEach((one)=>{
           this.totalSalary += one.AmountPaid;
+          console.log(res);
         });
       },
       err => {
+        console.log(err)
         this.loading = false;
       }
     );
@@ -168,7 +166,7 @@ totalStaff = 0;
             res => {
               this.loading = false;
               this.userService.generalToast(res['msg']);
-              this.getAllStaff();
+              this.selectStaffByDepartment(this.model.department);
             },
             err => {
               this.loading = false;
@@ -266,7 +264,6 @@ totalStaff = 0;
       res => {
         this.loading = false;
         this.allStaff = res['staff'];
-        this.refresherRef.complete();
         this.totalStaff = this.allStaff.length;
 
         this.allStaff.forEach((one)=>{
@@ -275,7 +272,6 @@ totalStaff = 0;
       },
       err => {
         this.loading = false;
-        this.refresherRef.complete();
       }
     );
   }
@@ -290,7 +286,6 @@ totalStaff = 0;
         console.log(res);
         this.loading = false;
         this.allStaff = res['staff'];
-        this.refresherRef.complete();
         this.totalStaff = this.allStaff.length;
 
         this.allStaff.forEach((one)=>{

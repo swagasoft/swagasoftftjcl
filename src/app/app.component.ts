@@ -56,12 +56,10 @@ userRole : any;
       url: '/outlets',
       icon: 'home'
     }, 
-    {
-      title: 'PAYROLE',
-      url: '/pay-roll',
-      icon: 'cash'
-    },
+   
   ]
+
+  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
   constructor(
     private platform: Platform,
     private statusBar: StatusBar,

@@ -327,4 +327,23 @@ this.showList = false;
     );
   }
 
+  getAllStaff(department){
+    console.log(department);
+    this.loading = true;
+    this.staffService.getAllStaff().subscribe(
+      res => {
+        console.log(res);
+        this.loading = false;
+        this.staffList = res['staff'];
+      },
+      err => {
+        this.loading = false;
+        console.log(err);
+      }
+    );
+  }
+
+  
+
+
 }

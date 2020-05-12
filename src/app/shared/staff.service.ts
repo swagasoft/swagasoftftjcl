@@ -1,3 +1,4 @@
+import { UserServiceService } from 'src/app/shared/user-service.service';
 import { environment } from 'src/environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -11,6 +12,8 @@ import { AlertController, ToastController } from '@ionic/angular';
 })
 export class StaffService {
 staffList = [];
+penalize = [];
+loading = false;
 
 
 noAuthHeader = {headers: new HttpHeaders({NoAuth: 'True'})};
@@ -21,6 +24,7 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
   constructor(private http: HttpClient, 
               public alertController: AlertController,
               public toastController: ToastController,
+              public userService: UserServiceService,
               private router: Router) {
               
                }
@@ -102,8 +106,40 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
     }
 
     thisMonthPenalty(date){
-      return this.http.post(environment.apiBaseUrl + '/this-month-penalty', date);
+     if(this.penalize.length == 0){
+      this.http.post(environment.apiBaseUrl + '/this-month-penalty', date).subscribe(
+        res => {
+          console.log('this month',res);
+          this.penalize = res['record'];
+        },
+        err => {
+          this.loading = false;
+          console.log(err)
+          this.penalize = [];
+          this.userService.generalToastSh(err.error.msg);
+        }
+      );
+     }else{
+       console.log('penalty already has datas');
+     }
     }
+
+    reloadPenalty(data){
+      this.http.post(environment.apiBaseUrl + '/this-month-penalty', data).subscribe(
+        res => {
+          console.log('this month',res);
+          this.penalize = res['record'];
+        },
+        err => {
+          this.loading = false;
+          console.log(err)
+          this.penalize = [];
+          this.userService.generalToastSh(err.error.msg);
+        }
+      );
+
+    }
+
      searchAdvsalary(name){
       return this.http.post(environment.apiBaseUrl + '/search-adv-salary',name);
     }

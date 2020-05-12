@@ -1,17 +1,7 @@
 <ion-app>
 
-  <!-- <div *ngIf="showSlash"  class="splash">
-    <div class="sk-folding-cube">
-      <div class="sk-cube1 sk-cube"></div>
-      <div class=" sk-cube2 sk-cube"></div>
-      <div class="sk-cube4 sk-cube"></div>
-      <div class=" sk-cube3 sk-cube"></div>
-    </div>
-  </div> -->
-
-
-<!-- <ion-split-pane when="lg"> -->
-<ion-menu  contentId="main-content" type="overlay">
+  <ion-split-pane when="md"  contentId="main-content">
+<ion-menu [enable]="userService.isLogedIn()"  contentId="main-content" type="overlay">
   <ion-header>
     <ion-toolbar color="dark">
         <small class="p-5 pt-2 pl-1 text-uppercase" [routerLink]="['/setting']"
@@ -19,9 +9,6 @@
         <small class="p-5 pl-1 text-uppercase" [routerLink]="['/setting']"
         >MY ROLE - {{userService.role}} </small> <br>
    
-    
-       
-            
             <ion-row class="ml-5">
               <ion-col class="ml-5">
                 <div #bal class="rubberBand animated infinite" (click)="userService.refreshDetails()">
@@ -29,14 +16,11 @@
                 </div>
               </ion-col>
             </ion-row>
-
-            
-        
-      
     </ion-toolbar>
   </ion-header>
   <ion-content > 
     <ion-list color="dark">
+      <ion-list-header color="dark">management</ion-list-header>
       <ion-menu-toggle  auto-hide="false" *ngFor="let p of appPages">
         <ion-item color="dark" [routerDirection]="'root'" [routerLink]="[p.url]" routerLinkActive="router-link-active">
           <ion-icon slot="start" [name]="p.icon"></ion-icon>
@@ -45,30 +29,82 @@
           </ion-label>
         </ion-item>
       </ion-menu-toggle>
+    </ion-list>
+    <ion-list *ngIf="userService.getUserRole() =='DIRECTOR'" id="labels-list">
+      <ion-list-header color="dark">professional</ion-list-header>
 
-      <ion-menu-toggle class="p-0 m-0" *ngIf="userService.getUserRole() =='DIRECTOR'" [routerLink]="['/expense-two']" routerLinkActive="router-link-active"  >
-        <ion-item color="dark">
+        <ion-item color="dark"   [routerLink]="['/expense-two']" routerLinkActive="router-link-active">
         <ion-icon name="list"></ion-icon>
         <ion-label  class="ml-4">EXPENSE 2</ion-label>
       </ion-item>
-    </ion-menu-toggle>
-    <ion-menu-toggle class="p-0 m-0" *ngIf="userService.getUserRole() =='DIRECTOR'" [routerLink]="['/manager']" routerLinkActive="router-link-active"  >
-        <ion-item color="dark">
-        <ion-icon name="build"></ion-icon>
-        <ion-label  class="ml-4">APP USER</ion-label>
+        <ion-item color="dark"   [routerLink]="['//pay-roll']" routerLinkActive="router-link-active">
+        <ion-icon name="cash"></ion-icon>
+        <ion-label  class="ml-4"> PAY ROLL</ion-label>
       </ion-item>
-    </ion-menu-toggle>
-       
-        <ion-menu-toggle (click)="logout()">
-            <ion-item color="dark"  >
-            <ion-icon name="power"></ion-icon>
-            <ion-label  class="ml-4">LOGOUT</ion-label>
-          </ion-item>
-        </ion-menu-toggle>
-        
+        <ion-item color="dark"   [routerLink]="['/manager']" routerLinkActive="router-link-active">
+        <ion-icon name="build"></ion-icon>
+        <ion-label  class="ml-4">APP USERS</ion-label>
+      </ion-item>
     </ion-list>
+    <ion-list id="labels-list">
+      <ion-list-header color="dark">power</ion-list-header>
+     
+      <ion-item color="dark" (click)="logout()" tappable >
+      <ion-icon color="light" name="power"></ion-icon>
+      <ion-label  class="ml-4">LOGOUT</ion-label>
+    </ion-item>
+  </ion-list>
   </ion-content>
 </ion-menu>
-  <ion-router-outlet  id="main-content"></ion-router-outlet>
-<!-- </ion-split-pane> -->
+  <ion-router-outlet  id="main-content"></ion-router-outlet> 
+  </ion-split-pane>
+
+
+  <!-- <ion-split-pane  contentId="main-content">
+    <ion-menu  contentId="main-content" type="overlay">
+      <ion-toolbar color="dark">
+        <ion-list-header color="light">USERNAME: {{userService.appUser}}</ion-list-header>
+        <ion-note color="light">ROLE : {{userService.role}}</ion-note>
+        <ion-item color="dark" class="ml-5" (click)="userService.refreshDetails()"> <ion-icon name="swap" size="large" ></ion-icon></ion-item>
+       
+      </ion-toolbar>
+      <ion-content color="dark" >
+        <ion-list  id="inbox-list">
+        
+          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
+            <ion-item color="dark" (click)="selectedIndex = i" routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" [class.selected]="selectedIndex == i">
+              <ion-icon color="light" slot="start" [ios]="p.icon + '-outline'" [name]="p.icon"></ion-icon>
+              <ion-label>{{ p.title }}</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+        </ion-list> 
+
+        <ion-list *ngIf="userService.getUserRole() =='DIRECTOR'" id="labels-list">
+          <ion-list-header>professional</ion-list-header>
+
+            <ion-item color="dark"   [routerLink]="['/expense-two']" routerLinkActive="router-link-active">
+            <ion-icon name="list"></ion-icon>
+            <ion-label  class="ml-4">EXPENSE 2</ion-label>
+          </ion-item>
+            <ion-item color="dark"   [routerLink]="['//pay-roll']" routerLinkActive="router-link-active">
+            <ion-icon name="cash"></ion-icon>
+            <ion-label  class="ml-4"> PAY ROLL</ion-label>
+          </ion-item>
+            <ion-item color="dark"   [routerLink]="['/manager']" routerLinkActive="router-link-active">
+            <ion-icon name="build"></ion-icon>
+            <ion-label  class="ml-4">APP USERS</ion-label>
+          </ion-item>
+        </ion-list>
+        <ion-list id="labels-list">
+          <ion-list-header>power</ion-list-header>
+         
+          <ion-item color="dark" (click)="logout()" tappable >
+          <ion-icon color="light" name="power"></ion-icon>
+          <ion-label  class="ml-4">LOGOUT</ion-label>
+        </ion-item>
+      </ion-list>
+      </ion-content>
+    </ion-menu>
+    <ion-router-outlet id="main-content"></ion-router-outlet>
+  </ion-split-pane> -->
 </ion-app>

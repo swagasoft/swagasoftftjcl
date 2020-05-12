@@ -16,11 +16,17 @@ export class FruitComponent implements OnInit {
   @ViewChild('refresherRef', {static : false}) refresherRef: IonRefresher;
   fruit = [];
   loading = false;
+  myDate  = new Date();
   
     constructor( public modalController: ModalController,
                  public alertController: AlertController,
                  public userService: UserServiceService,
-       public recordService: RecordService) { }
+                 public recordService: RecordService) {
+                  let appMonth = new Date().getMonth() + 1;
+                  let appYear = new Date().getFullYear() ;
+                  this.searchModel.month = appMonth;
+                  this.searchModel.year = appYear;
+                  }
   
   
   model = {
@@ -33,103 +39,49 @@ export class FruitComponent implements OnInit {
       };
   
   ngOnInit() {
+    this.recordService.thisMonthFruit(this.searchModel);
     }
+
+
+     // tslint:disable-next-line: member-ordering
+     filter_Month_Year: any = {
+              buttons: [{
+                text: 'CANCEL',
+                handler: (event) => console.log('calender cancelled')
+              }, {
+                text: 'SEARCH',
+                handler: (event) => {
+                console.log('clicked search..',event)
+                console.log(event.month.value);
+                this.searchModel.month = event.month.value;
+                this.searchModel.year = event.year.value;
+                this.recordService.reloadThisMonthFruit(this.searchModel);
+                }
+              }]
+    };
 
     doRefresh(event){
-      this.loading = true;
-      this.recordService.thisMonthFruit(this.searchModel).subscribe(
-        res => {
-          this.loading = false;
-          console.log('this month',res);
-          this.fruit = res['record'];
-          this.refresherRef.complete();
-        },
-        err => {
-          this.loading = false;
-          console.log(err)
-          this.fruit = [];
-          this.userService.generalToastSh(err.error.msg);
-          this.refresherRef.complete();
-        }
-      );
+      this.recordService.reloadThisMonthFruit(this.searchModel);
+      setTimeout(()=> {
+        this.refresherRef.complete();
+      },1000);
     }
   
-
-    thisMonthRecord(event){
-      this.searchModel.month = event.next.month;
-      this.searchModel.year = event.next.year;
-      console.log(this.searchModel);
-      this.loading = true;
-      this.recordService.thisMonthFruit(this.searchModel).subscribe(
-        res => {
-          this.loading = false;
-          console.log('this month',res);
-          this.fruit = res['record'];
-        },
-        err => {
-          this.loading = false;
-          console.log(err)
-          this.fruit = [];
-          this.userService.generalToastSh(err.error.msg);
-        }
-      );
-   }
-
-  getRecord(){
-      this.loading = true;
-      this.recordService.getFruit().subscribe(
-        res=> {
-          console.log(res);
-          this.loading = false;
-          this.fruit = res['record'];
-          this.refresherRef.complete();
-        },
-        err => {
-          this.loading = false;
-          this.refresherRef.complete();
-          console.log(err);
-        }
-      );
-    }
   
   selectChange(event){
       console.log(event);
     }
   
-    async presentModal() {
-   const modal = await this.modalController.create({
-     component: FruitmodalComponent,
-   });
-   modal.onDidDismiss().then(()=> {
-     console.log('i dismiss this modal');
-     this.getRecord();
-   });
-   return await modal.present();
-  }
-  
-  
-   async moreRecord(){
-      const alert = await this.alertController.create({
-        header: ``,
-        message : `<p>  </p>`,
-        buttons: [
-          {
-            text: 'Cancel', role: 'cancel', cssClass: 'danger',
-            handler: (blah) => {
-              console.log('cancel amount input');
-            }
-          }, {
-            text: 'Confirm',
-            cssClass : 'danger',
-            handler: (values) => {
-              console.log(values);
-             
-          }}
-        ]
+    async addRecord() {
+      const modal = await this.modalController.create({
+        component: FruitmodalComponent,
       });
-      await alert.present();
-    }
-  
+      modal.onDidDismiss().then(()=> {
+        console.log('i dismiss this modal');
+        this.recordService.reloadThisMonthFruit(this.searchModel);
+      });
+      return await modal.present();
+  }
   
  
 
@@ -157,7 +109,7 @@ export class FruitComponent implements OnInit {
         });
         modal.onDidDismiss().then(()=> {
           console.log('i dismiss this modal');
-          this.getRecord();
+          this.recordService.reloadThisMonthFruit(this.searchModel);
         });
         return await modal.present();
      
@@ -170,60 +122,49 @@ export class FruitComponent implements OnInit {
     }
   
     findByDate(){
-      this.loading = true;
-      this.recordService.findBydate(this.model.date).subscribe(
-        res => {
-          this.loading = false;
-          this.fruit = res['record'];
-        },
-        err => {
-          this.loading = false;
-          this.fruit =[];
-          this.userService.generalToastSh(err.error.msg);
-        }
-      );
+      this.recordService.findBydate(this.model.date);
     }
   
     verify(id){
-      this.loading = true;
+      this.recordService.loading = true;
       this.recordService.verifyFruit(id).subscribe(
         res => {
-          this.loading = false;
+          this.recordService.loading = false;
           this.userService.generalToastSh(res['msg']);
-          this.getRecord();
+          this.recordService.reloadThisMonthFruit(this.searchModel);
         },
         err => {
-          this.loading = false;
+          this.recordService.loading = false;
           this.userService.generalToastSh(err.error.msg);
         }
       );
     }
 
     disprove(id){
-      this.loading = true;
+      this.recordService.loading = true;
       this.recordService.disprove(id).subscribe(
         res => {
-          this.loading = false;
+          this.recordService.loading = false;
           this.userService.generalToastSh(res['msg']);
-          this.getRecord();
+          this.recordService.reloadThisMonthFruit(this.searchModel);
         },
         err => {
-          this.loading = false;
+          this.recordService.loading = false;
           this.userService.generalToastSh(err.error.msg);
         }
       );
     }
   
     okRecord(id){
-      this.loading = true;
+      this.recordService.loading = true;
       this.recordService.okFruitRecord(id).subscribe(
         res => {
-          this.loading = false;
-          this.getRecord();
+          this.recordService.loading = false;
+          this.recordService.reloadThisMonthFruit(this.searchModel);
           this.userService.generalToastSh(res['msg']);
         },
         err => {
-          this.loading = false;
+          this.recordService.loading = false;
           this.userService.generalToastSh(err.error.msg);
         }
       );
@@ -231,15 +172,15 @@ export class FruitComponent implements OnInit {
     }   
     
     UnokRecord(id){
-      this.loading = true;
+      this.recordService.loading = true;
       this.recordService.UnOkFruitRecord(id).subscribe(
         res => {
-          this.loading = false;
-          this.getRecord();
+          this.recordService.loading= false;
+          this.recordService.reloadThisMonthFruit(this.searchModel);
           this.userService.generalToastSh(res['msg']);
         },
         err => {
-          this.loading = false;
+          this.recordService.loading = false;
           this.userService.generalToastSh(err.error.msg);
         }
       );

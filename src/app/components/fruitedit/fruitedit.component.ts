@@ -57,7 +57,7 @@ export class FruiteditComponent implements OnInit {
     this.fruitModel.kg = this.navParams.get('kilo');
     this.fruitModel.supplier = this.navParams.get('supplier');
     this.fruitModel.driver = this.navParams.get('driver');
-    console.log(this.fruitModel.admin);
+    console.log(this.fruitModel.assist_buyer);
   }
 
   closeModal(){

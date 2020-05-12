@@ -12,6 +12,13 @@
 
 <ion-content>
 
+  
+  <ion-fab 
+     vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="getProduction()"   color="primary">
+      <ion-icon  name="refresh"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 
 
   <ion-refresher #refresherRef (ionRefresh)="doRefresh($event)" slot="fixed" >
@@ -33,12 +40,14 @@
        *ngIf="products?.confirm" color="success"> <ion-icon  name="lock"></ion-icon></ion-button>
 
       </ion-col>
+      <div class="ion-padding">
     <ion-button (click)="editProduction(products?._id,products?.prod_p, products?.prod_o,
     products?.prod_w,products?.prod_t,products?.prod_c,products?.prod_s,products?.prod_slg)"
      [disabled]="products?.confirm" size="small" color="light">prd</ion-button>
     <ion-button  [disabled]="products?.confirm" (click)="editBadStock(products?._id,products?.bad_p, products?.bad_o,
     products?.bad_w,products?.bad_t,products?.bad_c,products?.bad_s,products?.bad_slg)" size="small" color="light">bad</ion-button>
       
+      </div>
   
   </ion-row>
 
@@ -133,12 +142,20 @@
     <!-- list of supplies -->
     <div class="mb-1 mb-5"  *ngIf="!showbadStockForm">
       <p class="text-center font-weight-bold"> SUPPLY LIST</p>
-     <ion-card class="primary-color-dark  text-white ml-0 pb-3 " *ngFor="let item of supplies">
+    
+
+      <div slot="end">
+      </div>
+      <ion-row>
+        <ion-col *ngFor="let item of supplies; index as i" >
+
+     <ion-card class="primary-color-dark  text-white ml-0 pb-3 " >
      
       <ion-row class="table primary-color-dark text-white">
-        <div class=" ml-1 mr-2 font-weight-bold">{{item?.outlet}}</div>
-        <small class="mr-4">{{item?.created_at | date:'medium'}}</small>
-        <small class="">{{item?.admin}}</small>
+        <h3 class="font-weight-bold ion-padding">{{i + 1}} </h3>
+        <div class=" font-weight-bold ion-padding">{{item?.outlet}}</div>
+        <div class=" ion-padding">{{item?.created_at | date:'medium'}}</div>
+        <small class="ion-padding">{{item?.admin}}</small>
       </ion-row>
      <div>
       <table class="table text-white text-center table-responsive text-nowrap" id="dist">
@@ -253,6 +270,8 @@
     </div>
 
      </ion-card>
+    </ion-col>
+  </ion-row>
 
 
   </div>

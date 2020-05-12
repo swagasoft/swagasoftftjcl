@@ -17,6 +17,7 @@ merchRecord = [];
 presence = 0;
 totalBottles = 0;
 totalAmount = 0;
+myDate  = new Date();
 
   constructor(public userService: UserServiceService, 
     
@@ -25,6 +26,10 @@ totalAmount = 0;
               public alertController: AlertController,
               private recordService: RecordService) {
                 this.getAllMerchant();
+                let appMonth = new Date().getMonth() + 1;
+                let appYear = new Date().getFullYear() ;
+                this.searchModel.month = appMonth;
+                this.searchModel.year = appYear;
                }
 
   model = {
@@ -33,7 +38,7 @@ totalAmount = 0;
   searchModel = {
     month: null,
     year : null,
-    fullname : null
+    merchant : null
 
   }
 
@@ -58,11 +63,11 @@ totalAmount = 0;
   selectedVal(event){
     this.totalAmount = 0;
     this.totalBottles = 0;
-    this.model.merchant = event.detail.value;
-    this.searchModel.fullname = event.detail.value;
+    // this.model.merchant = event.detail.value;
+    this.searchModel.merchant = event.detail.value;
     console.log(this.model.merchant);
     this.loading = true;
-    this.outletService.getMerchantRecord(this.model).subscribe(
+    this.outletService.getMerchantRecord(this.searchModel).subscribe(
       res => {
         this.loading = false;
         console.log(res);

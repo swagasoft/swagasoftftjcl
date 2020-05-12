@@ -14,6 +14,8 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
 loading = false;
 salesRecord = [];
 myDate = new Date();
+fruitRecord = [];
+
   constructor(private http: HttpClient, private userService: UserServiceService) { }
 
   submitFruit(fruit){
@@ -39,11 +41,54 @@ myDate = new Date();
   }
 
   findBydate(date){
-    return this.http.post(environment.apiBaseUrl + '/find-fruit-by-date', date);
+    return this.http.post(environment.apiBaseUrl + '/find-fruit-by-date', date).subscribe(
+      res => {
+        this.loading = false;
+        this.fruitRecord = res['record'];
+      },
+      err => {
+        this.loading = false;
+        this.fruitRecord =[];
+        this.userService.generalToastSh(err.error.msg);
+      }
+    );
   }
 
-  thisMonthFruit(month){
-    return this.http.post(environment.apiBaseUrl + '/this-month-fruit', month);
+  thisMonthFruit(month){ 
+    if(this.fruitRecord.length == 0){
+      return this.http.post(environment.apiBaseUrl + '/this-month-fruit', month).subscribe(
+        res => {
+          this.loading = false;
+          console.log('this month',res);
+          this.fruitRecord = res['record'];
+        },
+        err => {
+          this.loading = false;
+          console.log(err)
+          this.fruitRecord = [];
+          this.userService.generalToastSh(err.error.msg);
+        }
+      );
+    }else{
+      console.log('fruit already has records');
+    }
+  
+  }
+
+  reloadThisMonthFruit(month){ 
+    return this.http.post(environment.apiBaseUrl + '/this-month-fruit', month).subscribe(
+      res => {
+        this.loading = false;
+        console.log('this month',res);
+        this.fruitRecord = res['record'];
+      },
+      err => {
+        this.loading = false;
+        console.log(err)
+        this.fruitRecord = [];
+        this.userService.generalToastSh(err.error.msg);
+      }
+    );
   }
 
   merchantSales(date){

@@ -10,16 +10,9 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-   <!-- referesh -->
-   <ion-refresher #refresherRef (ionRefresh)="doRefresh($event)" slot="fixed" >
-    <ion-refresher-content>
-    </ion-refresher-content>
-  </ion-refresher>
-
-  <div class="">
-
  
 
+  <div class="">
   <!-- <p>A pagination with customized links:</p>
   <ngb-pagination [collectionSize]="70" [(page)]="page" aria-label="Custom pagination">
     <ng-template ngbPaginationPrevious>Prev</ng-template>
@@ -62,6 +55,9 @@
           <ion-icon name="search" size="large"></ion-icon>
         </ion-button> 
       </ion-item>
+      <ion-col>
+        <ion-button color="success" size="small" (click)="getAllStaff()" >all staff</ion-button>
+      </ion-col>
       </ion-row>
     </ion-card>
     <ion-row>

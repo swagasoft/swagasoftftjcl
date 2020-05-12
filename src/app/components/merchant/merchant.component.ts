@@ -33,6 +33,7 @@ myDate  = new Date();
                 this.searchModel.month = appMonth;
                 this.searchModel.year = appYear;
                }
+               
 searchModel = {
   month : null,
   year : null
