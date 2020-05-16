@@ -166,7 +166,8 @@ totalStaff = 0;
             res => {
               this.loading = false;
               this.userService.generalToast(res['msg']);
-              this.selectStaffByDepartment(this.model.department);
+              this.getAllStaff();
+              // this.selectStaffByDepartment(this.model.department);
             },
             err => {
               this.loading = false;

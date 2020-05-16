@@ -31,16 +31,16 @@ canActivate:[AuthGuard]},
   },
   {
     path: 'payout', 
-    component : PayoutComponent,canActivate:[DirectorGuard]
+    component : PayoutComponent,canActivate:[DirectorGuard, AuthGuard]
   },
   {
     path: 'pay-record', 
-    component : PayRecordComponent,canActivate:[DirectorGuard, ]
+    component : PayRecordComponent,canActivate:[DirectorGuard,AuthGuard ]
   },
   {
     path: 'manager',
     loadChildren: () => import('./manager/manager.module').then( m => m.ManagerPageModule),
-     canActivate:[ DirectorGuard, ]
+     canActivate:[ AuthGuard, DirectorGuard ]
   },
   {
     path: 'distributions',
@@ -73,7 +73,7 @@ canActivate:[AuthGuard]},
    {
     path: 'expense-two',
    component : ExpenseTwoComponent,canActivate:[AuthGuard,DirectorGuard]
-  },
+  }, 
   {
     path: 'admin', 
     loadChildren: () => import('./admin/admin.module').then( m => m.AdminPageModule),
@@ -121,7 +121,7 @@ canActivate:[AuthGuard]},
   }, 
   {
     path: 'pay-roll',
-    component : PayRollComponent, canActivate: [DirectorGuard]
+    component : PayRollComponent, canActivate: [AuthGuard,DirectorGuard]
   }, 
   {
     path: 'salary_adv',

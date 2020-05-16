@@ -78,7 +78,7 @@
      color="light" class="p-1 text-center font-weight-bold" 
      [ngClass]="{'primary-color-dark text-white': item.return}">
         <ion-row [ngClass]="{'success-color-dark text-white': !item.return}">
-          <small class="text-white"> {{item.created_at | date:'medium'}}</small>
+          <div class="text-white"> {{item.created_at | date:'medium'}}</div>
           <ion-card-header class=" text-white font-weight-bold">{{item.admin}} </ion-card-header>
           <ion-button (click)="editExpense(item._id, item.description,item.product,
           item.amountPaid,item.receiver,item.information)"
@@ -95,7 +95,7 @@
           </ion-col> 
           <ion-col>
             <small class="">Amount</small>
-            <div>  {{item.amountPaid}} </div>
+            <div class="text-dark"> ₦ {{item.amountPaid}} </div>
           </ion-col> 
           <ion-col>
             <small *ngIf="!item.return" class="">Receiver</small>
@@ -106,11 +106,11 @@
 
         <ion-row >
           <ion-col>
-            <small>{{item.information}}</small>
+            <div>{{item.information}}</div>
           </ion-col>
         </ion-row>
         <ion-col>
-          <small class="text-warning">edit:{{item.edit}} </small>
+          <small class="text-primary">edited:{{item.edit}} </small>
         </ion-col>
         <ion-row>
        

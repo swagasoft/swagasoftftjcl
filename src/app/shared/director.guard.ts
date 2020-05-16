@@ -15,7 +15,7 @@ export class DirectorGuard implements CanActivate {
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean{
     this.userRole = this.userService.getUserRole();
     const director = 'DIRECTOR';
-    if( this.userRole !== director ){
+    if(!this.userService.isLogedIn() && this.userRole !== director ){
       this.router.navigateByUrl('/login');
     this.userService.deleteToken(); 
       return false;

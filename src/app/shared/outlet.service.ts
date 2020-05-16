@@ -1,3 +1,4 @@
+import { UserServiceService } from './user-service.service';
 import { Injectable } from '@angular/core';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 
@@ -10,12 +11,14 @@ import { environment } from 'src/environments/environment';
 
 
 export class OutletService {
+  outletList: any[] = [];
+  loading = false;
 
   noAuthHeader = {headers: new HttpHeaders({NoAuth: 'True'})};
 AuthHeader = {headers: new HttpHeaders().set('Authorization',
 `Bearer ${localStorage.getItem('token')}`)};
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, public userService: UserServiceService) { }
 
 
   createOutlet(outlet){
@@ -23,7 +26,44 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
   }
 
   findAlloutlets(){
-    return this.http.get(environment.apiBaseUrl + '/get-all-oulets');
+    if(this.outletList.length == 0){
+      this.loading = true;
+      return this.http.get(environment.apiBaseUrl + '/get-all-outlets').subscribe(
+        res => {
+          this.loading = false;
+          this.outletList = res['outlets'];
+          console.log(res);
+        },
+        err => {
+          this.loading = false;
+          console.log(err);
+          this.loading = false; this.userService.generalToast(err.error['msg']);
+        }
+      );
+    }else{
+        console.log('outlet has data')
+    }
+   
+  }
+
+  getOutletForSupply(){
+    return this.http.get(environment.apiBaseUrl + '/get-all-outlets');
+  }
+
+  reloadOutlets(){
+    this.loading = true;
+    this.http.get(environment.apiBaseUrl + '/get-all-outlets').subscribe(
+      res => {
+        this.loading = false;
+        this.outletList = res['outlets'];
+        console.log(res);
+      },
+      err => {
+        this.loading = false;
+        console.log(err);
+        this.loading = false; this.userService.generalToast(err.error['msg']);
+      }
+    );
   }
 
   deleteOutlet(id){

@@ -11,6 +11,14 @@
 
 <ion-content>
 
+  <ion-fab 
+  vertical="bottom" horizontal="end" slot="fixed">
+ <ion-fab-button (click)="reloadoutlet()"   color="primary">
+   <ion-icon  name="refresh"></ion-icon>
+ </ion-fab-button>
+ </ion-fab>
+  
+
   <ion-fab *ngIf="!showForm || !showEdit" (click)="addNewOutlet()"  vertical="top" horizontal="end" slot="fixed">
     <ion-fab-button   color="success">
       <ion-icon  name="add"></ion-icon>
@@ -38,17 +46,16 @@
       <ion-button color="success" size="medium" (click)="searchOutlet()" [disabled]="!search.value">
         <ion-icon name="search" size="large"></ion-icon>
       </ion-button> 
-      <ion-col> <ion-button color="success" (click)="getAllOutlet()">ALL</ion-button></ion-col>
     </ion-item>
     </ion-row>
   </ion-card>
 
   <ion-row>
-    <ion-chip class="font-weight-bold" color="primary" outline>TOTAL: {{outletList?.length}} </ion-chip>
+    <ion-chip class="font-weight-bold" color="primary" outline>TOTAL: {{outletService.outletList?.length}} </ion-chip>
   </ion-row>
   <!--  display outlets -->
   <div class="pt-4">
-     <ion-card *ngFor="let item of outletList; index as i" class="blue-gradient text-white">
+     <ion-card *ngFor="let item of outletService.outletList; index as i" class="blue-gradient text-white">
      <ion-row>
      <ion-col>
       <small class="text-white ">{{item.created_at | date}} </small>
@@ -637,7 +644,7 @@
 
 
 <!-- loading.. -->
-<div *ngIf="loading" class="spinner">
+<div *ngIf="outletService.loading" class="spinner">
   <!-- Circles -->
   <div class="loader"></div>
 </div>

@@ -58,7 +58,7 @@ searchModel = {
         console.log(event.month.value);
         this.searchModel.month = event.month.value;
         this.searchModel.year = event.year.value;
-        this.staffService.thisMonthPenalty(this.searchModel);
+        this.staffService.reloadPenalty(this.searchModel);
         }
       }]
 };
@@ -80,8 +80,8 @@ searchModel = {
       );
     }
   
-    doRefresh(event){
-      this.staffService.thisMonthPenalty(this.searchModel);
+    doRefresh(event){ 
+      this.staffService.reloadPenalty(this.searchModel);
       setTimeout(()=> {
         this.refresherRef.complete();
       },1000);

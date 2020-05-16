@@ -12,6 +12,13 @@
 
 <ion-content> 
 
+  <ion-fab 
+  vertical="bottom" horizontal="end" slot="fixed">
+ <ion-fab-button (click)="doRefresh($event)"   color="primary">
+   <ion-icon  name="refresh"></ion-icon>
+ </ion-fab-button>
+</ion-fab>
+
   <!-- month/year picker -->
    
  
@@ -82,7 +89,7 @@
           <small class="text-warning"> edited:{{item.edit}} </small>
         </ion-col>
         <ion-col>
-          <small *ngIf="item.wave" class="text-success font-weight-bold"> WAVED </small>
+          <h4 *ngIf="item.wave" class="text-success font-weight-bold"> WAVED </h4>
         </ion-col>
       </ion-row>
       <ion-row>

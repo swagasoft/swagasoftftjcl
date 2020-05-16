@@ -10,6 +10,7 @@
   </ion-toolbar>
 </ion-header> 
 
+
 <ion-content>
  <!-- referesh -->
  <ion-refresher #refresherRef (ionRefresh)="doRefresh($event)" slot="fixed" >
@@ -18,6 +19,12 @@
 </ion-refresher>
 
  <!-- month/year picker -->
+ <ion-fab 
+ vertical="bottom" horizontal="end" slot="fixed">
+<ion-fab-button (click)="doRefresh($event)"   color="primary">
+  <ion-icon  name="refresh"></ion-icon>
+</ion-fab-button>
+</ion-fab>
  
  <ion-card color="light">
   <ion-item color="primary">
@@ -110,7 +117,7 @@
        <div class="text-primary">{{item.kilo }}</div>
       </ion-col>
     </ion-row>
-    <ion-row class="my-border"  color="light">
+    <ion-row class=""  color="light">
       <ion-col>
         <div>SUPPLIER</div>
          <div class="text-primary"> {{item.supplier}}</div>
@@ -125,13 +132,14 @@
       </ion-col>
     </ion-row>
    <ion-row class="my-border">
-    <div class="text-danger text-center">Remark: {{item.remark}} </div>
+    <div>Remark: <ion-chip color="danger">{{item.remark}}</ion-chip> </div>
    </ion-row>
    <ion-row  class="my-border">
-    <ion-text  color="success" outline>Paid for : {{item.paid_for}}</ion-text>
+    <ion-text  outline>Paid for : <ion-chip  color="success">{{item.paid_for}}</ion-chip> </ion-text>
    </ion-row>
    <ion-row  class="my-border">
-        <ion-chip color="primary">size : {{item.size}}</ion-chip>
+     <div>sizes:  <ion-chip color="primary">size : {{item.size}}</ion-chip> </div>
+      
    </ion-row>
     <ion-row  color="light">
       <ion-col  >

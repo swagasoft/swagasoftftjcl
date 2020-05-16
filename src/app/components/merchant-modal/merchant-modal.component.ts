@@ -112,9 +112,9 @@ model = {
 
   getAllOutlets(){
     this.loading = true;
-    this.outletService.findAlloutlets().subscribe(
+    this.outletService.getOutletForSupply().subscribe(
       res => {
-        this.loading = false; this.allOutlet = res;
+        this.loading = false; this.allOutlet = res['outlets'];
         console.log(this.allOutlet);
         
       },
