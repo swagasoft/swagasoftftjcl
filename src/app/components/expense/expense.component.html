@@ -11,17 +11,22 @@
 </ion-header> 
 
 <ion-content>
+
+  <ion-fab 
+  vertical="bottom" horizontal="end" slot="fixed">
+ <ion-fab-button (click)="doRefresh($event)"   color="primary">
+   <ion-icon  name="refresh"></ion-icon>
+ </ion-fab-button>
+ </ion-fab>
   <!-- <h6 class="text-center text-dark"> expense records</h6> -->
   <ion-row>
-  <ion-badge  color="dark"><h5> balance : ₦{{balance | number}}</h5> </ion-badge>
+  <ion-badge *ngIf="balance > 10000"  color="success"><h5 class="font-weight-bold"> Balance : {{balance | currency:'₦'}}</h5> </ion-badge>
+  <ion-badge *ngIf="balance < 10000"  color="danger"><h5  class="font-weight-bold"> Balance : {{balance  | currency:'₦'}</h5> </ion-badge>
     <ion-button
     color="success" (click)="addBalance()">ADD  ₦ </ion-button>
-    <ion-col>
-     
-    </ion-col>
   </ion-row>
   <ion-chip  color="dark" class="font-weight-bold" outline>{{lastCredit?.admin}} </ion-chip>
-  <ion-chip color="dark" class="font-weight-bold" outline>₦ {{lastCredit?.balance | number}} </ion-chip>
+  <ion-chip color="dark" class="font-weight-bold" outline>{{lastCredit?.balance  | currency:'₦'}} </ion-chip>
   
 
 
@@ -29,7 +34,7 @@
   <div  class="pt-3">
  
 <ion-card color="light">
-  <ion-item color="primary">
+  <ion-item color="dark">
     <ion-label  class="ion-text-center font-weight-bold">PICK A MONTH</ion-label>
     <ion-datetime  [pickerOptions]="filter_Month_Year" displayFormat="MMMM YYYY"  [(ngModel)]="myDate" ></ion-datetime>
   </ion-item>
@@ -118,7 +123,7 @@
           </ion-col> 
           <ion-col>
             <small class="">Amount</small>
-            <div>  {{item.amountPaid}} </div>
+            <div>  {{item.amountPaid  | currency:'₦'}} </div>
           </ion-col> 
           <ion-col>
             <small *ngIf="!item.return" class="">Receiver</small>

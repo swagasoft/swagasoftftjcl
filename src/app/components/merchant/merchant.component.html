@@ -24,6 +24,14 @@
     </ion-item>
   </ion-card>
 
+
+  <ion-fab 
+  vertical="bottom" horizontal="end" slot="fixed">
+ <ion-fab-button (click)="doRefresh($event)"   color="primary">
+   <ion-icon  name="refresh"></ion-icon>
+ </ion-fab-button>
+ </ion-fab>
+
     <!-- referesh -->
     <ion-refresher #refresherRef (ionRefresh)="doRefresh($event)" slot="fixed" >
       <ion-refresher-content>

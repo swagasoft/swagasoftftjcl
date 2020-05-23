@@ -26,7 +26,7 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
   }
 
   findAlloutlets(){
-    if(this.outletList.length == 0){
+    if(!this.outletList.length){
       this.loading = true;
       return this.http.get(environment.apiBaseUrl + '/get-all-outlets').subscribe(
         res => {

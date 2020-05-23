@@ -96,7 +96,7 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
     thisMonthExpense(model){
       console.log('search from service');
      
-      if(this.expense.length == 0){
+      if(!this.expense.length){
         this.loadingExpense = true;
         this.http.post(environment.apiBaseUrl + '/this-month-expense', model).subscribe(
           res => {
@@ -160,8 +160,8 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
       return this.http.post(environment.apiBaseUrl +`/return-expense`, body);
     }
 
-    getCredit(){
-      return this.http.get(environment.apiBaseUrl + '/get-credit');
+    getCredit(date){
+      return this.http.put(environment.apiBaseUrl + '/get-credit', date);
     }
 
     getBalance(): Observable<Object> {
@@ -274,7 +274,7 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
         header: 'Info ',
         message: `${message}`,
         position: 'middle',
-        duration: 1000
+        duration: 3000
       });
       toast.present();
       
@@ -284,7 +284,7 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
         header: 'Info ',
         message: `${message}`,
         position: 'middle',
-        duration: 500
+        duration: 1000
       });
       toast.present();
     }

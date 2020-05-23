@@ -12,11 +12,11 @@
 
 <ion-content>
 
-  <ion-fab [routerLink]="['/expenses']"   vertical="top" horizontal="end" slot="fixed">
+  <!-- <ion-fab [routerLink]="['/expenses']"   vertical="top" horizontal="end" slot="fixed">
     <ion-fab-button   color="danger">
       <ion-icon  name="close"></ion-icon>
     </ion-fab-button>
-  </ion-fab>
+  </ion-fab> -->
 
   <!-- referesh -->
   <ion-refresher #refresherRef (ionRefresh)="doRefresh($event)" slot="fixed" >
@@ -24,13 +24,27 @@
     </ion-refresher-content>
   </ion-refresher>
 
+  <ion-card class=" date ion-padding" color="light">
+    <ion-item color="dark">
+      <ion-label  class="ion-text-center font-weight-bold">PICK A MONTH</ion-label>
+      <ion-datetime  [pickerOptions]="filter_Month_Year" displayFormat="MMMM YYYY"  [(ngModel)]="myDate" ></ion-datetime>
+    </ion-item>
+  </ion-card>
+
+  <div class="ion-text-center font-weight-bold">
+    <ion-chip> MONTHLY TOTAL : {{totalCredit | currency:'₦'}} </ion-chip>
+  </div>
   <!-- credit list  -->
+  <div class="ion-padding">
   <ion-card  *ngFor="let item of credit" class="text-center font-weight-bold ">
     <div class="blue-gradient text-white">{{item.created_at | date:'short'}} </div>
-    <div>{{item.admin}} </div>
+   
    <ion-row>
      <ion-col>
-      <h3>  ₦{{item.balance | number}} </h3>
+      <h6>{{item.admin}} </h6>
+     </ion-col>
+     <ion-col>
+      <h6>  {{item.balance | currency:'₦'}} </h6>
      </ion-col>
     
     <ion-col >
@@ -42,6 +56,7 @@
     </ion-col>
    </ion-row>
   </ion-card>
+</div>
 
   <!-- loading.. -->
 <div *ngIf="loading" class="spinner">

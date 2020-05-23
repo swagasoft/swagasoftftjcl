@@ -40,6 +40,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import {NgxElectronModule} from 'ngx-electron';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -90,8 +91,7 @@ import { ProdRecordComponent } from './components/prod-record/prod-record.compon
   imports: [BrowserModule,
     NgbModule,
      IonicModule.forRoot(),
-    FormsModule,
-   
+    FormsModule,NgxElectronModule,
     ReactiveFormsModule,
     HttpClientModule,
      AppRoutingModule],

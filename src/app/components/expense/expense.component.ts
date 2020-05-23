@@ -117,7 +117,7 @@ this.userService.thisMonthExpense(this.searchModel);
     console.log(this.searchModel);
     this.userService.reloadExpense(this.searchModel);
  
- }
+ } 
 //  Ccustom date picker
       // tslint:disable-next-line: member-ordering
       filter_Month_Year: any = {

@@ -106,7 +106,7 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
     }
 
     thisMonthPenalty(date){
-     if(this.penalize.length == 0){
+     if(!this.penalize.length){
       this.http.post(environment.apiBaseUrl + '/this-month-penalty', date).subscribe(
         res => {
           console.log('this month',res);

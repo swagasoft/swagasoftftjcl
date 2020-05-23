@@ -27,7 +27,7 @@
 </ion-fab>
  
  <ion-card color="light">
-  <ion-item color="primary">
+  <ion-item color="dark">
     <ion-label  class="ion-text-center font-weight-bold">PICK A MONTH</ion-label>
     <ion-datetime  [pickerOptions]="filter_Month_Year" displayFormat="MMMM YYYY"  [(ngModel)]="myDate" ></ion-datetime>
   </ion-item>
@@ -65,14 +65,14 @@
       <ion-col>
         <div class="font-weight-bold">{{i+1}} - {{item.product}} </div>
         <div class="d-flex justify-content-center">
-          <img *ngIf="item.product == 'pineapple'"  src="./../../../assets/fruits/pineapple.jpg" alt="pineapple" style="width:80px;">
-          <img *ngIf="item.product == 'orange'" src="./../../../assets/fruits/orange.jpg" alt="orange" style="width:80px;">
-          <img *ngIf="item.product == 'carrot'" src="./../../../assets/fruits/carottes.jpg" alt="carrot" style="width:80px;">
-          <img *ngIf="item.product == 'sugarcane'" src="./../../../assets/fruits/sugarcane.jpg" alt="sugarcane" style="width:80px;">
-          <img *ngIf="item.product == 'tigernut'" src="./../../../assets/fruits/tigernuts.PNG" alt="tigernut" style="width:80px;">
-          <img *ngIf="item.product == 'watermelon'" src="./../../../assets/fruits/watermelon.jpg" alt="watermelon" style="width:80px;">
-          <img *ngIf="item.product == 'lime'" src="./../../../assets/fruits/limes.jpg" alt="lime" style="width:80px;">
-          <img *ngIf="item.product == 'ginger'" src="./../../../assets/fruits/ginger.jpg" alt="ginger" style="width:80px;">
+          <img *ngIf="item.product == 'pineapple'"  src="assets/fruits/pineapple.jpg" alt="pineapple" style="width:80px;">
+          <img *ngIf="item.product == 'orange'" src="assets/fruits/orange.jpg" alt="orange" style="width:80px;">
+          <img *ngIf="item.product == 'carrot'" src="assets/fruits/carottes.jpg" alt="carrot" style="width:80px;">
+          <img *ngIf="item.product == 'sugarcane'" src="assets/fruits/sugarcane.jpg" alt="sugarcane" style="width:80px;">
+          <img *ngIf="item.product == 'tigernut'" src="assets/fruits/tigernuts.PNG" alt="tigernut" style="width:80px;">
+          <img *ngIf="item.product == 'watermelon'" src="assets/fruits/watermelon.jpg" alt="watermelon" style="width:80px;">
+          <img *ngIf="item.product == 'lime'" src="assets/fruits/limes.jpg" alt="lime" style="width:80px;">
+          <img *ngIf="item.product == 'ginger'" src="assets/fruits/ginger.jpg" alt="ginger" style="width:80px;">
          </div>
       </ion-col>
      <ion-col>
@@ -110,25 +110,27 @@
         <div class="text-primary">{{item.damage}}</div>
       </ion-col>
       <ion-col>
-        <div class="mr-1">BOTTLES</div>
-        <div class="text-primary">{{item.bottles}}</div>
-      </ion-col>
-      <ion-col>
-       <div class="text-primary">{{item.kilo }}</div>
-      </ion-col>
+        <div>DRIVER</div>
+         <div class="text-primary">{{item.driver}}</div>
+     </ion-col>
+     <ion-col>
+      <div>KILO</div>
+     <div class="text-primary">{{item.kilo }}</div>
+    </ion-col>
     </ion-row>
     <ion-row class=""  color="light">
       <ion-col>
         <div>SUPPLIER</div>
          <div class="text-primary"> {{item.supplier}}</div>
       </ion-col>
-       <ion-col>
-         <div>DRIVER</div>
-          <div class="text-primary">{{item.driver}}</div>
-      </ion-col>
+      
        <ion-col>
         <div>AMOUNT</div>
-       <div class="font-weight-bold  text-primary"> ₦ {{item.amount | number}}</div>
+       <div class="font-weight-bold  text-primary"> {{item.amount  | currency:'₦'}}</div>
+      </ion-col>
+      <ion-col>
+        <div class="">BOTTLES</div>
+        <div class="text-primary">{{item.bottles}}</div>
       </ion-col>
     </ion-row>
    <ion-row class="my-border">
@@ -138,7 +140,7 @@
     <ion-text  outline>Paid for : <ion-chip  color="success">{{item.paid_for}}</ion-chip> </ion-text>
    </ion-row>
    <ion-row  class="my-border">
-     <div>sizes:  <ion-chip color="primary">size : {{item.size}}</ion-chip> </div>
+     <div>sizes:  <ion-chip color="primary">{{item.size}}</ion-chip> </div>
       
    </ion-row>
     <ion-row  color="light">

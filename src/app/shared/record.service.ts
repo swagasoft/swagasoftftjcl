@@ -55,7 +55,7 @@ fruitRecord = [];
   }
 
   thisMonthFruit(month){ 
-    if(this.fruitRecord.length == 0){
+    if(!this.fruitRecord.length){
       return this.http.post(environment.apiBaseUrl + '/this-month-fruit', month).subscribe(
         res => {
           this.loading = false;
@@ -92,7 +92,7 @@ fruitRecord = [];
   }
 
   merchantSales(date){
-    if(this.salesRecord.length == 0){
+    if(!this.salesRecord.length){
       this.loading = true;
       return this.http.post(environment.apiBaseUrl + '/merchant-sales', date).subscribe(
         res => {
