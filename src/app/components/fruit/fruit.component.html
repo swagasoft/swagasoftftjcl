@@ -59,11 +59,14 @@
 </form>
 <div class="pt-5">
 
-
-  <ion-card color="light" class="font-weight-bold ion-padding"  *ngFor="let item of recordService.fruitRecord index as i">
+<ion-row>
+  <ion-col size="12" size-lg="6" size-md="6" size-xs="12"
+  size-sm="6" size-xl="6" *ngFor="let item of fruitRecord index as i">
+  <ion-card color="light" class="font-weight-bold ion-padding"  >
     <ion-row>
       <ion-col>
-        <div class="font-weight-bold">{{i+1}} - {{item.product}} </div>
+        <ion-chip class="font-weight-bold" outline>{{i+1}}</ion-chip>
+        <h5 class="font-weight-bold "> {{item.product}} </h5>
         <div class="d-flex justify-content-center">
           <img *ngIf="item.product == 'pineapple'"  src="assets/fruits/pineapple.jpg" alt="pineapple" style="width:80px;">
           <img *ngIf="item.product == 'orange'" src="assets/fruits/orange.jpg" alt="orange" style="width:80px;">
@@ -76,10 +79,15 @@
          </div>
       </ion-col>
      <ion-col>
-      <small class="font-weight-bold">{{item.created_at | date:'medium'}} </small>
-     </ion-col> <ion-col>
-      <small class="text-primary">edited :{{item.edit}} </small>
-      <div class="pl-1">{{item.admin}} </div>
+      <div class="font-weight-bold">{{item.created_at | date:'medium'}} </div>
+     </ion-col>
+     <ion-col>
+      <div>Admin</div>
+      <div class="pl-1 text-primary">{{item.admin}} </div>
+     </ion-col>
+      <ion-col>
+      <small class="text-danger">edited :{{item.edit}} </small>
+      
       <ion-button [disabled]="item.verify || item.confirm"
        (click)="editRecord(item._id,item.product,item.damage,item.assist_buyer,item.paid_for
        ,item.amount,item.kilo,item.supplier,item.driver,
@@ -109,6 +117,9 @@
         <div class="mr-1">DAMAGE</div>
         <div class="text-primary">{{item.damage}}</div>
       </ion-col>
+     
+    </ion-row>
+    <ion-row class=""  color="light">
       <ion-col>
         <div>DRIVER</div>
          <div class="text-primary">{{item.driver}}</div>
@@ -117,8 +128,6 @@
       <div>KILO</div>
      <div class="text-primary">{{item.kilo }}</div>
     </ion-col>
-    </ion-row>
-    <ion-row class=""  color="light">
       <ion-col>
         <div>SUPPLIER</div>
          <div class="text-primary"> {{item.supplier}}</div>
@@ -160,10 +169,12 @@
       </ion-col>
     </ion-row>
   </ion-card>
+</ion-col>
+</ion-row>
 </div>
 
  <!-- loading.. -->
- <div *ngIf="recordService.loading" class="spinner">
+ <div *ngIf="loading" class="spinner">
   <div class="loader"></div>
 </div>
 

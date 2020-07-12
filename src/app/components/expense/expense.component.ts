@@ -5,6 +5,7 @@ import { IonRefresher, AlertController, ModalController } from '@ionic/angular';
 import { UserServiceService } from 'src/app/shared/user-service.service';
 import { NgForm } from '@angular/forms';
 import { PayModalComponent } from '../pay-modal/pay-modal.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-expense',
@@ -14,11 +15,13 @@ import { PayModalComponent } from '../pay-modal/pay-modal.component';
 export class ExpenseComponent implements OnInit , OnDestroy {
   @ViewChild('refresherRef', {static : false}) refresherRef: IonRefresher;
   admin: any;
-  loading  = false;
+  loading  = true;
   Calmodel; 
   lastCredit:any;
   myDate  = new Date();
   myDayAndMonth:any  = new Date();
+  expenseSub: Subscription;
+  lastCreditSub: Subscription;
 
   constructor(public userService: UserServiceService, public modalController: ModalController,
               public alertController: AlertController) {
@@ -29,6 +32,9 @@ export class ExpenseComponent implements OnInit , OnDestroy {
     let appDay = new Date().getDate();
     this.searchModel.month =  new Date().getMonth() + 1;
     this.searchModel.year = new Date().getFullYear() ;
+    setTimeout(()=> {
+    this.getThisMonthExpense();
+   },1000);
    
   }
 
@@ -65,18 +71,18 @@ showList = true;
   ngOnInit() {
 this.getBalance();
 this.findLastCredit();
-this.userService.thisMonthExpense(this.searchModel);
+
+
   }
   ngOnDestroy() {
-     this.model = {
+    this.lastCreditSub.unsubscribe();
+    this.expense = [];
+    this.model = {
     filterOptions: '',
     search : ''
   };
 
-
-     this. expense = [];
-
-     this.expenseModel = {
+    this.expenseModel = {
     date : Date.now(),
     description : '',
     product : '',
@@ -88,10 +94,61 @@ this.userService.thisMonthExpense(this.searchModel);
     };
   }
 
-    returnModel = {
-      id: '',
-      admin: ''
-    };
+      returnModel = {
+        id: '',
+        admin: ''
+      };
+
+
+    getThisMonthExpense(){
+      this.expense = this.userService.expenseSaver;
+      if(this.expense.length){
+     console.log('data exist');
+     this.loading = false;
+     return;
+    }else{
+      console.log('no saved data....')
+      this.loading = true;
+      this.expenseSub =  this.userService.thisMonthExpense(this.searchModel).subscribe(
+         res => {
+           this.loading = false;
+           this.expense = res['record'];
+           this.userService.expenseSaver =  this.expense;
+         },
+         err => {
+           this.loading = false;
+           console.log(err);
+           this.expense = [];
+           let message = (err.error.msg) ? err.error.msg : 'Internet connnection failed!';
+           this.userService.generalToastSh(message);
+         }
+        );
+    }
+    }
+
+
+    refreshExpense(){
+      console.log('refresh expense..')
+      this.loading = true;
+      this.expenseSub =  this.userService.thisMonthExpense(this.searchModel).subscribe(
+           res => {
+             this.loading = false;
+             this.expense = res['record'];
+             this.refresherRef.complete();
+             this.userService.expenseSaver =  this.expense;
+             console.log(this.userService.expenseSaver)
+           },
+           err => {
+             this.loading = false;
+             console.log(err);
+             this.refresherRef.complete();
+             this.expense = [];
+             let message = (err.error.message) ? err.error.message : 'Internet connnection failed!';
+             this.userService.generalToastSh(message);
+           }
+          );
+      
+      }
 
   async editExpense(id, description, product, amountPaid, receiver, information) {
                       const modal = await this.modalController.create({ component: ExpenseEditComponent,
@@ -100,14 +157,28 @@ this.userService.thisMonthExpense(this.searchModel);
                       'product': product,  'amountPaid': amountPaid,
                       'receiver': receiver, 'information': information
                     } } );
-                      modal.onDidDismiss().then(() => {   this.userService.reloadExpense(this.searchModel);  this.getBalance(); });
+                      modal.onDidDismiss().then(() => {   this.refreshExpense();  this.getBalance(); });
                       return await modal.present();
 }
 
 
   searchExpense() {
     this.loading = true;
-    this.userService.searchExpense(this.searchModel);
+    this.userService.searchExpense(this.searchModel).subscribe(
+      res => {
+        this.loading = false;
+        console.log(res);
+        this.expense = res['expenses'];
+        this.userService.expenseSaver = this.expense;
+      },
+      err => {
+        this.loading= false;
+        this.expense = [];
+        let message = (err.error.msg) ? err.error.msg : 'Internet connnection failed!';
+        this.userService.generalToast(message);
+        console.log(err);
+      }
+    );
   }
 
   monthAndYear(){
@@ -115,7 +186,7 @@ this.userService.thisMonthExpense(this.searchModel);
     this.searchModel.month = new Date(this.myDate).getMonth() + 1;
     this.searchModel.year = new Date(this.myDate).getFullYear() ;
     console.log(this.searchModel);
-    this.userService.reloadExpense(this.searchModel);
+    this.refreshExpense();
  
  } 
 //  Ccustom date picker
@@ -129,14 +200,29 @@ this.userService.thisMonthExpense(this.searchModel);
           handler: (event) => {
            this.searchModel.month = event.month.value;
            this.searchModel.year = event.year.value;
-           this.userService.reloadExpense(this.searchModel);
+           this.refreshExpense();
           }
         }]
       };
 
       submitDate(form: NgForm){
         console.log(this.model);
-        this.userService.findExpenseByDate(this.model);
+        this.loading = true;
+        this.userService.findExpenseByDate(this.model).subscribe(
+          res => {
+            this.loading = false;
+            console.log(res);
+            this.expense = res['expenses'];
+            this.userService.expenseSaver =  this.expense;
+          },
+          err => {
+            this.loading = false;
+            this.expense = [];
+        let message = (err.error.msg) ? err.error.msg : 'Internet connnection failed!';
+            this.userService.generalToastSh(message);
+            console.log('my error',err);
+          }
+        );
       }
     
        
@@ -156,16 +242,17 @@ this.userService.thisMonthExpense(this.searchModel);
         cssClass : 'danger',
         handler: (values) => {
           console.log(id);
-          this.userService.loadingExpense = true;
+          this.loading = true;
           this.userService.confirmExpense(id).subscribe(
           res => {
-            this.userService.loadingExpense = false;
+            this.loading = false;
             this.userService.generalToastSh(res['msg']);
-            this.userService.reloadExpense(this.searchModel);
+            this.refreshExpense();
           },
           err => {
-            this.userService.loadingExpense = false;
-            this.userService.generalToast(err.error.msg);
+            this.loading = false;
+        let message = (err.error.msg) ? err.error.msg : 'Internet connnection failed!';
+            this.userService.generalToast(message);
           }
         );
       }
@@ -178,14 +265,15 @@ this.userService.thisMonthExpense(this.searchModel);
  async UnokRecord(id){
   this.userService.unConfirmExpense(id).subscribe(
     res => {
-      this.userService.reloadExpense(this.searchModel);
+      this.refreshExpense();
     }
   );
  }
 
 
   doRefresh(event) {
-    this.userService.reloadExpense(this.searchModel);
+    console.log('refreshing expense')
+    this.refreshExpense();
     this.getBalance();
 
   }
@@ -205,7 +293,8 @@ this.userService.thisMonthExpense(this.searchModel);
       err => {
         this.loading = false;
         console.log(err);
-        this.userService.generalToast(err.error.msg);
+        let message = (err.error.msg) ? err.error.msg : 'Internet connnection failed!';
+        this.userService.generalToast(message);
       }
     );
   }
@@ -227,18 +316,18 @@ this.userService.thisMonthExpense(this.searchModel);
           cssClass : 'danger',
           handler: () => {
             console.log(id);
-            this.userService.loadingExpense = true;
+            this.loading = true;
             const data = {admin : this.expenseModel.admin, id};
             this.expenseModel.admin;
             this.userService.reverseExpense(data).subscribe(
               res => {
-                this.userService.loadingExpense = false;
+                this.loading = false;
                 this.userService.generalToast(res['msg']);
-                this.userService.reloadExpense(this.searchModel);
+                this.refreshExpense();
               },
               err => {
-                this.userService.loadingExpense = false;
-                this.userService.generalToast(err.error.msg);
+               this.loading = false;
+               this.userService.generalToast(err.error.msg);
               }
             );
 
@@ -266,16 +355,16 @@ this.userService.thisMonthExpense(this.searchModel);
           cssClass : 'danger',
           handler: () => {
             console.log(id);
-            this.userService.loadingExpense = true;
+            this.loading = true;
             this.userService.verifyExpense(id).subscribe(
               res => {
                 console.log(res);
-                this.userService.generalToast(res['msg']);
-                this.userService.loadingExpense = false;
-                this.userService.reloadExpense(this.searchModel);
+                this.userService.generalToastSh(res['msg']);
+                this.loading = false;
+                this.refreshExpense();
               },
               err => {
-                this.userService.loadingExpense = false;
+                this.loading = false;
                 this.userService.generalToast(err.error.msg);
               }
             );
@@ -288,7 +377,7 @@ this.userService.thisMonthExpense(this.searchModel);
   }
  
   findLastCredit() {
-    this.userService.getLastCredit().subscribe(
+   this.lastCreditSub = this.userService.getLastCredit().subscribe(
       res => {
         // console.log(res['credit']);
         this.lastCredit = res['credit'];
@@ -319,23 +408,24 @@ this.userService.thisMonthExpense(this.searchModel);
             text: 'Confirm',
             cssClass : 'success',
             handler: (val) => {
-              this.userService.loadingExpense = true;
+              this.loading = true;
               // give a name to object;
               val.name = 'BALANCE';
               val.admin = this.expenseModel.admin;
               val.date = Date.now();
               this.userService.updateBalance(val).subscribe(
                 res => {
-                  this.userService.loadingExpense = false;
+                  this.loading = false;
                   this.balance = res['balance'];
                   this.userService.generalToast(res['msg']);
-                  this.userService.reloadExpense(this.searchModel);
+                  this.refreshExpense();
                   this.getBalance();
                   this.findLastCredit();
                 },
                 err => {
-                  this.userService.loadingExpense = false;
-                  this.userService.generalToast(err.error.msg);
+                  this.loading = false;
+                  let message = (err.error.msg) ? err.error.msg : 'Internet connnection failed!';
+                  this.userService.generalToast(message);
                 }
               );
             }
@@ -352,7 +442,7 @@ this.userService.thisMonthExpense(this.searchModel);
       component: ExpReturnModalComponent,
     });
     modal.onDidDismiss().then(()=> {
-      this.userService.reloadExpense(this.searchModel);
+      this.refreshExpense();
       this.getBalance();
       console.log('modal dismiss...');
     });
@@ -361,7 +451,7 @@ this.userService.thisMonthExpense(this.searchModel);
    } 
 
   submitExpense(form: NgForm) {
-    this.userService.loadingExpense = true;
+    this.loading = true;
     console.log(this.expenseModel);
     this.userService.submitExpense(this.expenseModel).subscribe(
       res => {
@@ -369,11 +459,13 @@ this.userService.thisMonthExpense(this.searchModel);
         this.cancelForm();
         console.log(res);
         this.getBalance();
-        this.userService.reloadExpense(this.searchModel);
+        this.refreshExpense();
         this.clearModel();
       },
       err => {
-        this.userService.loadingExpense = false;
+        this.loading = false;
+        let message = (err.error.msg) ? err.error.msg : 'Internet connnection failed!';
+        this.userService.generalToastSh(message);
       }
     );
   }

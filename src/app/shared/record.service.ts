@@ -12,9 +12,10 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
 `Bearer ${localStorage.getItem('token')}`)};
 
 loading = false;
-salesRecord = [];
 myDate = new Date();
 fruitRecord = [];
+fruitSaver = [];
+salesSaver = [];
 
   constructor(private http: HttpClient, private userService: UserServiceService) { }
 
@@ -41,114 +42,34 @@ fruitRecord = [];
   }
 
   findBydate(date){
-    return this.http.post(environment.apiBaseUrl + '/find-fruit-by-date', date).subscribe(
-      res => {
-        this.loading = false;
-        this.fruitRecord = res['record'];
-      },
-      err => {
-        this.loading = false;
-        this.fruitRecord =[];
-        this.userService.generalToastSh(err.error.msg);
-      }
-    );
+    return this.http.post(environment.apiBaseUrl + '/find-fruit-by-date', date);
   }
 
   thisMonthFruit(month){ 
-    if(!this.fruitRecord.length){
-      return this.http.post(environment.apiBaseUrl + '/this-month-fruit', month).subscribe(
-        res => {
-          this.loading = false;
-          console.log('this month',res);
-          this.fruitRecord = res['record'];
-        },
-        err => {
-          this.loading = false;
-          console.log(err)
-          this.fruitRecord = [];
-          this.userService.generalToastSh(err.error.msg);
-        }
-      );
-    }else{
-      console.log('fruit already has records');
-    }
+      return this.http.post(environment.apiBaseUrl + '/this-month-fruit', month);
+ 
   
   }
 
   reloadThisMonthFruit(month){ 
-    return this.http.post(environment.apiBaseUrl + '/this-month-fruit', month).subscribe(
-      res => {
-        this.loading = false;
-        console.log('this month',res);
-        this.fruitRecord = res['record'];
-      },
-      err => {
-        this.loading = false;
-        console.log(err)
-        this.fruitRecord = [];
-        this.userService.generalToastSh(err.error.msg);
-      }
-    );
+    return this.http.post(environment.apiBaseUrl + '/this-month-fruit', month);
   }
 
   merchantSales(date){
-    if(!this.salesRecord.length){
-      this.loading = true;
-      return this.http.post(environment.apiBaseUrl + '/merchant-sales', date).subscribe(
-        res => {
-          this.loading = false;
-          console.log(res);
-          this.loading = false;
-          this.salesRecord = res['record'];
-        },
-       
-        err => { 
-          this.loading = false;
-          console.log(err);
-          this.salesRecord = [];
-          this.userService.generalToast(err.error.msg);
-        }
-      );
-    }else{
-      console.log('MERCHANT ALREADY has datas');
-    }
+      return this.http.post(environment.apiBaseUrl + '/merchant-sales', date)
+  
   }
 
 
   findmerchantByDay(ref){
-    this.salesRecord = [];
     this.loading = true;
-    this.http.post(environment.apiBaseUrl + '/merchant-date-day', ref).subscribe(
-      res => {
-        this.loading = false;
-        this.salesRecord = res['record'];
-      },
-      err => { 
-        this.loading = false;
-        this.userService.generalToastSh(err.error.msg);
-      }
-    );
+    return this.http.post(environment.apiBaseUrl + '/merchant-date-day', ref);
   }
 
 
   
   reloadMerchantSales(date){
-    this.loading = true;
-    return this.http.post(environment.apiBaseUrl + '/merchant-sales', date).subscribe(
-      res => {
-        this.loading = false;
-        console.log(res);
-        this.loading = false;
-        this.salesRecord = res['record'];
-      },
-     
-      err => { 
-        console.log(err);
-        this.loading = false;
-        this.salesRecord = [];
-        this.userService.generalToast(err.error.msg);
-      }
-    );
+    return this.http.post(environment.apiBaseUrl + '/merchant-sales', date);
   }
 
 }

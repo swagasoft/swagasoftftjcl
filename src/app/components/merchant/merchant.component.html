@@ -18,7 +18,7 @@
 <ion-content>
 
   <ion-card color="light">
-    <ion-item color="primary">
+    <ion-item color="dark">
       <ion-label  class="ion-text-center font-weight-bold">PICK A MONTH</ion-label>
       <ion-datetime  [pickerOptions]="filter_Month_Year" displayFormat="MMMM YYYY"  [(ngModel)]="myDate" ></ion-datetime>
     </ion-item>
@@ -61,10 +61,10 @@
 
 <!-- sales list -->
 
- <ion-card *ngFor="let item of recordService.salesRecord" class="blue-gradient text-white">
+ <ion-card *ngFor="let item of salesRecord" class="blue-gradient text-white">
   <ion-row>
     <ion-col>
-      <div  class="font-weight-bold"> {{item.merchantName}} </div>
+      <div  class="font-weight-bold">Merchant:  {{item.merchantName}} </div>
     </ion-col>
      <ion-col>
       <div  class="font-weight-bold"> {{item.outletCode}} </div>
@@ -135,7 +135,7 @@
 </ion-fab>
 
     <!-- loading.. -->
-    <div *ngIf="recordService.loading" class="spinner">
+    <div *ngIf="loading" class="spinner">
       <div class="loader"></div>
     </div>
 

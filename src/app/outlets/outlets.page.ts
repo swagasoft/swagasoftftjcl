@@ -16,13 +16,16 @@ export class OutletsPage implements OnInit {
   showEdit = false;
   admin:any;
   selectedAxis: any;
+  loading = true;
+  outletList: any[] = [];
+
 
   constructor(public outletService: OutletService,
               public alertController: AlertController,
               public userService: UserServiceService) { 
                 this.admin = localStorage.getItem('appUser');
                 this.model.admin = this.admin;
-              this.getAllOutlet();
+             
   }  
 
   model = {
@@ -57,6 +60,9 @@ export class OutletsPage implements OnInit {
   
   } 
   ngOnInit() {
+    setTimeout(()=> {
+      this.getAllOutlet();
+    },1000);
   }
 
   async editMerchantRate(id,amount){
@@ -78,7 +84,7 @@ export class OutletsPage implements OnInit {
             if (values.amount == ''  ){
               this.userService.generalToast("AMOUNT NOT SPECIFIELD!");
             }else{
-            this.outletService.loading = true;
+            this.loading = true;
             let body = {
                 values: values,
                 admin: this.admin,
@@ -87,12 +93,12 @@ export class OutletsPage implements OnInit {
             console.log(body);
             this.outletService.updateMerchantRate(body).subscribe(
             res => {
-              this.outletService.loading = false;
+              this.loading = false;
               this.userService.generalToastSh(res['msg']);
               this.getAllOutlet();
             },
             err => {
-              this.outletService.loading = false;
+              this.loading = false;
               this.userService.generalToast(err.error.msg);
             }
           );
@@ -110,31 +116,30 @@ export class OutletsPage implements OnInit {
   }
 
   createOutlet(form : NgForm){
-    this.outletService.loading = true;
+    this.loading = true;
     this.outletService.createOutlet(this.model).subscribe(
       res => {
-        this.outletService.loading = false; this.userService.generalToast(res['msg']);
+        this.loading = false; this.userService.generalToast(res['msg']);
         this.resetForm();
-        this.outletService.reloadOutlets();
+        this.reloadOutlet();
       },
       err => {
-        this.outletService.loading  = false; this.userService.generalToast(err.error['msg']);
+        this.loading  = false; this.userService.generalToast(err.error['msg']);
       }
     );
   }
 
   searchOutlet(){
     const search = this.model;
-    console.log(search);
-    this.outletService.loading = true;
+    this.loading = true;
     this.outletService.searchOutlet(search).subscribe(
       res => {
-        this.outletService.loading = false;
-        this.outletService.outletList =  res['docs'];
-        console.log(res);
+        this.loading = false;
+        this.outletList =  res['docs'];
+        this.outletService.outletSaver = this.outletList;
       },
       err => {
-        this.outletService.loading = false;
+        this.loading = false;
         this.userService.generalToast(err.error['msg']);
       }
     );
@@ -159,12 +164,51 @@ export class OutletsPage implements OnInit {
     }
 
 
-    getAllOutlet(){
-      this.outletService.findAlloutlets();
+    getAllOutlet(){ 
+      this.outletList = this.outletService.outletSaver;
+      if(this.outletList.length){
+       
+        console.log('passing data completed!')
+        this.loading = false;
+        return;
+      }else{
+        console.log('getting new data')
+        this.loading = true;
+        this.outletService.findAlloutlets().subscribe(
+          res => {
+            this.loading = false;
+            this.outletList = res['outlets'];
+            this.outletService.outletSaver = this.outletList;
+          },
+          err => {
+            this.loading = false;
+            this.loading = false; this.userService.generalToast(err.error['msg']);
+          }
+        );
+      }
+      
+    }
+
+
+    reloadOutlet(){ 
+      this.loading = true;
+      this.outletService.findAlloutlets().subscribe(
+        res => {
+          this.loading = false;
+          this.outletList = res['outlets'];
+          this.outletService.outletSaver = this.outletList;
+        },
+        err => {
+          this.loading = false;
+          this.outletList = [];
+          console.log(err);
+          this.loading = false; this.userService.generalToast(err.error['msg']);
+        }
+      );
     }
 
     reloadoutlet(){
-      this.outletService.reloadOutlets();
+      this.reloadOutlet();
     }
 
 
@@ -181,14 +225,14 @@ export class OutletsPage implements OnInit {
           },
           {
             text: 'DELETE', role: 'cancel', cssClass: 'danger', handler: () => {
-              this.outletService.loading = true;
+              this.loading = true;
               this.outletService.deleteOutlet(id).subscribe(
                 res => {
-                  this.outletService.loading = false;
-                  this.userService.generalToast(res['msg']); this.outletService.reloadOutlets();
+                  this.loading = false;
+                  this.userService.generalToast(res['msg']); this.reloadOutlet();
                 },
                 err => {
-                  this.outletService.loading = false;
+                  this.loading = false;
                   this.userService.generalToast(err.error['msg']);
                 }
               );
@@ -228,7 +272,7 @@ export class OutletsPage implements OnInit {
     }
 
     updateOutlet(){
-      this.outletService.loading = true;
+      this.loading = true;
       console.log(this.editModel); 
       this.outletService.editOutlet(this.editModel).subscribe(
         res => {
@@ -236,11 +280,11 @@ export class OutletsPage implements OnInit {
           this.showForm = false;
           this.showOutletlist = true;
           this.showEdit = false;
-          this.outletService.loading = false;
-          this.outletService.reloadOutlets()
+          this.loading = false;
+          this.reloadOutlet();
         },
         err => {
-          this.outletService.loading = false;
+          this.loading = false;
           this.userService.generalToast(err.error.msg);
         }
       );

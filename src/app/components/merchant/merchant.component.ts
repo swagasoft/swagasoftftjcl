@@ -1,7 +1,7 @@
 import { MerchantModalComponent } from './../merchant-modal/merchant-modal.component';
 import { RecordService } from 'src/app/shared/record.service';
 import { UserServiceService } from './../../shared/user-service.service';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { NgbDatepickerNavigateEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ModalController, AlertController, IonRefresher, IonInfiniteScroll } from '@ionic/angular';
 import { OutletService } from 'src/app/shared/outlet.service';
@@ -12,14 +12,17 @@ import { NgForm } from '@angular/forms';
   templateUrl: './merchant.component.html',
   styleUrls: ['./merchant.component.scss'],
 })
-export class MerchantComponent implements OnInit {
+export class MerchantComponent implements OnInit, OnDestroy {
   @ViewChild('dateClass', {static : false}) dateClass: ElementRef;
   @ViewChild('refresherRef', {static : false}) refresherRef: IonRefresher;
   // @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
 
 page = 0;
 model;
+loading = true;
 myDate  = new Date();
+salesRecord = [];
+
 
 
   constructor(public userService: UserServiceService, 
@@ -40,8 +43,64 @@ searchModel = {
 }
 
   ngOnInit() {
-    this.recordService.merchantSales(this.searchModel);
+setTimeout(()=> {
+  this.getMerchantRecord();
+},1000);
     
+  }
+
+  ngOnDestroy(){
+
+  }
+
+  getMerchantRecord(){
+    if(this.recordService.salesSaver.length){
+      this.salesRecord = this.recordService.salesSaver ; 
+      this.loading = false;
+    }else{
+      console.log('no saved data....', this.recordService.salesSaver)
+      this.recordService.merchantSales(this.searchModel).subscribe(
+        res => {
+          this.loading = false;
+          console.log(res);
+          this.loading = false;
+          this.salesRecord = res['record'];
+          this.recordService.salesSaver = this.salesRecord;
+          console.log(this.recordService.salesSaver);
+        },
+       
+        err => { 
+          this.loading = false;
+          console.log(err);
+          this.salesRecord = [];
+          let message = (err.error.msg) ? err.error.msg : 'Internet connnection failed!';
+          this.userService.generalToast(message);
+        }
+      );
+      // end
+    }
+    
+  }
+
+  reloadRecord(){
+    this.recordService.merchantSales(this.searchModel).subscribe(
+      res => {
+        this.loading = false;
+        this.refresherRef.complete();
+        console.log(res);
+        this.loading = false;
+        this.salesRecord = res['record'];
+        this.recordService.salesSaver = this.salesRecord;
+      },
+     
+      err => { 
+        this.loading = false;
+        this.refresherRef.complete();
+        console.log(err);
+        this.salesRecord = [];
+        this.userService.generalToast(err.error.msg);
+      }
+    );
   }
 
 
@@ -53,11 +112,23 @@ searchModel = {
       }, {
         text: 'SEARCH',
         handler: (event) => {
-         console.log('clicked search..',event)
-         console.log(event.month.value);
+          this.loading = true;
          this.searchModel.month = event.month.value;
          this.searchModel.year = event.year.value;
-         this.recordService.reloadMerchantSales(this.searchModel);
+         this.recordService.reloadMerchantSales(this.searchModel).subscribe(
+          res => {
+            this.loading = false;
+            this.salesRecord = res['record'];
+            this.recordService.salesSaver = this.salesRecord;
+          },
+         
+          err => { 
+            console.log(err);
+            this.loading = false;
+            this.salesRecord = [];
+            this.userService.generalToast(err.error.msg);
+          }
+        );
         }
       }]
     };
@@ -67,23 +138,31 @@ searchModel = {
 
   submitDate(form: NgForm){
     console.log(this.model);
-    this.recordService.findmerchantByDay(this.model);
+    this.loading = true;
+    this.salesRecord = [];
+    this.recordService.findmerchantByDay(this.model).subscribe(
+      res => {
+        this.loading = false;
+        this.salesRecord = res['record'];
+        this.recordService.salesSaver = this.salesRecord;
+      },
+      err => { 
+        this.loading = false;
+        this.userService.generalToastSh(err.error.msg);
+      }
+    );
   }
 
    
   doRefresh(event){ 
-    this.recordService.reloadMerchantSales(this.searchModel)
-    setTimeout(()=> {
-      this.refresherRef.complete();
-    }, 2000);
+  this.reloadRecord();
   }
   
 
   async merchantModal() {
  const modal = await this.modalController.create({ component: MerchantModalComponent});
  modal.onDidDismiss().then(()=> {
-  this.recordService.reloadMerchantSales(this.searchModel);
-   console.log('dismiss')
+  this.reloadRecord();
  });
  return await modal.present();
 }
@@ -109,7 +188,7 @@ async clickOk(id){
             res => {
               this.recordService.loading = false;
               this.userService.generalToastSh(res['msg']);
-              this.recordService.reloadMerchantSales(this.searchModel);
+              this.reloadRecord();
             },
             err => {
               this.recordService.loading = false;
@@ -140,15 +219,15 @@ async delete(id){
         cssClass : 'danger',
         handler: (values) => {
           console.log(id);
-          this.recordService.loading = true;
+          this.loading = true;
           this.outletService.deleteRecord(id).subscribe(
             res => {
-              this.recordService.loading = false;
+              this.loading = false;
               this.userService.generalToastSh(res['msg']);
-              this.recordService.reloadMerchantSales(this.searchModel);
+              this.reloadRecord();
             },
             err => {
-              this.recordService.loading = false;
+              this.loading = false;
               this.userService.generalToast(err.error.msg);
             }
           );
@@ -177,15 +256,15 @@ async clickVerify(id){
         cssClass : 'danger',
         handler: (values) => {
           console.log(id);
-          this.recordService.loading = true;
+          this.loading = true;
           this.outletService.verifySaleRecord(id).subscribe(
             res => {
-              this.recordService.loading = false;
+              this.loading = false;
               this.userService.generalToastSh(res['msg']);
-              this.recordService.reloadMerchantSales(this.searchModel);
+              this.reloadRecord();
             },
             err => {
-              this.recordService.loading = false;
+              this.loading = false;
               this.userService.generalToast(err.error.msg);
             }
           );
@@ -211,15 +290,15 @@ async disprove(id){
         cssClass : 'danger',
         handler: (values) => {
           console.log(id);
-          this.recordService.loading = true;
+          this.loading = true;
           this.outletService.disproveRecord(id).subscribe(
             res => {
-              this.recordService.loading = false;
+              this.loading = false;
               this.userService.generalToastSh(res['msg']);
-              this.recordService.reloadMerchantSales(this.searchModel);
+              this.reloadRecord();
             },
             err => {
-              this.recordService.loading = false;
+              this.loading = false;
               this.userService.generalToast(err.error.msg);
             }
           );

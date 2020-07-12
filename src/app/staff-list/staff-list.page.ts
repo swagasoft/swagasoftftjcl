@@ -13,7 +13,7 @@ export class StaffListPage implements OnInit, OnDestroy {
 showform = false;
 showList = true;
 staffList = [];
-loading = false;
+loading = true;
 admin: any; 
 
   constructor(private staffService: StaffService,
@@ -44,8 +44,11 @@ admin: any;
   ngOnInit() {
     this.admin = localStorage.getItem('appUser');
     this.model.admin = this.admin;
-    const admin = 'ADMINISTRATOR'
+    const admin = 'ADMINISTRATOR';
+    this.model.department = admin;
+    setTimeout(()=> {
     this.selectStaffByDepartment(admin);
+   },1000);
   }
 
   ngOnDestroy(){
@@ -61,6 +64,7 @@ admin: any;
         this.loading = false;
         console.log(res);
         this.staffList = res['staff']; 
+        this.staffService.staffSaver = this.staffList;
       },
       err=>{
         this.loading = false;
@@ -71,6 +75,7 @@ admin: any;
     );
   }
 
+ 
   async deleteStaff(id, fullname){
     const alert = await this.alertController.create({
       header: `delete ${fullname}`,
@@ -93,7 +98,7 @@ admin: any;
             res => {
               this.loading = false;
               this.userService.generalToast(res['msg']);
-              this.getLimitStaff();
+              this.selectStaffByDepartment(this.model.department);
             },
             err => {
               this.loading = false;
@@ -273,7 +278,6 @@ this.showList = false;
   }
 
   submitStaff(form: NgForm){
-    console.log(form.value);
     this.loading = true;
     this.staffService.submitStaff(this.model).subscribe(
       res => {
@@ -319,6 +323,7 @@ this.showList = false;
         console.log(res);
         this.loading = false;
         this.staffList = res['staff'];
+        // this.staffService.staffSaver = this.staffList;
       },
       err => {
         this.loading = false;
@@ -326,6 +331,8 @@ this.showList = false;
       }
     );
   }
+
+  
 
   getAllStaff(department){
     console.log(department);

@@ -36,6 +36,7 @@ myDate  = new Date();
     merchant:''
   }
   searchModel = {
+    fulname:'',
     month: null,
     year : null,
     merchant : null

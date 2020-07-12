@@ -182,7 +182,8 @@ componentProps: {
                 },
                 err => {
                   this.loading = false;
-                  this.userService.generalToast(err.error.msg);
+                  let message = (err.error.msg) ? err.error.msg : 'Internet connnection failed!';
+                  this.userService.generalToast(message);
                 }
               );
         
@@ -247,7 +248,8 @@ componentProps: {
         console.log(err);
         this.products =null;
         this.loading = false;
-        this.userService.generalToast(err.error.msg);
+        let message = (err.error.msg) ? err.error.msg : 'Internet connnection failed!';
+        this.userService.generalToast(message);
         this.refresherRef.complete();
 
       }

@@ -62,24 +62,23 @@
 </ion-row>
 <ion-row>
   <ion-col>
-    <small>salary</small>
-    <div>₦ {{item.salary}} </div>
+    <div>SALARY</div>
+    <div> {{item.salary | currency:'₦ '}} </div>
   </ion-col>
   <ion-col>
-    <small>penalty</small>
-    <div>₦ {{item.penalty}} </div>
+    <div>PENALTY</div>
+    <div> {{item.penalty | currency:'₦ '}} </div>
   </ion-col>
   <ion-col>
-    <small>sal_adv</small>
-    <div>₦ {{item.advance_salary}} </div>
+    <div>SAL_ADV</div>
+    <div> {{item.advance_salary | currency:'₦ '}} </div>
   </ion-col>
   <ion-col>
-    <small>bonus</small>
-    <div>₦ {{item.bonus}} </div>
+    <div>BONUS</div>
+    <div>{{item.bonus | currency:'₦ '}} </div>
   </ion-col>
   <ion-col>
-    <small>paid</small>
-    <div>₦ {{item.AmountPaid}} </div>
+    <ion-chip outline><h5 class="font-weight-bold"> {{item.AmountPaid | currency:'₦ '}} </h5></ion-chip>
   </ion-col>
 </ion-row>
 <ion-row>

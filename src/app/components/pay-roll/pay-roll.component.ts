@@ -35,6 +35,7 @@ totalStaff = 0;
 
   ngOnInit() {
     const admin = 'ADMINISTRATOR';
+    this.model.department = admin;
     this.selectStaffByDepartment(admin);
   }
   ngOnDestroy(){
@@ -51,13 +52,14 @@ totalStaff = 0;
 
 
   
-  selectCategory(cat){
-
+  selectCategory(department){
+    console.log(department)
+    this.model.department = department;
     this.totalSalary = 0;
     this.totalStaff = 0;
     this.loading = true; 
     this.totalStaff = 0;
-    this.staffService.getStaffByDepartment(cat).subscribe(
+    this.staffService.getStaffByDepartment(department).subscribe(
       res => {
         this.loading = false;
         this.allStaff = res['staff'];
@@ -95,6 +97,7 @@ totalStaff = 0;
     
     modal.onDidDismiss().then(()=> {
      this.selectCategory(this.model.department);
+    //  this.selectStaffByDepartment(this.model.department);
     });
     return await modal.present();
   }
@@ -166,8 +169,7 @@ totalStaff = 0;
             res => {
               this.loading = false;
               this.userService.generalToast(res['msg']);
-              this.getAllStaff();
-              // this.selectStaffByDepartment(this.model.department);
+              this.selectStaffByDepartment(this.model.department);
             },
             err => {
               this.loading = false;

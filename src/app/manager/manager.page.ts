@@ -17,8 +17,8 @@ export class ManagerPage implements OnInit {
   phoneRegex =  /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
 
   constructor(private userService : UserServiceService,
-    public alertService: AlertService,
-    private alertController : AlertController) {
+              public alertService: AlertService,
+              private alertController : AlertController) {
         this.getAllUsers();
    }
  
@@ -50,7 +50,7 @@ export class ManagerPage implements OnInit {
       err => {
         this.loading = false;
         let msg = err.error['msg'];
-              this.userService.generalToast(msg);
+        this.userService.generalToast(err.error.message);
         console.log(err);
       }
     );

@@ -21,7 +21,7 @@
   <!-- <h6 class="text-center text-dark"> expense records</h6> -->
   <ion-row>
   <ion-badge *ngIf="balance > 10000"  color="success"><h5 class="font-weight-bold"> Balance : {{balance | currency:'₦'}}</h5> </ion-badge>
-  <ion-badge *ngIf="balance < 10000"  color="danger"><h5  class="font-weight-bold"> Balance : {{balance  | currency:'₦'}</h5> </ion-badge>
+  <ion-badge *ngIf="balance < 10000"  color="danger"><h5  class="font-weight-bold"> Balance : {{balance  | currency:'₦'}}</h5> </ion-badge>
     <ion-button
     color="success" (click)="addBalance()">ADD  ₦ </ion-button>
   </ion-row>
@@ -40,23 +40,41 @@
   </ion-item>
 </ion-card>
 
-  <form #dateform="ngForm"   (submit)=" submitDate(dateform)" class="form-inline">
-    <div class="form-group">
-      <div class="input-group">
-        <input class="form-control"  placeholder="YYYY-MM-DD"
-               name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker">
-        <div class="input-group-append">
-          <button class="btn btn-outline-secondary" (click)="d.toggle()"
-           type="button"><ion-icon name="apps"></ion-icon> </button>
-          <ion-button class="primary" [disabled]="!model"
-           (click)="submitDate(dateform)" type="submit">
-          <ion-icon name="search"></ion-icon></ion-button>
+<!-- search -->
+<ion-row>
+  <ion-col size="12">
+    <form #dateform="ngForm"   (submit)=" submitDate(dateform)" class="form-inline">
+      <div class="form-group">
+        <div class="input-group">
+          <input class="form-control"  placeholder="YYYY-MM-DD"
+                 name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" (click)="d.toggle()"
+             type="button"><ion-icon name="apps"></ion-icon> </button>
+            <ion-button color="success" [disabled]="!model"
+             (click)="submitDate(dateform)" type="submit">
+            <ion-icon name="search"></ion-icon></ion-button>
+          </div>
         </div>
       </div>
-    </div>
-  </form>
+    </form>
+  </ion-col>
+  <ion-col size="12">
+    <ion-card class="p-0 m-0 " color="light">
+      <ion-row class="p-0 m-0">
+        <ion-item>
+        <ion-input name="search" #search placeholder="search expense"  [(ngModel)]="searchModel.search"></ion-input> 
+        <ion-button color="success" size="medium" (click)="searchExpense()" [disabled]="!search.value">
+          <ion-icon name="search" size="large"></ion-icon>
+        </ion-button> 
+      </ion-item>
+      </ion-row>
+    </ion-card>
+  
+  </ion-col>
+</ion-row>
 
-
+ 
 <!-- 
 <form #dateform="ngForm"  (submit)=" submitDate(dateform)" (keydown.enter)="submitDate(dateform)"
  class="card form-inline p-0 m-0">
@@ -83,26 +101,20 @@
 <!-- search list -->
 
 
-<ion-card class="p-0 m-0 " color="light">
-  <ion-row class="p-0 m-0">
-    <ion-item>
-    <ion-input name="search" #search placeholder="search expense"  [(ngModel)]="searchModel.search"></ion-input> 
-    <ion-button color="primary" size="medium" (click)="searchExpense()" [disabled]="!search.value">
-      <ion-icon name="search" size="large"></ion-icon>
-    </ion-button> 
-  </ion-item>
-  </ion-row>
-</ion-card>
 
-    <ion-card  *ngFor="let item of userService.expense; index as i"
+<ion-row>
+  <ion-col size="12" size-lg="6" size-md="6" size-xs="12"
+  size-sm="6" size-xl="6" *ngFor="let item of expense; index as i">
+    <ion-card 
      color="light" class="p-1 text-center font-weight-bold" 
      [ngClass]="{'primary-color-dark text-white': item.return}">
         <ion-row [ngClass]="{'success-color-dark text-white': !item.return}">
+          <!-- here card -->
           <ion-col>
             <div class="text-white"> {{item.created_at | date:'medium'}}</div>
           </ion-col>
            <ion-col>
-            <div class=" text-white font-weight-bold">{{item.admin}} </div>
+            <div class=" text-white font-weight-bold"><ion-icon name="person"></ion-icon> {{item.admin}} </div>
            </ion-col>
            <ion-col>
              
@@ -123,7 +135,7 @@
           </ion-col> 
           <ion-col>
             <small class="">Amount</small>
-            <div>  {{item.amountPaid  | currency:'₦'}} </div>
+            <h6 class="font-weight-bold text-primary">  {{item.amountPaid  | currency:'₦'}} </h6>
           </ion-col> 
           <ion-col>
             <small *ngIf="!item.return" class="">Receiver</small>
@@ -160,6 +172,9 @@
          </ion-col>
         </ion-row>
     </ion-card>
+  </ion-col>
+
+</ion-row>
   </div>
 </div>
   
@@ -233,7 +248,7 @@
 </div>
 
 <!-- loading.. -->
-<div *ngIf="userService.loadingExpense" class="spinner">
+<div *ngIf="loading" class="spinner">
   <div class="loader"></div>
 </div>
 

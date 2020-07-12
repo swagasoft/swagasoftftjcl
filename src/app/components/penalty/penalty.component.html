@@ -65,17 +65,21 @@
       </ion-refresher-content>
     </ion-refresher>
 
+<ion-row>
+  <ion-col size="12" size-lg="6" size-md="6" size-xs="12"
+  size-sm="6" size-xl="6" *ngFor="let item of penalize; index as i">
 
-    <ion-card *ngFor="let item of staffService.penalize" class="bg-dark text-white">
+    <ion-card  class="bg-dark text-white">
+      <ion-chip outline color="light" class="font-weight-bold">{{i+1}} </ion-chip>
       <ion-row class="font-weight-bold">
        <ion-col>
         <div>{{item.name}} </div>
        </ion-col>
       <ion-col>
-        <div class="pl-4">₦ {{item.amount}} </div>
+        <div class="pl-4"> {{item.amount | currency:'₦'}} </div>
       </ion-col>
       <ion-col>
-        <small>{{item.created_at | date:'medium'}} </small>
+        <div>{{item.created_at | date:'medium'}} </div>
        </ion-col>
       </ion-row>
       <ion-row>
@@ -83,13 +87,14 @@
       </ion-row>
       <ion-row>
         <ion-col>
-          <small>{{item.admin}} </small>
+          <div>Admin </div>
+          <div>{{item.admin}} </div>
         </ion-col>
         <ion-col>
-          <small class="text-warning"> edited:{{item.edit}} </small>
+          <div class="text-warning"> edited:{{item.edit}} </div>
         </ion-col>
         <ion-col>
-          <h4 *ngIf="item.wave" class="text-success font-weight-bold"> WAVED </h4>
+          <h6 *ngIf="item.wave" class="text-success font-weight-bold"> WAVED </h6>
         </ion-col>
       </ion-row>
       <ion-row>
@@ -115,10 +120,8 @@
       
   
     </ion-card>
-    <!-- loading.. -->
-<!-- <div *ngIf="loading" class="spinner">
-  <div class="loader"></div>
-</div> -->
+  </ion-col>
+</ion-row>
 
 
 <ion-fab horizontal="start" vertical="bottom" slot="fixed">
@@ -135,5 +138,8 @@
   </ion-fab-list>
 </ion-fab>
 
-
+<!-- loading.. -->
+<div *ngIf="loading" class="spinner">
+  <div class="loader"></div>
+</div>
 </ion-content>

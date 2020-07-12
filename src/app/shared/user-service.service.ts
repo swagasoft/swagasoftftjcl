@@ -20,6 +20,8 @@ export class UserServiceService {
   networkDisconnet = false;
   loadingExpense = false;
   expense: Array<any> = [];
+  expenseSaver = [];
+ 
 
 
   noAuthHeader = {headers: new HttpHeaders({NoAuth: 'True'})};
@@ -95,26 +97,21 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
 
     thisMonthExpense(model){
       console.log('search from service');
-     
-      if(!this.expense.length){
-        this.loadingExpense = true;
-        this.http.post(environment.apiBaseUrl + '/this-month-expense', model).subscribe(
-          res => {
-            this.loadingExpense = false;
-            this.expense = res['record'];
-          },
-          err => {
-            this.loadingExpense = false;
-            console.log(err);
-            this.expense = [];
-            this.generalToastSh(err.error.msg);
-          }
-         );
-      }else{
-       console.log('expense already exist!');
-      }
+       return this.http.post(environment.apiBaseUrl + '/this-month-expense', model)
     
     }
+
+    // thisMonthExpenseAsync(model){
+    //   console.log('search from service');
+     
+    //     this.loadingExpense = true;
+    //     this.http.post(environment.apiBaseUrl + '/this-month-expense', model).pipe(
+    //       map(res => {
+    //         console.log(res['record']);
+    //       }),
+    //       sharedReplay()
+    //     )
+    // }
 
     reloadExpense(model){
       this.http.post(environment.apiBaseUrl + '/this-month-expense', model).subscribe(
@@ -134,19 +131,7 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
 
     findExpenseByDate(date){
       this.loadingExpense = true;
-      this.http.post(environment.apiBaseUrl + '/find-by-date', date).subscribe(
-        res => {
-          this.loadingExpense = false;
-          console.log(res);
-          this.expense = res['expenses'];
-        },
-        err => {
-          this.loadingExpense = false;
-          this.expense = [];
-          this.generalToastSh(err.error.msg);
-          console.log('my error',err);
-        }
-      );
+     return this.http.post(environment.apiBaseUrl + '/find-by-date', date)
     }
 
     updateExpense(expense){
@@ -183,19 +168,7 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
       return this.http.post(environment.apiBaseUrl + `/reverse-expense`, data);
     }
     searchExpense(search){
-     this.http.post(environment.apiBaseUrl + '/search-expense',search).subscribe(
-        res => {
-          this.loadingExpense = false;
-          console.log(res);
-          this.expense = res['expenses'];
-        },
-        err => {
-          this.loadingExpense = false;
-          this.expense = [];
-          this.generalToastSh(err.error.msg);
-          console.log(err);
-        }
-      );
+    return this.http.post(environment.apiBaseUrl + '/search-expense',search)
 
     }
 
@@ -254,7 +227,8 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
      }
 
      deleteToken() {
-      window.localStorage.removeItem('token');
+       localStorage.removeItem('user-role');
+       window.localStorage.removeItem('token');
     }
 
      public logout(): void {

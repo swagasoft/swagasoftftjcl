@@ -37,7 +37,13 @@
       </ion-row>
     </ion-card>
 
-    <ion-card *ngFor="let item of listOfUsers; index as i"
+    <ion-chip color="dark" class="font-weight-bold"> </ion-chip>
+    <ion-row>
+      <ion-col size="12" size-lg="6" size-md="6" size-xs="12"
+      size-sm="6" size-xl="6" *ngFor="let item of listOfUsers; index as i">
+
+     
+    <ion-card 
      class=" blue-gradient text-white">
    
         <ion-row>
@@ -62,6 +68,9 @@
       
     </ion-row>
     </ion-card>
+  </ion-col>
+</ion-row>
+    <!-- here -->
   </div>
 
   <div *ngIf="showUserForm">

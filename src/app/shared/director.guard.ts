@@ -15,13 +15,19 @@ export class DirectorGuard implements CanActivate {
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean{
     this.userRole = this.userService.getUserRole();
     const director = 'DIRECTOR';
-    if(!this.userService.isLogedIn() && this.userRole !== director ){
-      this.router.navigateByUrl('/login');
-    this.userService.deleteToken(); 
-      return false;
-  
+    if(this.userService.isLogedIn() && this.userService.getUserRole() === director ){
+
+      console.log('success...', this.userService.getUserRole());
+      return true;
+    }else{
+      
+      this.router.navigateByUrl('/distributions');
+      this.userService.generalToast('Restricted page for this user!');
+      console.log('falses....', this.userService.getUserRole());
+        return false;
+    
     }
-    return true;
+
   }
   
 }

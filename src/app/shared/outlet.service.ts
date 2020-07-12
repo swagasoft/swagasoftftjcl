@@ -11,7 +11,7 @@ import { environment } from 'src/environments/environment';
 
 
 export class OutletService {
-  outletList: any[] = [];
+outletSaver = [];
   loading = false;
 
   noAuthHeader = {headers: new HttpHeaders({NoAuth: 'True'})};
@@ -26,23 +26,8 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
   }
 
   findAlloutlets(){
-    if(!this.outletList.length){
-      this.loading = true;
-      return this.http.get(environment.apiBaseUrl + '/get-all-outlets').subscribe(
-        res => {
-          this.loading = false;
-          this.outletList = res['outlets'];
-          console.log(res);
-        },
-        err => {
-          this.loading = false;
-          console.log(err);
-          this.loading = false; this.userService.generalToast(err.error['msg']);
-        }
-      );
-    }else{
-        console.log('outlet has data')
-    }
+      return this.http.get(environment.apiBaseUrl + '/get-all-outlets');
+
    
   }
 
@@ -50,21 +35,6 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
     return this.http.get(environment.apiBaseUrl + '/get-all-outlets');
   }
 
-  reloadOutlets(){
-    this.loading = true;
-    this.http.get(environment.apiBaseUrl + '/get-all-outlets').subscribe(
-      res => {
-        this.loading = false;
-        this.outletList = res['outlets'];
-        console.log(res);
-      },
-      err => {
-        this.loading = false;
-        console.log(err);
-        this.loading = false; this.userService.generalToast(err.error['msg']);
-      }
-    );
-  }
 
   deleteOutlet(id){
     return this.http.get(environment.apiBaseUrl + `/delete-outlet${id}`);

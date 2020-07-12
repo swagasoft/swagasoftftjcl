@@ -11,9 +11,8 @@ import { AlertController, ToastController } from '@ionic/angular';
   providedIn: 'root'
 })
 export class StaffService {
-staffList = [];
-penalize = [];
-loading = false;
+penaltySaver = [];
+staffSaver = [];
 
 
 noAuthHeader = {headers: new HttpHeaders({NoAuth: 'True'})};
@@ -106,37 +105,12 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
     }
 
     thisMonthPenalty(date){
-     if(!this.penalize.length){
-      this.http.post(environment.apiBaseUrl + '/this-month-penalty', date).subscribe(
-        res => {
-          console.log('this month',res);
-          this.penalize = res['record'];
-        },
-        err => {
-          this.loading = false;
-          console.log(err)
-          this.penalize = [];
-          this.userService.generalToastSh(err.error.msg);
-        }
-      );
-     }else{
-       console.log('penalty already has datas');
-     }
+     return this.http.post(environment.apiBaseUrl + '/this-month-penalty', date)
+    
     }
 
     reloadPenalty(data){
-      this.http.post(environment.apiBaseUrl + '/this-month-penalty', data).subscribe(
-        res => {
-          console.log('this month',res);
-          this.penalize = res['record'];
-        },
-        err => {
-          this.loading = false;
-          console.log(err)
-          this.penalize = [];
-          this.userService.generalToastSh(err.error.msg);
-        }
-      );
+     return this.http.post(environment.apiBaseUrl + '/this-month-penalty', data);
 
     }
 

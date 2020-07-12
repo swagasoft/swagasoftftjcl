@@ -46,22 +46,10 @@ export class LoginPage implements OnInit {
       this.router.navigate(['/distributions']);
    
         
-    }, error => {
+    }, err => {
       this.loading = false;
-      let errorMessage = '';
-      let message = error.error;
-      if(error.error ){
-        const message  = error.error;
-        this.userService.generalToast(message);
-        console.log('LOGIN ERROR');
-        console.log(error.statusText);
-      }else{
-        const messageErr = error.statusText;
-        // this.userService.presentToast(messageErr);
-        console.log('server error');
-      }
-     
-      // this.loginToast(message);
+      let message = (err.error.message) ? err.error.message : 'Internet connnection failed!';
+      this.userService.generalToast(message);
     });
   }
 

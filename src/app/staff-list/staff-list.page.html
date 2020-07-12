@@ -69,10 +69,15 @@
       </ion-card>
        </ion-col>
 
-       <ion-chip color=dark outline>{{staffList.length}} </ion-chip>
+       <ion-chip color="dark" outline>Total : {{staffList.length}} </ion-chip>
 
-      <ion-card *ngFor="let item of staffList"
+       <ion-row>
+         <ion-col  size="12" size-lg="6" size-md="6" size-xs="12"
+         size-sm="6" size-xl="6" *ngFor="let item of staffList; index as i">
+
+      <ion-card 
        class=" primary-color-dark text-white" color="light">
+       <ion-chip color="light" class="font-weight-bold ">{{i+1}} </ion-chip>
         <h5 class="text-center text-white font-weight-bold 
         text-uppercase pt-2">{{item.fullname}} </h5>
         <ion-row>
@@ -130,6 +135,8 @@
           <ion-col> <small>{{item.admin}}  </small> </ion-col>
         </ion-row>
       </ion-card>
+    </ion-col>
+  </ion-row>
     </div>
   <!-- end staff list  -->
 
