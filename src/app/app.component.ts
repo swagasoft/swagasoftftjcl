@@ -17,6 +17,7 @@ export class AppComponent {
 app_user : any;
 showSlash = true;
 userRole : any;
+dark = false;
 
   public appPages = [
     {

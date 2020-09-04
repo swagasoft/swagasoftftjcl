@@ -1,5 +1,5 @@
 <ion-header> 
-  <ion-toolbar color="dark">
+  <ion-toolbar color="light">
     
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
@@ -11,11 +11,14 @@
 </ion-header>
 
 <ion-content>
-  <ion-card class="p-1 aqua-gradient tezt-white">
+  <ion-card class="p-1 aqua-gradient ">
     <!-- select filter -->
     <ion-item color="light" >
-      <ion-label color="dark" class="text-center">select outlet</ion-label>
+      <ion-label color="dark" class="text-center"></ion-label>
       <select (change)="selectOutlet($event)"  >
+        <option value="none" selected disabled hidden> 
+          SELECT OUTLET 
+      </option> 
         <option *ngFor="let item of allOutlet" [value]="item._id">{{item.code}}</option>
        
       </select>

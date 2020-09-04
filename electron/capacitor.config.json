@@ -1,14 +1,15 @@
 {
-  "appId": "swagasoft.farm2juice",
-  "appName": "farm2juice",
+  "appId": "farmtojuice.swagasoft",
+  "appName": "FarmtoJuice",
   "bundledWebRuntime": false,
+  "linuxAndroidStudioPath": "/snap/bin/android-studio",
   "npmClient": "npm",
   "webDir": "www",
   "plugins": {
-    "SplashScreen":{
-      "launchShowDuration":"30000",
-      "launchAutoHide":"false",
-      "showSpinner":"true",
+    "SplashScreen": {
+      "launchShowDuration": "3000",
+      "launchAutoHide": "false",
+      "showSpinner": "true",
       "FadeSplashScreenDuration": "100"
     }
   },
@@ -20,14 +21,12 @@
       "BackupWebStorage": "none",
       "webviewbounce": "false",
       "UiWebViewBounce": "false",
-      "AutoHideSplashScreen": "false",
-      "launchShowDuration":"30000",
-      "launchAutoHide":"false",
+      "AutoHideSplashScreen": "true",
       "SplashMaintainAspectRatio": "true",
-      "FadeSplashScreenDuration": "100",
-      "SplashShowOnlyFirstTime": "true",
-      "SplashScreen": "screen",
-      "SplashScreenDelay": "30000"
+      "FadeSplashScreenDuration": "300",
+      "SplashShowOnlyFirstTime": "false",
+      "SplashScreen": "none",
+      "SplashScreenDelay": "3000"
     }
   }
 }

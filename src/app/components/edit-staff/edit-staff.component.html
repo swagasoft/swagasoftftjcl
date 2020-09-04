@@ -1,0 +1,148 @@
+<ion-header>
+  <ion-button color="light" (click)="closeModal()">
+    <button >
+      <ion-icon color="danger" name="close"></ion-icon>
+    </button>
+  </ion-button>
+</ion-header>
+
+
+<ion-content>
+
+  
+  <div>
+    <ion-card  class="aqua-gradient text-white">
+      <ion-card-header class="text-center text-uppercase font-weight-bold">EDIT {{model.fullname}} </ion-card-header>
+      <ion-card-content>
+        <form #staffForm="ngForm"  
+         (submit)="staffForm.valid && updateStaff(staffForm)">
+          
+          <ion-col >
+            <ion-item >
+              <ion-label position="floating">fullname</ion-label>
+              <ion-input  type="text" #fullname="ngModel" name="fullname" 
+              [(ngModel)]="model.fullname" required="true"></ion-input>
+          
+            </ion-item>
+            <small class="error text-danger" *ngIf="staffForm.submitted && !fullname.value"> fullname is required</small>
+          </ion-col>
+
+        <ion-row>
+          <ion-col>
+            <ion-item class="bg-dark">
+              <div  class="text-input mb-1">
+              <ion-label position="floating">phone</ion-label>
+              <ion-input  type="text" #phone="ngModel" name="phone" 
+              [(ngModel)]="model.phone"
+                autocomplete="off" required="true"></ion-input>
+          </div>
+            </ion-item>
+            <small class="error text-danger" *ngIf="staffForm.submitted && !phone.value"> phone is required</small>
+          </ion-col>
+          <ion-col>
+            <ion-item >
+              <ion-label position="floating">start date</ion-label>
+              <ion-input  type="text" #startDate="ngModel" name="startDate" 
+              [(ngModel)]="model.startDate" placeholder="03-05-2020"
+                autocomplete="off" ></ion-input>
+         
+            </ion-item>
+          </ion-col>
+
+
+        </ion-row>
+          <ion-col>
+            <ion-item class="bg-dark">
+              <div  class="text-input mb-1">
+              <ion-label position="floating">address</ion-label>
+              <ion-input  type="text" #address="ngModel" name="address" 
+              [(ngModel)]="model.address"
+                autocomplete="off" required="true"></ion-input>
+          </div>
+            </ion-item>
+            <small class="error text-danger" *ngIf="staffForm.submitted && !fullname.value"> address is required</small>
+          </ion-col>
+
+          <ion-row>
+            <ion-col>
+              <ion-item class="bg-dark">
+                <div  class="text-input mb-1">
+                <ion-label position="floating">bank</ion-label>
+                <ion-input  type="text" #bank="ngModel" name="bank" 
+                [(ngModel)]="model.bankAccountName"
+                  autocomplete="off" required="true"></ion-input>
+            </div>
+              </ion-item>
+               <small class="error text-danger" *ngIf="staffForm.submitted && !bank.value"> bank is required</small>
+             </ion-col>
+             <ion-col>
+              <ion-item class="bg-dark">
+                <div  class="text-input mb-1">
+                <ion-label position="floating">bank account number</ion-label>
+                <ion-input  type="number" #accountNumber="ngModel" name="bankNumber" 
+                [(ngModel)]="model.bankNumber"
+                  autocomplete="off" required="true"></ion-input>
+            </div>
+              </ion-item>
+               <small class="error text-danger" *ngIf="staffForm.submitted && !accountNumber.value"> required</small>
+             </ion-col>
+          </ion-row>
+
+          <ion-col>
+            <ion-item class="bg-dark">
+              <div  class="text-input mb-1">
+              <ion-label position="floating"> bank account fullname</ion-label>
+              <ion-input  type="text" #bankName="ngModel" name="bankName" 
+              [(ngModel)]="model.bankName"
+                autocomplete="off" required="true"></ion-input>
+          </div>
+            </ion-item>
+             <small class="error text-danger" *ngIf="staffForm.submitted && !bankName.value">required</small>
+           </ion-col>
+
+            <ion-col>
+              <!-- select options -->
+            <ion-card>
+              <ion-item class="bg-dark">
+              <ion-label class="text-center">bank account type</ion-label>
+              <ion-select [value]="model.bankAccountType"   name="accountType"
+               (ngModelChange)="accounttype($event)" #accountType="ngModel"
+              [(ngModel)]="model.bankAccountType">
+                <ion-select-option  value="SAVINGS">SAVINGS</ion-select-option>
+                <ion-select-option  value="CURRENT">CURRENT</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <small class="error text-danger" *ngIf="!model.bankAccountType">account is required</small>
+          </ion-card>
+             </ion-col>
+
+           
+
+             <ion-col >
+              <ion-item color="light" >
+                <ion-label color="dark" class="text-center">SELECTED STATE</ion-label>
+                <ion-select [value]="model.location"  #location name="location"
+                (ngModelChange)="selectLocation($event)" [(ngModel)]="model.location">
+                  <ion-select-option *ngFor="let item of staffService.nigeriaState"
+                  [value]="item.value">{{item.name}} </ion-select-option>
+               
+                </ion-select>
+              </ion-item>
+             </ion-col>
+
+            
+             <!--  -->
+              <ion-button type="submit" expand="block" fill="outline" >
+                submit
+              </ion-button>
+        </form>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+
+    <!-- loading.. -->
+<div *ngIf="loading" class="spinner">
+  <div class="loader"></div>
+</div>
+</ion-content>

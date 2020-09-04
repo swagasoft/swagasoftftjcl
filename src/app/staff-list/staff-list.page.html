@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar color="dark">
+  <ion-toolbar color="light">
     
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
@@ -12,14 +12,39 @@
 
 <ion-content>
 
+<ion-toolbar>
 
+  <ion-segment (ionChange)="segmentChanged($event)" scrollable value="heart">
+    <ion-segment-button value="search">
+      <ion-icon name="search"></ion-icon>
+    </ion-segment-button>
+    <ion-segment-button value="department">
+     <ion-chip outline><div>department</div> </ion-chip>
+    </ion-segment-button>
+    <ion-segment-button value="">
+     <small>expand</small> <ion-toggle (ionChange)="expandPanel($event)" ></ion-toggle>
+    </ion-segment-button>
+    <ion-segment-button value="star">
+      <ion-chip outline (click)="getAllStaff()"> <div> all staff</div> </ion-chip>
+    </ion-segment-button>
+    <ion-segment-button value="add" >
+      <ion-chip (click)="addStaff()" outline> <div>add</div> </ion-chip>
+    </ion-segment-button>
+    <!-- <ion-segment-button value="globe">
+      <ion-icon name="globe"></ion-icon>
+    </ion-segment-button>
+    <ion-segment-button value="basket">
+      <ion-icon name="basket"></ion-icon>
+    </ion-segment-button> -->
+  </ion-segment>
+</ion-toolbar>
 
-  <ion-fab *ngIf="showList"
+  <!-- <ion-fab *ngIf="showList"
      vertical="top" horizontal="end" slot="fixed">
     <ion-fab-button (click)="addStaff()" [disabled]="userService.getUserRole() =='ADMIN' "   color="success">
       <ion-icon  name="add"></ion-icon>
     </ion-fab-button>
-  </ion-fab>
+  </ion-fab> -->
 
   <ion-fab *ngIf="showform" (click)="cancelForm()"  vertical="top" horizontal="end" slot="fixed">
     <ion-fab-button   color="danger">
@@ -30,29 +55,26 @@
   <!-- staff list  -->
     <div *ngIf="showList" class="pt-5">
 
-         <!-- search by name -->
-<ion-card>
-  <ion-row>
+      
+     
+
+         
+  <ion-list *ngIf="segment =='search'">
     <ion-item>
     <ion-input name="search" #search placeholder="search by name"
     (keydown.enter)="searchStaff()"  [(ngModel)]="searchModel.search"></ion-input> 
-    <ion-button color="success" size="medium" (click)="searchStaff()" [disabled]="!search.value">
+    <ion-button size="small" (click)="searchStaff()" [disabled]="!search.value">
       <ion-icon name="search" size="large"></ion-icon>
     </ion-button> 
   </ion-item>
-  <ion-col>
-    <ion-button color="success" size="small" (click)="getAllStaff()">all staff</ion-button>
-  </ion-col>
-  </ion-row>
-  
-</ion-card>
+  </ion-list>
 
-      <ion-col>
-        <!-- select options -->
-        <ion-card>
+
+
+      <ion-list *ngIf="segment =='department'">
           <ion-item color="light">
           <ion-label class="text-center">select by department</ion-label>
-          <ion-select select="success" interface="popover" name="accountType"
+          <ion-select select="success" name="accountType"
            (ngModelChange)="selectStaffByDepartment($event)"  [(ngModel)]="model.department"
          >
          <ion-select-option  value="ADMINISTRATOR">ADMINISTRATOR</ion-select-option>
@@ -66,8 +88,7 @@
          <ion-select-option  value="MANAGEMENT">MANAGEMENT</ion-select-option>
           </ion-select>
         </ion-item>
-      </ion-card>
-       </ion-col>
+       </ion-list>
 
        <ion-chip color="dark" outline>Total : {{staffList.length}} </ion-chip>
 
@@ -77,19 +98,30 @@
 
       <ion-card 
        class=" primary-color-dark text-white" color="light">
-       <ion-chip color="light" class="font-weight-bold ">{{i+1}} </ion-chip>
+       <!-- <ion-chip color="light" class="font-weight-bold ">{{i+1}} </ion-chip> -->
+       <div>start: {{item.startDate}} </div>
+        
         <h5 class="text-center text-white font-weight-bold 
-        text-uppercase pt-2">{{item.fullname}} </h5>
+        text-uppercase pt-1">{{item.fullname}} </h5>
         <ion-row>
           <ion-col>
-            <small class="">phone</small>
-            <div>{{item.phone}}</div>
+            <div> <ion-icon slot="start" name="call"></ion-icon> {{item.phone}}</div>
           </ion-col>
            <ion-col>
-            <small class="">Department</small>
-            <div>{{item.department}}</div>
+            <div> <ion-icon slot="start" name="walk"></ion-icon> {{item.department}}</div>
           </ion-col>
+          <ion-col>
+            <ion-icon   *ngIf="userService.getUserRole() == 'DIRECTOR' ||
+            userService.getUserRole() == 'DILIGENT'"
+            (click)="deleteStaff(item._id, item.fullname)"
+           color="danger"  size="large" name="trash"></ion-icon>
+          </ion-col>
+          <ion-button  *ngIf="userService.getUserRole() == 'DIRECTOR' ||
+          userService.getUserRole() == 'DILIGENT'"
+           size="small" shape="round"(click)="editprompt(item)">edit</ion-button>
         </ion-row>
+
+        <div *ngIf="expand">
 
         <ion-row>
           <ion-col>
@@ -112,28 +144,25 @@
         
           </ion-col>
           <ion-col>
-            <ion-button size="small" color="light" 
+            <ion-button shape="round" size="small" color="light" 
             (click)="penalizeStaff(item._id, item.fullname, item.department)">
               <ion-icon 
               size="small" name="cut"></ion-icon>
             </ion-button>
           </ion-col>
           <ion-col>
-            <ion-button (click)="salaryAdAlert(item._id, item.fullname, item.department)"
+            <ion-button shape="round" (click)="salaryAdAlert(item._id, item.fullname, item.department)"
             color="light" size="small">Salary_Adv</ion-button>
-          </ion-col>
-          <ion-col>
-           
-              <ion-icon  *ngIf="userService.getUserRole() == 'DIRECTOR' ||
-               userService.getUserRole() == 'DILIGENT'"
-               (click)="deleteStaff(item._id, item.fullname)"
-              color="danger"  size="large" name="trash"></ion-icon>
           </ion-col>
          
         </ion-row>
         <ion-row>
-          <ion-col> <small>{{item.admin}}  </small> </ion-col>
+          <ion-col> <small> <ion-icon slot="start" name="man"></ion-icon> {{item.admin}}  </small> </ion-col>
+          <ion-col> <div> <ion-icon slot="start" name="compass"></ion-icon> {{item.location}}  </div> </ion-col>
         </ion-row>
+        <small> <ion-icon slot="start" name="home"> </ion-icon> {{item.address}} </small>
+        </div>
+
       </ion-card>
     </ion-col>
   </ion-row>
@@ -149,8 +178,8 @@
          (submit)="staffForm.valid && submitStaff(staffForm)">
           
           <ion-col >
-            <ion-item class="bg-dark">
-              <div  class="text-input mb-1">
+            <ion-item >
+              <div  >
               <ion-label position="floating">fullname</ion-label>
               <ion-input  type="text" #fullname="ngModel" name="fullname" 
               [(ngModel)]="model.fullname"
@@ -160,6 +189,7 @@
             <small class="error text-danger" *ngIf="staffForm.submitted && !fullname.value"> fullname is required</small>
           </ion-col>
 
+         <ion-row>
           <ion-col>
             <ion-item class="bg-dark">
               <div  class="text-input mb-1">
@@ -173,58 +203,59 @@
           </ion-col>
 
           <ion-col>
-            <ion-item class="bg-dark">
-              <div  class="text-input mb-1">
+            <ion-item>
+              <ion-label position="floating">start date</ion-label>
+              <ion-input  type="text" #startDate="ngModel" name="startDate" 
+              [(ngModel)]="model.startDate" placeholder="03-05-2020"
+                autocomplete="off" required="true"></ion-input>
+            </ion-item>
+          </ion-col>
+         </ion-row>
+
+           <ion-col>
+            <ion-item>
               <ion-label position="floating">address</ion-label>
               <ion-input  type="text" #address="ngModel" name="address" 
               [(ngModel)]="model.address"
                 autocomplete="off" required="true"></ion-input>
-          </div>
             </ion-item>
             <small class="error text-danger" *ngIf="staffForm.submitted && !fullname.value"> address is required</small>
-          </ion-col>
+         
+           </ion-col>
 
           <ion-row>
             <ion-col>
-              <ion-item class="bg-dark">
-                <div  class="text-input mb-1">
+              <ion-item >
                 <ion-label position="floating">bank</ion-label>
                 <ion-input  type="text" #bank="ngModel" name="bank" 
                 [(ngModel)]="model.bank"
                   autocomplete="off" required="true"></ion-input>
-            </div>
               </ion-item>
                <small class="error text-danger" *ngIf="staffForm.submitted && !bank.value"> bank is required</small>
              </ion-col>
+
              <ion-col>
-              <ion-item class="bg-dark">
-                <div  class="text-input mb-1">
+              <ion-item >
                 <ion-label position="floating">account number</ion-label>
                 <ion-input  type="number" #accountNumber="ngModel" name="accountNumber" 
-                [(ngModel)]="model.accountNumber"
-                  autocomplete="off" required="true"></ion-input>
-            </div>
+                [(ngModel)]="model.accountNumber" required></ion-input>
               </ion-item>
                <small class="error text-danger" *ngIf="staffForm.submitted && !accountNumber.value"> required</small>
              </ion-col>
           </ion-row>
 
           <ion-col>
-            <ion-item class="bg-dark">
-              <div  class="text-input mb-1">
+            <ion-item >
               <ion-label position="floating"> bank account fullname</ion-label>
               <ion-input  type="text" #bankName="ngModel" name="bankName" 
-              [(ngModel)]="model.bankName"
-                autocomplete="off" required="true"></ion-input>
-          </div>
+              [(ngModel)]="model.bankName" required="true"></ion-input>
             </ion-item>
              <small class="error text-danger" *ngIf="staffForm.submitted && !bankName.value">required</small>
-           </ion-col>
 
-            <ion-col>
+          </ion-col>
               <!-- select options -->
             <ion-card>
-              <ion-item class="bg-dark">
+              <ion-item >
               <ion-label class="text-center">account type</ion-label>
               <ion-select select="success" interface="popover" name="accountType"
                (ngModelChange)="accounttype($event)" #accountType="ngModel"
@@ -235,7 +266,6 @@
             </ion-item>
             <small class="error text-danger" *ngIf="!model.accountType">account is required</small>
           </ion-card>
-             </ion-col>
 
              <ion-col>
               <!-- select options -->
@@ -260,8 +290,18 @@
           </ion-card>
              </ion-col>
 
-             <ion-row class="pt-3" 
-             >
+              <ion-item color="light" >
+                <ion-label color="dark" class="text-center">SELECT STATE</ion-label>
+                <ion-select   #location name="location"
+                (ngModelChange)="selectLocation($event)" [(ngModel)]="model.location">
+                  <ion-select-option *ngFor="let item of staffService.nigeriaState"
+                  [value]="item.value">{{item.name}} </ion-select-option>
+               
+                </ion-select>
+              </ion-item>
+
+            
+             <ion-row class="pt-3">
               <ion-button   *ngIf="model.department  ||  model.accountType  "
               color="success" type="submit">SUBMIT</ion-button>
               <ion-button type="reset"(click)="resetForm()" >RESET</ion-button>

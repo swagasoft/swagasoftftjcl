@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar color="dark">
+  <ion-toolbar color="light">
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
@@ -79,7 +79,6 @@
      </ion-row>
       <ion-row class="font-weight-bold ">
         <ion-col>Location: {{item.location}} </ion-col>
-        <ion-col>Axis : {{item.axis}} </ion-col>
         <ion-col>Code : {{item.code}} </ion-col>
       </ion-row>
       <ion-card-title class="text-uppercase text-white"> {{i+1}}  - {{item.name}}</ion-card-title>
@@ -138,16 +137,16 @@
       
       <ion-row>
         <ion-col>
-          <ion-item>
-            <div  class="text-input mb-1">
-            <ion-label position="floating">location</ion-label>
-            <ion-input class="p-0 m-0"  type="text" #location="ngModel" name="location" 
-            [(ngModel)]="model.location" 
-              autocomplete="off" required="true"  ></ion-input>
-        </div>
+          <ion-item color="light" >
+            <ion-label color="dark" class="text-center">LOCATION</ion-label>
+            <ion-select select="dark" [value]="model.location" required #location name="location"
+            (ngModelChange)="selectChange($event)" [(ngModel)]="modelSel.filterOptions">
+            <ion-select-option *ngFor="let item of staffService.nigeriaState"
+            [value]="item.value">{{item.name}} </ion-select-option>
+            </ion-select>
           </ion-item>
-          <small class="error text-danger" *ngIf="outletForm.touched && !location.value">enter location</small>
-
+          <small class="error text-danger" *ngIf="outletForm.touched && !model.location"> location must be selected</small>
+        
         </ion-col>
         <ion-col>
           <ion-item>
@@ -163,28 +162,6 @@
         </ion-col>
       </ion-row>
 
-      
-      
-      <ion-card class="p-3">
-        <!-- select filter --> 
-        <ion-item color="light" >
-          <ion-label color="dark" class="text-center">select axis</ion-label>
-          <ion-select select="dark" interface="popover" required #axis name="axis"
-          (ngModelChange)="selectChange($event)" [(ngModel)]="modelSel.filterOptions">
-            <ion-select-option class="text-dark" value="OWERRI">Owerri</ion-select-option>
-            <ion-select-option color="success" value="PORT">Port Harcourt</ion-select-option>
-            <ion-select-option color="success" value="ENUGU">Enugu</ion-select-option>
-            <ion-select-option color="success" value="WARRI">Warri</ion-select-option>
-            <ion-select-option color="success" value="ORE">Ore</ion-select-option>
-            <ion-select-option color="success" value="BAYELSA">Bayelsa</ion-select-option>
-            <ion-select-option color="success" value="DIRECTOR">Abuja</ion-select-option>
-          </ion-select>
-        </ion-item>
-        <small class="error text-danger" *ngIf="outletForm.touched && !model.axis"> axis must be selected</small>
-      </ion-card>
-
-      <!-- prices row -->
-     
       <ion-row>
         <ion-col>
           <ion-item>
@@ -417,13 +394,13 @@
       
       <ion-row>
         <ion-col>
-          <ion-item>
-            <div  class="text-input mb-1">
-            <ion-label position="floating">location</ion-label>
-            <ion-input class="p-0 m-0"  type="text" #location="ngModel" name="location" 
-            [(ngModel)]="editModel.location" 
-              autocomplete="off" required="true"  ></ion-input>
-        </div>
+          <ion-item color="light" >
+            <ion-label color="dark" class="text-center">LOCATION</ion-label>
+            <ion-select select="dark" [value]="editModel.location" required #location name="location"
+            (ngModelChange)="editModelLocation($event)" [(ngModel)]="editModel.location">
+            <ion-select-option *ngFor="let item of staffService.nigeriaState"
+            [value]="item.value">{{item.name}} </ion-select-option>
+            </ion-select>
           </ion-item>
           <small class="error text-danger" *ngIf="editForm.touched && !location.value">enter location</small>
 

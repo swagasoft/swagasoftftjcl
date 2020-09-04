@@ -27,12 +27,10 @@
   <preference name="BackupWebStorage" value="none" />
   <preference name="webviewbounce" value="false" />
   <preference name="UiWebViewBounce" value="false" />
-  <preference name="AutoHideSplashScreen" value="false" />
-  <preference name="launchShowDuration" value="30000" />
-  <preference name="launchAutoHide" value="false" />
+  <preference name="AutoHideSplashScreen" value="true" />
   <preference name="SplashMaintainAspectRatio" value="true" />
-  <preference name="FadeSplashScreenDuration" value="100" />
-  <preference name="SplashShowOnlyFirstTime" value="true" />
-  <preference name="SplashScreen" value="screen" />
-  <preference name="SplashScreenDelay" value="30000" />
+  <preference name="FadeSplashScreenDuration" value="300" />
+  <preference name="SplashShowOnlyFirstTime" value="false" />
+  <preference name="SplashScreen" value="none" />
+  <preference name="SplashScreenDelay" value="3000" />
 </widget>

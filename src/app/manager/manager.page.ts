@@ -90,14 +90,15 @@ export class ManagerPage implements OnInit {
       response => {
         this.loading = false;
         let header = 'success';
-        this.alertService.generalAlert(header, response);
+        console.log(response);
+        this.alertService.generalAlert(header, response['message']);
         this.getAllUsers();
 
       },
       err => {
         this.loading = false;
         let head = 'error';
-        this.alertService.generalToast(head, err.error);
+        this.alertService.generalToast(head, err.error.message);
       }
     );
 

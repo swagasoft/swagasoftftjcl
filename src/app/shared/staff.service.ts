@@ -13,7 +13,47 @@ import { AlertController, ToastController } from '@ionic/angular';
 export class StaffService {
 penaltySaver = [];
 staffSaver = [];
+nigeriaState =[
+  {value :"ABIA", name: "ABIA"},
+  {value :"ABUJA", name: "ABUJA"},
+  {value:"ADAMAWA",name:"ADAMAWA"},
+  {value:"AKWA_IBOM", name:"AKWA IBOM"},
+  {value:"ANAMBRA", name:"ANAMBRA"},
+  {value:"BAUCHI", name:"BAUCHI"},
+  {value:"BAYELSA", name:"BAYELSA"},
+  {value:"BENUE", name:"BENUE"},
+  {value:"BORNO", name:"BORNO"},
+  {value:"CROSS_RIVER", name:"CROSS RIVER"},
+  {value:"DELTA", name:"DELTA"},
+  {value:"EBONYI", name:"EBONYI"},
+  {value:"EDO", name:"EDO"},
+  {value:"EKITI", name:"EKITI"},
+  {value:"ENUGU", name:"ENUGU"},
+  {value:"GOMBE", name:"GOMBE"},
+  {value:"IMO", name:"IMO"},
+  {value:"JIGAWA", name:"JIGAWA"},
+  {value:"KADUNA", name:"KADUNA"},
+  {value:"KANO", name:"KANO"},
+  {value:"KATSINA", name:"KATSINA"},
+  {value:"KEBBI", name:"KEBBI"},
+  {value:"KOGI", name:"KOGI"},
+  {value:"KWARA", name:"KWARA"},
+  {value:"LAGOS", name:"LAGOS"},
+  {value:"NASARAWA", name:"NASARAWA"},
+  {value:"NIGER", name:"NIGER"},
+  {value:"OGUN", name:"OGUN"},
+  {value:"ONDO", name:"ONDO"},
+  {value:"OSUN", name:"OSUN"},
+  {value:"OYO", name:"OYO"},
+  {value:"PLATEAU", name:"PLATEAU"},
+  {value:"RIVERS", name:"RIVERS"},
+  {value:"SOKOTO", name:"SOKOTO"},
+  {value:"SOKOTO", name:"SOKOTO"},
+  {value:"TARABA", name:"TARABA"},
+  {value:"YOBE", name:"YOBE"},
+  {value:"ZAMFARA", name:"ZAMFARA"},
 
+]
 
 noAuthHeader = {headers: new HttpHeaders({NoAuth: 'True'})};
 AuthHeader = {headers: new HttpHeaders().set('Authorization',
@@ -34,6 +74,10 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
     }
     submitStaff(form){
       return this.http.post(environment.apiBaseUrl +'/submit-staff', form);
+    }
+
+    updateStaff(staff){
+      return this.http.put(environment.apiBaseUrl +'/update-stafe', staff);
     }
 
     deleteTaff(id){

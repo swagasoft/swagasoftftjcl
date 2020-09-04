@@ -1,14 +1,20 @@
-<ion-app>
+<ion-app [class.dark-theme]="dark">
 
   <ion-split-pane when="md"  contentId="main-content">
 <ion-menu [enable]="userService.isLogedIn()"  contentId="main-content" type="overlay">
   <ion-header>
-    <ion-toolbar color="dark">
-        <small class="p-5 pt-2 pl-1 text-uppercase" [routerLink]="['/setting']"
-        >user - {{userService.appUser}} </small> <br>
-        <small class="p-5 pl-1 text-uppercase" [routerLink]="['/setting']"
-        >MY ROLE - {{userService.role}} </small> <br>
-   
+    <ion-toolbar color="light">
+        
+       <ion-menu-toggle>
+         <ion-tem color="medium" class="ion-padding"> 
+          <small class="p-5 pt-2 pl-1 text-uppercase" [routerLink]="['/setting']"
+          >user - {{userService.appUser}} </small> <br>
+          <small class="p-5 pl-1 text-uppercase" [routerLink]="['/setting']"
+          >MY ROLE - {{userService.role}} </small> <br>
+     
+         </ion-tem>
+       </ion-menu-toggle>
+
             <ion-row class="ml-5">
               <ion-col class="ml-5">
                 <div #bal class="rubberBand animated infinite" (click)="userService.refreshDetails()">
@@ -19,42 +25,58 @@
     </ion-toolbar>
   </ion-header>
   <ion-content > 
-    <ion-list color="dark">
-      <ion-list-header color="dark">management</ion-list-header>
+    <ion-list color="light">
+      <ion-list-header color="light" >MANAGEMENT</ion-list-header>
       <ion-menu-toggle  auto-hide="false" *ngFor="let p of appPages">
-        <ion-item color="dark" [routerDirection]="'root'" [routerLink]="[p.url]" routerLinkActive="router-link-active">
+        <ion-item color="light" [routerDirection]="'root'" [routerLink]="[p.url]" routerLinkActive="router-link-active">
           <ion-icon slot="start" [name]="p.icon"></ion-icon>
           <ion-label>
             {{p.title}}
           </ion-label>
         </ion-item>
       </ion-menu-toggle>
+      <ion-item color="light">
+        <ion-icon slot="start" name="moon"></ion-icon>
+        <ion-label>
+          Dark Mode
+        </ion-label>
+        <ion-toggle [(ngModel)]="dark"></ion-toggle>
+      </ion-item>
     </ion-list>
-    <ion-list color="dark">
-      
-      <ion-list-header color="dark">director</ion-list-header>
-        <ion-item  color="dark"   [routerLink]="['/expense-two']" routerLinkActive="router-link-active">
+
+    <ion-list color="light">
+      <ion-list-header color="light">DIRECTOR</ion-list-header>
+       <ion-menu-toggle>
+        <ion-item  color="light"   [routerLink]="['/expense-two']" routerLinkActive="router-link-active">
           <ion-icon name="list"></ion-icon>
           <ion-label  class="ml-4">EXPENSE 2</ion-label>
         </ion-item>
+       </ion-menu-toggle>
       
-          <ion-item color="dark" 
-            [routerLink]="['//pay-roll']" routerLinkActive="router-link-active">
-            <ion-icon name="cash"></ion-icon>
-            <ion-label  class="ml-4"> PAY ROLL</ion-label>
-          </ion-item>
-        <ion-item color="dark" 
-          [routerLink]="['/manager']" routerLinkActive="router-link-active">
-          <ion-icon name="build"></ion-icon>
-          <ion-label  class="ml-4">APP USERS</ion-label>
-        </ion-item>
+       <ion-menu-toggle>
+        <ion-item color="light" 
+        [routerLink]="['//pay-roll']" routerLinkActive="router-link-active">
+        <ion-icon name="cash"></ion-icon>
+        <ion-label  class="ml-4"> PAY ROLL</ion-label>
+      </ion-item>
+       </ion-menu-toggle>
+         
+       <ion-menu-toggle>
+        <ion-item color="light" 
+        [routerLink]="['/manager']" routerLinkActive="router-link-active">
+        <ion-icon name="build"></ion-icon>
+        <ion-label  class="ml-4">APP USERS</ion-label>
+      </ion-item>
+       </ion-menu-toggle>
      
     </ion-list>
     <ion-list id="labels-list">
-      <ion-item  color="dark" (click)="logout()" tappable >
-        <ion-icon color="light" name="power"></ion-icon>
-        <ion-label  class="ml-4">LOGOUT</ion-label>
-      </ion-item>
+      <ion-menu-toggle>
+        <ion-item  color="light" (click)="logout()" tappable >
+          <ion-icon  name="power"></ion-icon>
+          <ion-label  class="ml-4">LOGOUT</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
   </ion-list>
   </ion-content>
 </ion-menu>

@@ -22,6 +22,7 @@ export class ExpenseComponent implements OnInit , OnDestroy {
   myDayAndMonth:any  = new Date();
   expenseSub: Subscription;
   lastCreditSub: Subscription;
+  segment = null;
 
   constructor(public userService: UserServiceService, public modalController: ModalController,
               public alertController: AlertController) {
@@ -71,9 +72,12 @@ showList = true;
   ngOnInit() {
 this.getBalance();
 this.findLastCredit();
-
-
   }
+
+  segmentChanged(event){
+    this.segment = event.target.value;
+  }
+
   ngOnDestroy() {
     this.lastCreditSub.unsubscribe();
     this.expense = [];
@@ -81,6 +85,8 @@ this.findLastCredit();
     filterOptions: '',
     search : ''
   };
+
+ 
 
     this.expenseModel = {
     date : Date.now(),
@@ -119,8 +125,8 @@ this.findLastCredit();
            this.loading = false;
            console.log(err);
            this.expense = [];
-           let message = (err.error.msg) ? err.error.msg : 'Internet connnection failed!';
-           this.userService.generalToastSh(message);
+          //  let message = (err.error.msg) ? err.error.msg : 'Internet connnection failed!';
+           this.userService.generalToastSh(err.error.msg);
          }
         );
     }
@@ -143,8 +149,8 @@ this.findLastCredit();
              console.log(err);
              this.refresherRef.complete();
              this.expense = [];
-             let message = (err.error.message) ? err.error.message : 'Internet connnection failed!';
-             this.userService.generalToastSh(message);
+            //  let message = (err.error.message) ? err.error.message : 'Internet connnection failed!';
+             this.userService.generalToastSh(err.error.msg);
            }
           );
       
@@ -286,7 +292,7 @@ this.findLastCredit();
     this.userService.getBalance().subscribe(
       res => {
         this.loading = false;
-        this.refresherRef.complete();
+        // this.refresherRef.complete();
         console.log(res['balance']['0']['balance']);
         this.balance = res['balance']['0']['balance'];
       },
@@ -408,6 +414,10 @@ this.findLastCredit();
             text: 'Confirm',
             cssClass : 'success',
             handler: (val) => {
+              console.log(val);
+              if(val.amount < 0){
+                return this.userService.generalToast("INVALID AMOUNT, PLEASE TRY AGAIN!");
+              }
               this.loading = true;
               // give a name to object;
               val.name = 'BALANCE';

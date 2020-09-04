@@ -46,12 +46,20 @@
      <ion-col>
       <h6>  {{item.balance | currency:'₦'}} </h6>
      </ion-col>
+
     
     <ion-col >
-      <ion-button color="light"  [disabled]="userService.getUserRole() != 'DIRECTOR'">
+      <!-- <ion-button color="light"  [disabled]="userService.getUserRole() != 'DIRECTOR'">
         <ion-icon size="large"
        (click)="delete(item._id)" color="danger" name="trash"></ion-icon>
+      </ion-button> -->
+
+      <ion-button (click)="deleteRecord(item._id)" color="light"  [disabled]="userService.getUserRole() != 'DIRECTOR'">
+        <ion-icon size="large"
+        color="danger" name="trash"></ion-icon>
       </ion-button>
+
+
       
     </ion-col>
    </ion-row>

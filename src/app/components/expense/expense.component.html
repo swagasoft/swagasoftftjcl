@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar color="dark">
+  <ion-toolbar color="light">
     
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
@@ -12,45 +12,75 @@
 
 <ion-content>
 
+  <ion-toolbar>
+
+    <ion-segment (ionChange)="segmentChanged($event)" scrollable value="heart">
+      <ion-segment-button value="search">
+        <ion-icon name="search"></ion-icon>
+      </ion-segment-button>
+      <ion-segment-button value="balance">
+       <ion-chip outline><div>balance</div> </ion-chip>
+      </ion-segment-button>
+      <ion-segment-button value="add_expense" >
+        <ion-chip (click)="addExpense()" outline> <div>add expense</div> </ion-chip>
+      </ion-segment-button>
+      <ion-segment-button value="add" >
+        <ion-chip (click)="addBalance()" outline> <div>ADD  ₦</div> </ion-chip>
+      </ion-segment-button>
+
+      <ion-segment-button value="monthly-record" >
+      <ion-item>
+        <ion-chip outline><div> MONTHLY RECORD</div> </ion-chip>
+        <ion-datetime  [pickerOptions]="filter_Month_Year" displayFormat="MMMM YYYY"  [(ngModel)]="myDate" ></ion-datetime>
+      </ion-item>
+      </ion-segment-button>
+
+      <ion-segment-button value="calendar">
+        <ion-icon name="calendar"></ion-icon>
+      </ion-segment-button>
+      <ion-segment-button value="return" >
+        <ion-chip (click)="returnStock()" outline> <div>return expense</div> </ion-chip>
+      </ion-segment-button>
+      <ion-segment-button value="credit" >
+        <ion-chip [routerLink]="['/credit']" outline> <div>credit list</div> </ion-chip>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+
+  
+
+
   <ion-fab 
   vertical="bottom" horizontal="end" slot="fixed">
  <ion-fab-button (click)="doRefresh($event)"   color="primary">
    <ion-icon  name="refresh"></ion-icon>
  </ion-fab-button>
  </ion-fab>
-  <!-- <h6 class="text-center text-dark"> expense records</h6> -->
-  <ion-row>
+  <!-- <h6 class="
+    text-center text-dark"> expense records</h6> -->
+  <ion-row  *ngIf="segment=='balance'">
   <ion-badge *ngIf="balance > 10000"  color="success"><h5 class="font-weight-bold"> Balance : {{balance | currency:'₦'}}</h5> </ion-badge>
   <ion-badge *ngIf="balance < 10000"  color="danger"><h5  class="font-weight-bold"> Balance : {{balance  | currency:'₦'}}</h5> </ion-badge>
-    <ion-button
-    color="success" (click)="addBalance()">ADD  ₦ </ion-button>
   </ion-row>
-  <ion-chip  color="dark" class="font-weight-bold" outline>{{lastCredit?.admin}} </ion-chip>
-  <ion-chip color="dark" class="font-weight-bold" outline>{{lastCredit?.balance  | currency:'₦'}} </ion-chip>
+  <!-- <ion-chip  color="success" class="font-weight-bold" outline>{{lastCredit?.admin}} </ion-chip> -->
+  <ion-badge color="primary" class="font-weight-bold" outline> {{lastCredit?.admin}} + {{lastCredit?.balance  | currency:'₦'}} </ion-badge>
   
+
 
 
   <div *ngIf="!showExpenseInput" >
   <div  class="pt-3">
- 
-<ion-card color="light">
-  <ion-item color="dark">
-    <ion-label  class="ion-text-center font-weight-bold">PICK A MONTH</ion-label>
-    <ion-datetime  [pickerOptions]="filter_Month_Year" displayFormat="MMMM YYYY"  [(ngModel)]="myDate" ></ion-datetime>
-  </ion-item>
-</ion-card>
 
-<!-- search -->
-<ion-row>
-  <ion-col size="12">
+
+  <ion-col *ngIf="segment=='calendar'" size="12">
     <form #dateform="ngForm"   (submit)=" submitDate(dateform)" class="form-inline">
       <div class="form-group">
         <div class="input-group">
           <input class="form-control"  placeholder="YYYY-MM-DD"
                  name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker">
           <div class="input-group-append">
-            <button class="btn btn-outline-secondary" (click)="d.toggle()"
-             type="button"><ion-icon name="apps"></ion-icon> </button>
+            <ion-button (click)="d.toggle()"
+             ><ion-icon name="calendar"></ion-icon> </ion-button>
             <ion-button color="success" [disabled]="!model"
              (click)="submitDate(dateform)" type="submit">
             <ion-icon name="search"></ion-icon></ion-button>
@@ -59,20 +89,16 @@
       </div>
     </form>
   </ion-col>
-  <ion-col size="12">
-    <ion-card class="p-0 m-0 " color="light">
-      <ion-row class="p-0 m-0">
-        <ion-item>
-        <ion-input name="search" #search placeholder="search expense"  [(ngModel)]="searchModel.search"></ion-input> 
-        <ion-button color="success" size="medium" (click)="searchExpense()" [disabled]="!search.value">
-          <ion-icon name="search" size="large"></ion-icon>
-        </ion-button> 
-      </ion-item>
-      </ion-row>
-    </ion-card>
-  
-  </ion-col>
-</ion-row>
+
+
+<ion-col size="12">
+  <ion-item *ngIf="segment=='search'">
+  <ion-input name="search" #search placeholder="search expense"  [(ngModel)]="searchModel.search"></ion-input> 
+  <ion-button  size="small" (click)="searchExpense()" [disabled]="!search.value">
+    <ion-icon name="search" size="large"></ion-icon>
+  </ion-button> 
+</ion-item>
+</ion-col>
 
  
 <!-- 
@@ -181,11 +207,12 @@
   
 
   <!-- add expense -->
-  <div class="pt-5">
-  <ion-card *ngIf="showExpenseInput" class="pt-5 success-color-dark">
+  <div class="pt-3">
+  <ion-card color="success" *ngIf="showExpenseInput" class="pt-5 ">
     <form #expense="ngForm" (keydown.enter)="expense.valid && submitExpense(expense)"
      (submit)="expense.valid && submitExpense(expense)">
       <!--  form data -->
+      <h6 class="text-center"> REGISTER EXPENSE</h6>
       <ion-row>
         <ion-col>
           <ion-item class="bg-dark">
@@ -211,7 +238,7 @@
      
       <ion-row >
         <ion-col>
-          <ion-item class="bg-dark">
+          <ion-item >
             <ion-label position="floating">Item</ion-label>
             <ion-input  type="text" #product="ngModel" name="product" 
             [(ngModel)]="expenseModel.product" required="true"></ion-input>
@@ -220,7 +247,7 @@
         </ion-col>
 
         <ion-col>
-          <ion-item class="bg-dark">
+          <ion-item >
             <ion-label position="floating">Amount</ion-label>
             <ion-input  type="number" #amount="ngModel" name="amount" 
             [(ngModel)]="expenseModel.amountPaid" required="true"></ion-input>
@@ -230,8 +257,8 @@
       </ion-row>
         <ion-col>
           
-          <ion-item class="bg-dark">
-            <textarea rows="2" cols="60" class="m-0 p-0" type="text" #information name="information"
+          <ion-item >
+            <textarea rows="2" cols="100" class="m-0 p-0" type="text" #information name="information"
             clearInput [(ngModel)]="expenseModel.information" placeholder="additional information"
                 required ></textarea>
           </ion-item>
@@ -239,10 +266,11 @@
 </ion-col>
       <!-- end form data -->
         <div class="d-flex justify-content-center">
-          <ion-button type="submit" class="mt-3" [disabled]="amount.value < 0"
-          color="success"> SUBMIT EXPENSE</ion-button>
+          <ion-button type="submit" class="mt-3" fill="outline" [disabled]="amount.value < 0"
+          color="light"> SUBMIT EXPENSE</ion-button>
         </div>
      
+
     </form>
   </ion-card>
 </div>
@@ -263,20 +291,4 @@
 
 
 
-<ion-fab horizontal="start" vertical="bottom" slot="fixed">
-  <ion-fab-button  color="light">
-    <ion-icon name="alert"></ion-icon>
-  </ion-fab-button>
-  <ion-fab-list side="top">
-     <ion-button color="light" [routerLink]="['/credit']">
-     <div>CREDIT RECORD</div>
-    </ion-button>
-     <ion-button color="light" (click)="returnStock()">
-     <div>RETURN</div>
-    </ion-button>
-    <ion-button  color="light"  (click)="addExpense()">
-      <div>ADD EXPENSE</div>
-    </ion-button>
-  </ion-fab-list>
-</ion-fab>
 </ion-content>

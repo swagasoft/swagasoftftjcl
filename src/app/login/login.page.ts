@@ -30,7 +30,7 @@ export class LoginPage implements OnInit {
   ngOnInit() {
   }
 
-  async login(form: any) {
+  async login() {
     console.log('login fire')
     this.loading = true;
     this.userService.login(this.model).subscribe(response => {

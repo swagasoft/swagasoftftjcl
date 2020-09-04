@@ -61,7 +61,7 @@ credit = [];
     );
   }
 
-  delete(id){
+  deleteRecord(id){
     console.log(id);
     this.loading = true;
     this.userService.deleteCredit(id).subscribe(

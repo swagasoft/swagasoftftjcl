@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar color="dark">
+  <ion-toolbar color="light">
     
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
@@ -26,12 +26,11 @@
 </ion-fab-button>
 </ion-fab>
  
- <ion-card color="light">
-  <ion-item color="dark">
+
+  <ion-item color="primary">
     <ion-label  class="ion-text-center font-weight-bold">PICK A MONTH</ion-label>
     <ion-datetime  [pickerOptions]="filter_Month_Year" displayFormat="MMMM YYYY"  [(ngModel)]="myDate" ></ion-datetime>
   </ion-item>
-</ion-card>
 
 
 <!-- add button -->

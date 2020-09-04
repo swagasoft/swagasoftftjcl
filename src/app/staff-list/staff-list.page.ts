@@ -2,7 +2,9 @@ import { UserServiceService } from './../shared/user-service.service';
 import { StaffService } from './../shared/staff.service';
 import { NgForm } from '@angular/forms';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
+import { EditProductionComponent } from '../components/edit-production/edit-production.component';
+import { EditStaffComponent } from '../components/edit-staff/edit-staff.component';
 
 @Component({
   selector: 'app-staff-list',
@@ -15,9 +17,11 @@ showList = true;
 staffList = [];
 loading = true;
 admin: any; 
-
-  constructor(private staffService: StaffService,
+segment = null;
+expand = false;
+  constructor(public staffService: StaffService,
               public userService: UserServiceService,
+              public modalController: ModalController,
               public alertController: AlertController) {
     
    }
@@ -28,6 +32,8 @@ admin: any;
     department : '',
     bank: '',
     bankName: '',
+    location:'',
+    startDate:'',
     address: '',
     accountNumber: '',
     booking: '',
@@ -40,6 +46,15 @@ admin: any;
     search: '',fullname: '', month: null, year : null
     };
 
+
+    segmentChanged(event){
+      this.segment = event.target.value;
+    }
+
+    expandPanel(event){
+      console.log(event);
+      this.expand = event.detail.checked;
+    }
 
   ngOnInit() {
     this.admin = localStorage.getItem('appUser');
@@ -73,6 +88,31 @@ admin: any;
         console.warn(err);
       }
     );
+  }
+
+  async editprompt(item){
+    console.log(item);
+    const alert = await this.alertController.create({
+      header: `Edit ${item.fullname}`,
+      message : `<p class="text-dark">modify staff properties</p>`,
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+          handler: (blah) => {
+            console.log('cancel amount input');
+          }
+        }, {
+          text: 'Yes',
+          handler: () => {
+            this.editStaff(item);
+           
+         
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 
  
@@ -111,6 +151,30 @@ admin: any;
     });
     await alert.present();
   }
+
+  async editStaff(staff) {
+    console.log();
+    const modal = await this.modalController.create({
+  component: EditStaffComponent,
+  componentProps: {
+    'id': staff._id,
+    'fullname':  staff.fullname,
+    'phone': staff.phone,
+    'department': staff.department,
+    'bankNumber': staff.bankNumber,
+    'bankAccountType': staff.bankAccountType,
+    'bankName': staff.bankName,
+    'startDate': staff.startDate,
+    'bankAccountName': staff.bankAccountName,
+    'location': staff.location,
+    'address':staff.address,
+    'accountNumber':staff.accountNumber,
+  }} );
+    modal.onDidDismiss().then(() => {
+         this.selectStaffByDepartment(this.model.department);
+});
+    return await modal.present();
+}
 
   async penalizeStaff(id, fullname,department){
     console.log('click')
@@ -239,6 +303,8 @@ admin: any;
       fullname : '',
       phone : '',
       department : '',
+      location:'',
+      startDate:'',
       bank: '',
       bankName: '',
       address: '',
@@ -260,6 +326,11 @@ admin: any;
     console.log(event);
     this.model.department = event;
     console.log(this.model.department); 
+  }
+
+  selectLocation(event){
+    console.log(this.model.location)
+    // console.log(event)
   }
 
   selectFormEvent(event){
@@ -287,7 +358,7 @@ this.showList = false;
         this.resetForm();
         this.showform = false;
         this.showList = true;
-        this.getLimitStaff();
+        this.selectStaffByDepartment(this.model.department);
       },
       err => {
         this.loading = false;
@@ -334,8 +405,7 @@ this.showList = false;
 
   
 
-  getAllStaff(department){
-    console.log(department);
+  getAllStaff(){
     this.loading = true;
     this.staffService.getAllStaff().subscribe(
       res => {

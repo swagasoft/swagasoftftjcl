@@ -11,8 +11,9 @@ import { NavController, ModalController } from '@ionic/angular';
   styleUrls: ['./merchant-modal.component.scss'],
 })
 export class MerchantModalComponent implements OnInit, OnDestroy {
-loading = true; allOutlet: any;  allMerchant: any;
+loading = true; allOutlet: any;  allMerchant: any; 
 admin: any; singleOutlet: any; saleRecords : any;
+specifieldmerchant: any;
 
 
   constructor(public userService: UserServiceService,
@@ -20,7 +21,6 @@ admin: any; singleOutlet: any; saleRecords : any;
               public distService : DistributionService,
               public navCtrl: NavController, public modalController: ModalController) { 
                 this.getAllOutlets();
-                this.getAllMerchant();
               }
 
               
@@ -38,7 +38,7 @@ model = {
       admin:'', outletCode : '', outletName:'', outletRate: 0,
       amountSold: null, bottleSold : null, merchant: []
     }
-    this.allOutlet = [];  this.allMerchant = [];
+    this.allOutlet = [];  this.specifieldmerchant = [];
     this.singleOutlet = [] ;
   }
 
@@ -93,22 +93,22 @@ model = {
     console.log('i clicked close');
   } 
 
-  getAllMerchant(){
-    this.loading = true;
-    this.outletService.getAllMercahnt().subscribe(
-      res => {
-        this.loading = false;
-        this.allMerchant = res['merchant'];
-        console.log(this.allMerchant);
+  // getAllMerchant(){
+  //   this.loading = true;
+  //   this.outletService.getAllMercahnt().subscribe(
+  //     res => {
+  //       this.loading = false;
+  //       this.allMerchant = res['merchant'];
+  //       console.log(this.allMerchant);
 
-      },
-      err => {
-        this.loading = false;
-        this.userService.generalToast(err.error.msg);
-        console.log(err);
-      }
-    );
-  }
+  //     },
+  //     err => {
+  //       this.loading = false;
+  //       this.userService.generalToast(err.error.msg);
+  //       console.log(err);
+  //     }
+  //   );
+  // }
 
   getAllOutlets(){
     this.loading = true;
@@ -127,6 +127,7 @@ model = {
 
   selectOutlet(event){
     console.log(event.target.value);
+    this.specifieldmerchant = [];
     const outletId = event.target.value;
     this.loading = true;
     this.distService.findOutlet(outletId).subscribe(
@@ -135,9 +136,8 @@ model = {
         this.singleOutlet = res['outlet'];
         this.model.outletCode = res['outlet']['code'];
         this.model.outletRate = res['outlet']['merchant_rate'];
-        console.log(res);
-        console.log(this.model.outletCode);
-        console.log(this.model.outletRate);
+        this.specifieldmerchant = res['merchant'];
+       
       },
       err => {
         this.loading = false;

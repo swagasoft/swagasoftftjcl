@@ -53,6 +53,7 @@ import { ViewByOutletComponent } from './components/view-by-outlet/view-by-outle
 import { ViewMerchantComponent } from './components/view-merchant/view-merchant.component';
 import { SpecialComponent } from './components/special/special.component';
 import { ProdRecordComponent } from './components/prod-record/prod-record.component';
+import { EditStaffComponent } from './components/edit-staff/edit-staff.component';
 
 @NgModule({
   declarations: [AppComponent,ProductionComponent,
@@ -83,10 +84,10 @@ import { ProdRecordComponent } from './components/prod-record/prod-record.compon
     ProdEditModalComponent,
     PenaltyComponent,
     SettingComponent,
-    SupplyComponent, PayRollComponent],
+    SupplyComponent, PayRollComponent, EditStaffComponent],
   entryComponents: [ PayModalComponent,MerchantModalComponent, ReturnModalComponent,
     ExpReturnModalComponent, EditExpenseTwoComponent,EditProductionComponent,
-    EditBadStockComponent,EditSupplyComponent,ProdEditModalComponent,
+    EditBadStockComponent,EditSupplyComponent,ProdEditModalComponent,EditStaffComponent,
     ExpenseEditComponent, FruitmodalComponent, FruiteditComponent,ExchangeModalComponent ],
   imports: [BrowserModule,
     NgbModule,

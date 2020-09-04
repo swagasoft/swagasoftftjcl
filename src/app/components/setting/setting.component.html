@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar color="dark">
+  <ion-toolbar color="light">
     
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
@@ -12,13 +12,26 @@ SETTINGS    </div>
 <ion-content>
 
 
- <ion-list class="p-5 mt-5 aqua-gradient text-white">
-   <ion-list-header class="text-uppercase text-white"> USERNAME {{mydetails?.username}} </ion-list-header>
-   <li>PHONE : {{mydetails?.phone}} </li>
-   <li>ROLE : {{mydetails?.role}} </li>
-   <ion-button (click)="resetPassword()">CHANGE PASSWORD </ion-button>
- </ion-list>
-
+<ion-card color="light" class="mt-5">
+  <ion-list inset="true" lines="inset">
+    <ion-item>
+     <div slot="start">USERNAME</div>
+     <ion-label>{{mydetails?.username}}</ion-label>
+   </ion-item>
+    <ion-item>
+     <div slot="start">PHONE</div>
+     <ion-label>{{mydetails?.phone}}</ion-label>
+   </ion-item>
+    <ion-item>
+     <div slot="start">ROLE</div>
+     <ion-label>{{mydetails?.role}}</ion-label>
+   </ion-item>
+   <ion-item>
+    <ion-icon slot="start" name="key"></ion-icon>
+    <ion-button (click)="resetPassword()" fill="outline">CHANGE PASSWORD </ion-button>
+   </ion-item>
+</ion-list>
+</ion-card>
 
     <!-- loading.. -->
     <div *ngIf="loading" class="spinner">

@@ -4,6 +4,7 @@ import { NgForm } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { Button } from 'protractor';
+import { StaffService } from '../shared/staff.service';
 
 @Component({
   selector: 'app-outlets',
@@ -22,6 +23,7 @@ export class OutletsPage implements OnInit {
 
   constructor(public outletService: OutletService,
               public alertController: AlertController,
+              public staffService: StaffService,
               public userService: UserServiceService) { 
                 this.admin = localStorage.getItem('appUser');
                 this.model.admin = this.admin;
@@ -95,7 +97,7 @@ export class OutletsPage implements OnInit {
             res => {
               this.loading = false;
               this.userService.generalToastSh(res['msg']);
-              this.getAllOutlet();
+              this.reloadoutlet();
             },
             err => {
               this.loading = false;
@@ -147,8 +149,13 @@ export class OutletsPage implements OnInit {
 
   selectChange( $event) {
     console.log($event);
-    this.model.axis = $event;
+    this.model.location = $event;
     this.selectedAxis = $event;
+        }
+
+    editModelLocation( $event) {
+    console.log($event);
+    this.editModel.location = $event;
         }
 
     cancelForm(){
