@@ -46,14 +46,14 @@
 
     <ion-list color="light">
       <ion-list-header color="light">DIRECTOR</ion-list-header>
-       <ion-menu-toggle>
+       <ion-menu-toggle autoHide="false">
         <ion-item  color="light"   [routerLink]="['/expense-two']" routerLinkActive="router-link-active">
           <ion-icon name="list"></ion-icon>
           <ion-label  class="ml-4">EXPENSE 2</ion-label>
         </ion-item>
        </ion-menu-toggle>
       
-       <ion-menu-toggle>
+       <ion-menu-toggle autoHide="false">
         <ion-item color="light" 
         [routerLink]="['//pay-roll']" routerLinkActive="router-link-active">
         <ion-icon name="cash"></ion-icon>
@@ -61,7 +61,7 @@
       </ion-item>
        </ion-menu-toggle>
          
-       <ion-menu-toggle>
+       <ion-menu-toggle autoHide="false">
         <ion-item color="light" 
         [routerLink]="['/manager']" routerLinkActive="router-link-active">
         <ion-icon name="build"></ion-icon>
@@ -71,8 +71,8 @@
      
     </ion-list>
     <ion-list id="labels-list">
-      <ion-menu-toggle>
-        <ion-item  color="light" (click)="logout()" tappable >
+      <ion-menu-toggle autoHide="false"> 
+        <ion-item  color="light" (click)="logout()" tappable  detail="false">
           <ion-icon  name="power"></ion-icon>
           <ion-label  class="ml-4">LOGOUT</ion-label>
         </ion-item>

@@ -3,12 +3,12 @@ import { NavParams, ModalController } from '@ionic/angular';
 import { UserServiceService } from 'src/app/shared/user-service.service';
 
 @Component({
-  selector: 'app-expense-edit',
-  templateUrl: './expense-edit.component.html',
-  styleUrls: ['./expense-edit.component.scss'],
+  selector: 'app-edit-return',
+  templateUrl: './edit-return.component.html',
+  styleUrls: ['./edit-return.component.scss'],
 })
-export class ExpenseEditComponent implements OnInit {
-loading = false;
+export class EditReturnComponent implements OnInit {
+  loading = false;
   constructor(public navParams: NavParams,
               public userService: UserServiceService ,
               public modalController: ModalController) {
@@ -45,7 +45,7 @@ loading = false;
   updateExpense(){
     this.loading = true;
     console.log(this.expenseModel);
-    this.userService.updateExpense(this.expenseModel).subscribe(
+    this.userService.updateReturn(this.expenseModel).subscribe(
       res => {
         this.loading = false;
         // this.userService.generalToastSh(res['msg']);

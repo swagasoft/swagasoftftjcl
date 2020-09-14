@@ -1,3 +1,4 @@
+import { EditReturnComponent } from './components/edit-return/edit-return.component';
 import { ProdEditModalComponent } from './components/prod-edit-modal/prod-edit-modal.component';
 import { EditSupplyComponent } from './components/edit-supply/edit-supply.component';
 import { EditBadStockComponent } from './components/edit-bad-stock/edit-bad-stock.component';
@@ -84,11 +85,12 @@ import { EditStaffComponent } from './components/edit-staff/edit-staff.component
     ProdEditModalComponent,
     PenaltyComponent,
     SettingComponent,
+    EditReturnComponent,
     SupplyComponent, PayRollComponent, EditStaffComponent],
   entryComponents: [ PayModalComponent,MerchantModalComponent, ReturnModalComponent,
     ExpReturnModalComponent, EditExpenseTwoComponent,EditProductionComponent,
     EditBadStockComponent,EditSupplyComponent,ProdEditModalComponent,EditStaffComponent,
-    ExpenseEditComponent, FruitmodalComponent, FruiteditComponent,ExchangeModalComponent ],
+    ExpenseEditComponent, FruitmodalComponent, FruiteditComponent,ExchangeModalComponent ,EditReturnComponent],
   imports: [BrowserModule,
     NgbModule,
      IonicModule.forRoot(),

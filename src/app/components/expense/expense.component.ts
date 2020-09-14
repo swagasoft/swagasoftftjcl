@@ -1,3 +1,4 @@
+import { EditReturnComponent } from './../edit-return/edit-return.component';
 import { ExpReturnModalComponent } from './../exp-return-modal/exp-return-modal.component';
 import { ExpenseEditComponent } from './../expense-edit/expense-edit.component';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
@@ -158,6 +159,17 @@ this.findLastCredit();
 
   async editExpense(id, description, product, amountPaid, receiver, information) {
                       const modal = await this.modalController.create({ component: ExpenseEditComponent,
+                    componentProps: {
+                      'id': id,  'description':  description,
+                      'product': product,  'amountPaid': amountPaid,
+                      'receiver': receiver, 'information': information
+                    } } );
+                      modal.onDidDismiss().then(() => {   this.refreshExpense();  this.getBalance(); });
+                      return await modal.present();
+}
+
+  async editReturn(id, description, product, amountPaid, receiver, information) {
+                      const modal = await this.modalController.create({ component: EditReturnComponent,
                     componentProps: {
                       'id': id,  'description':  description,
                       'product': product,  'amountPaid': amountPaid,

@@ -137,6 +137,9 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
     updateExpense(expense){
       return this.http.put(environment.apiBaseUrl + '/update-expense', expense);
     }
+    updateReturn(expense){
+      return this.http.put(environment.apiBaseUrl + '/update-return', expense);
+    }
     updateExpenseTwo(expense){
       return this.http.post(environment.apiBaseUrl + '/update-expense-two', expense);
     }

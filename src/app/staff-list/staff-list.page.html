@@ -10,7 +10,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content color="light">
 
 <ion-toolbar>
 
@@ -171,7 +171,7 @@
   <!-- simon -->
 
   <div>
-    <ion-card *ngIf="showform" class="aqua-gradient text-white">
+    <ion-card color="light" *ngIf="showform" class="">
       <ion-card-header class="text-center bg-dark text-white">CREATE STAFF</ion-card-header>
       <ion-card-content>
         <form #staffForm="ngForm"  
@@ -180,7 +180,7 @@
           <ion-col >
             <ion-item >
               <div  >
-              <ion-label position="floating">fullname</ion-label>
+              <ion-label color="primary" position="floating">fullname</ion-label>
               <ion-input  type="text" #fullname="ngModel" name="fullname" 
               [(ngModel)]="model.fullname"
                 autocomplete="off" required="true"></ion-input>
@@ -191,9 +191,9 @@
 
          <ion-row>
           <ion-col>
-            <ion-item class="bg-dark">
+            <ion-item >
               <div  class="text-input mb-1">
-              <ion-label position="floating">phone</ion-label>
+              <ion-label color="primary" position="floating">phone</ion-label>
               <ion-input  type="text" #phone="ngModel" name="phone" 
               [(ngModel)]="model.phone"
                 autocomplete="off" required="true"></ion-input>
@@ -204,9 +204,9 @@
 
           <ion-col>
             <ion-item>
-              <ion-label position="floating">start date</ion-label>
+              <ion-label color="primary" position="floating">start date</ion-label>
               <ion-input  type="text" #startDate="ngModel" name="startDate" 
-              [(ngModel)]="model.startDate" placeholder="03-05-2020"
+              [(ngModel)]="model.startDate" placeholder="example 03-05-2020"
                 autocomplete="off" required="true"></ion-input>
             </ion-item>
           </ion-col>
@@ -214,7 +214,7 @@
 
            <ion-col>
             <ion-item>
-              <ion-label position="floating">address</ion-label>
+              <ion-label color="primary" position="floating">address</ion-label>
               <ion-input  type="text" #address="ngModel" name="address" 
               [(ngModel)]="model.address"
                 autocomplete="off" required="true"></ion-input>
@@ -226,7 +226,7 @@
           <ion-row>
             <ion-col>
               <ion-item >
-                <ion-label position="floating">bank</ion-label>
+                <ion-label color="primary" position="floating">bank</ion-label>
                 <ion-input  type="text" #bank="ngModel" name="bank" 
                 [(ngModel)]="model.bank"
                   autocomplete="off" required="true"></ion-input>
@@ -236,7 +236,7 @@
 
              <ion-col>
               <ion-item >
-                <ion-label position="floating">account number</ion-label>
+                <ion-label color="primary" position="floating">account number</ion-label>
                 <ion-input  type="number" #accountNumber="ngModel" name="accountNumber" 
                 [(ngModel)]="model.accountNumber" required></ion-input>
               </ion-item>
@@ -246,7 +246,7 @@
 
           <ion-col>
             <ion-item >
-              <ion-label position="floating"> bank account fullname</ion-label>
+              <ion-label color="primary" position="floating"> bank account fullname</ion-label>
               <ion-input  type="text" #bankName="ngModel" name="bankName" 
               [(ngModel)]="model.bankName" required="true"></ion-input>
             </ion-item>
@@ -256,7 +256,7 @@
               <!-- select options -->
             <ion-card>
               <ion-item >
-              <ion-label class="text-center">account type</ion-label>
+              <ion-label color="primary" class="text-center">account type</ion-label>
               <ion-select select="success" interface="popover" name="accountType"
                (ngModelChange)="accounttype($event)" #accountType="ngModel"
               [(ngModel)]="model.accountType">
@@ -271,7 +271,7 @@
               <!-- select options -->
             <ion-card>
               <ion-item color="light">
-                <ion-label class="text-center">select department</ion-label>
+                <ion-label color="primary" class="text-center">select department</ion-label>
                 <ion-select select="success" interface="popover" name="accountType"
                  (ngModelChange)="selectFormEvent($event)"  [(ngModel)]="model.department"
                >
@@ -291,7 +291,7 @@
              </ion-col>
 
               <ion-item color="light" >
-                <ion-label color="dark" class="text-center">SELECT STATE</ion-label>
+                <ion-label color="primary" class="text-center">SELECT STATE</ion-label>
                 <ion-select   #location name="location"
                 (ngModelChange)="selectLocation($event)" [(ngModel)]="model.location">
                   <ion-select-option *ngFor="let item of staffService.nigeriaState"
