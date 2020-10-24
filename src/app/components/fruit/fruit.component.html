@@ -11,6 +11,7 @@
 </ion-header> 
 
 
+
 <ion-content>
  <!-- referesh -->
  <ion-refresher #refresherRef (ionRefresh)="doRefresh($event)" slot="fixed" >
@@ -19,45 +20,51 @@
 </ion-refresher>
 
  <!-- month/year picker -->
- <ion-fab 
+ <!-- <ion-fab 
  vertical="bottom" horizontal="end" slot="fixed">
 <ion-fab-button (click)="doRefresh($event)"   color="primary">
   <ion-icon  name="refresh"></ion-icon>
 </ion-fab-button>
-</ion-fab>
+</ion-fab> -->
  
 
-  <ion-item color="primary">
-    <ion-label  class="ion-text-center font-weight-bold">PICK A MONTH</ion-label>
-    <ion-datetime  [pickerOptions]="filter_Month_Year" displayFormat="MMMM YYYY"  [(ngModel)]="myDate" ></ion-datetime>
-  </ion-item>
+<ion-row>
+  <ion-col size="4">
+    <ion-item color="success">
+      <ion-label  class="ion-text-center font-weight-bold"> MONTHLY </ion-label> <ion-icon name="calendar"></ion-icon>
+      <ion-datetime  [pickerOptions]="filter_Month_Year" displayFormat="MMMM YYYY"  [(ngModel)]="myDate" ></ion-datetime>
+    </ion-item>
+  </ion-col>
+  <ion-col size="8">
+    
+<form #dateform="ngForm" (keydown.enter)=" submitDate(dateform)"
+(submit)=" submitDate(dateform)" class="form-inline">
+ <div class="form-group">
+   <div class="input-group">
+     <input class="form-control" placeholder="yyyy-mm-dd"
+            name="dp" [(ngModel)]="model.date" ngbDatepicker #d="ngbDatepicker">
+     <div class="input-group-append">
+       <button class="btn btn-outline-secondary" (click)="d.toggle()"
+        type="button"><ion-icon name="apps"></ion-icon> </button>
+       <button class="btn btn-success" [disabled]="!model.date"
+        (click)="submitDate(dateform)" type="submit">
+       <ion-icon name="search"></ion-icon></button>
+     </div>
+   </div>
+ </div>
+</form>
+  </ion-col>
+</ion-row>
 
 
 <!-- add button -->
- <ion-fab  (click)="addRecord()"  vertical="top" horizontal="end" slot="fixed">
+ <ion-fab class="mt-5" (click)="addRecord()"  vertical="top" horizontal="end" slot="fixed">
   <ion-fab-button color="success">
     <ion-icon  name="add"></ion-icon>
   </ion-fab-button>
 </ion-fab>
 
-<form #dateform="ngForm" (keydown.enter)=" submitDate(dateform)"
- (submit)=" submitDate(dateform)" class="form-inline">
-  <div class="form-group">
-    <div class="input-group">
-      <input class="form-control" placeholder="yyyy-mm-dd"
-             name="dp" [(ngModel)]="model.date" ngbDatepicker #d="ngbDatepicker">
-      <div class="input-group-append">
-        <button class="btn btn-outline-secondary" (click)="d.toggle()"
-         type="button"><ion-icon name="apps"></ion-icon> </button>
-        <button class="btn btn-success" [disabled]="!model.date"
-         (click)="submitDate(dateform)" type="submit">
-        <ion-icon name="search"></ion-icon></button>
-      </div>
-    </div>
-  </div>
-</form>
 <div class="pt-5">
-
 <ion-row>
   <ion-col size="12" size-lg="6" size-md="6" size-xs="12"
   size-sm="6" size-xl="6" *ngFor="let item of fruitRecord index as i">

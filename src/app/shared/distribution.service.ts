@@ -55,6 +55,10 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
     return this.http.post(environment.apiBaseUrl + '/get-outlet-supplies', properties);
   }
 
+  getOutletSuppliesByDay(properties){
+    return this.http.post(environment.apiBaseUrl + '/get-outlet-supplies-daily', properties);
+  }
+
   productionList(date){
     return this.http.post(environment.apiBaseUrl +'/production-list',date);
   }

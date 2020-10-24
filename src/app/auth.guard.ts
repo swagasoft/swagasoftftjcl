@@ -13,7 +13,7 @@ export class AuthGuard implements CanActivate {
   }
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean{
-  console.log('INSID CANACTIVATE')
+
     if(!this.userService.isLogedIn()){
       this.router.navigateByUrl('/login');
       this.userService.deleteToken();

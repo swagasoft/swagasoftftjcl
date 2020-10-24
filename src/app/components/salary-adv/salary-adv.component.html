@@ -11,41 +11,37 @@ SALARY ADVANCE    </div>
  
 <ion-content>
 
-    <ion-card>
-      <ngb-datepicker  (navigate)="thisMonthRecord($event)" 
-      class="datepicker-only-month-select "></ngb-datepicker>
-    </ion-card>
-
+  <ion-row>
+    <ion-col size="8">
+      <ion-item>
+        <ngb-datepicker  (navigate)="thisMonthRecord($event)" 
+        class="datepicker-only-month-select "></ngb-datepicker>
+      </ion-item>
+    </ion-col>
+    <ion-col size="4">
+      <form #dateform="ngForm"  (submit)=" submitDate(dateform)" class="form-inline">
+        <div class="form-group">
+          <div class="input-group">
+            <input class="form-control" placeholder="yyyy-mm-dd"
+                   name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary" (click)="d.toggle()"
+               type="button"><ion-icon name="apps"></ion-icon> </button>
+              <button class="btn btn-success" [disabled]="!model"
+                type="submit">
+              <ion-icon name="search"></ion-icon></button>
+            </div>
+          </div>
+        </div>
+      </form>
+    
+    </ion-col>
+  </ion-row>
  
   
-  <form #dateform="ngForm"  (submit)=" submitDate(dateform)" class="form-inline">
-    <div class="form-group">
-      <div class="input-group">
-        <input class="form-control" placeholder="yyyy-mm-dd"
-               name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker">
-        <div class="input-group-append">
-          <button class="btn btn-outline-secondary" (click)="d.toggle()"
-           type="button"><ion-icon name="apps"></ion-icon> </button>
-          <button class="btn btn-success" [disabled]="!model"
-           (click)="submitDate(dateform)" type="submit">
-          <ion-icon name="search"></ion-icon></button>
-        </div>
-      </div>
-    </div>
-  </form>
+ 
 
 
-      <!-- search list -->
-<!-- <ion-card>
-  <ion-row>
-    <ion-item>
-    <ion-input name="search" #search placeholder="search by name"  [(ngModel)]="searchModel.search"></ion-input> 
-    <ion-button color="success" size="medium" (click)="searchRecord()" [disabled]="!search.value">
-      <ion-icon name="search" size="large"></ion-icon>
-    </ion-button> 
-  </ion-item>
-  </ion-row>
-</ion-card> -->
   
 <!-- refresher -->
   <ion-refresher #refresherRef (ionRefresh)="doRefresh($event)" slot="fixed" >
@@ -89,10 +85,10 @@ SALARY ADVANCE    </div>
       <ion-icon name="alert"></ion-icon>
     </ion-fab-button>
     <ion-fab-list side="top">
-       <ion-button color="light" [routerLink]="['/penalty']">
+       <ion-button color="light" [routerLink]="['/tabs/penalty']">
        <div>penalty</div>
       </ion-button>
-      <ion-button  color="light"  [routerLink]="['/salary_adv']">
+      <ion-button  color="light"  [routerLink]="['/tabs/salary_adv']">
         <div>salary advance</div>
       </ion-button>
     </ion-fab-list>

@@ -40,7 +40,7 @@ expand = false;
     accountType: '',
     admin:'',
     date: Date.now()
-  }
+  };
 
   searchModel = { 
     search: '',fullname: '', month: null, year : null
@@ -54,6 +54,18 @@ expand = false;
     expandPanel(event){
       console.log(event);
       this.expand = event.detail.checked;
+    }
+
+    changeStatus(event, id){
+      console.log(event);
+      console.log(id);
+      let  status = {active: event.detail.checked, id: id};
+      this.staffService.changeStaffStatus(status).subscribe(
+        res => {
+          console.log(res);
+          this.selectStaffByDepartment(this.model.department);
+        }
+      );
     }
 
   ngOnInit() {
@@ -177,7 +189,7 @@ expand = false;
 }
 
   async penalizeStaff(id, fullname,department){
-    console.log('click')
+    console.log('click');
     const alert = await this.alertController.create({
       header: `Penalize ${fullname}`,
       inputs: [
@@ -215,7 +227,7 @@ expand = false;
                 admin: this.admin,
                 date: Date.now(),
                 id : id
-            }
+            };
             console.log(body);
             this.staffService.penalizeStaff(body).subscribe(
             res => {
@@ -277,7 +289,7 @@ expand = false;
                 admin : this.admin,
                 date:Date.now(),
                 id : id
-            }
+            };
             console.log(body);
             this.staffService.salaryAdvance(body).subscribe(
             res => {
@@ -313,7 +325,7 @@ expand = false;
       accountType: '',
       admin: this.admin,
       date: Date.now()
-    }
+    };
   }
 
   accounttype(event){
@@ -329,7 +341,7 @@ expand = false;
   }
 
   selectLocation(event){
-    console.log(this.model.location)
+    console.log(this.model.location);
     // console.log(event)
   }
 
@@ -371,7 +383,7 @@ this.showList = false;
   }
 
   getLimitStaff(){
-    console.log('getting the limit')
+    console.log('getting the limit');
     this.loading = true;
     this.staffService.getAllStaff().subscribe(
       res => {
@@ -408,6 +420,21 @@ this.showList = false;
   getAllStaff(){
     this.loading = true;
     this.staffService.getAllStaff().subscribe(
+      res => {
+        console.log(res);
+        this.loading = false;
+        this.staffList = res['staff'];
+      },
+      err => {
+        this.loading = false;
+        console.log(err);
+      }
+    );
+  }
+
+  removedStaff(){
+    this.loading = true;
+    this.staffService.getRemovedStaff().subscribe(
       res => {
         console.log(res);
         this.loading = false;

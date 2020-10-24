@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar color="dark">
+  <ion-toolbar color="light">
     
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
@@ -10,19 +10,39 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content> 
+<ion-content color="light"> 
 
-  <!-- month/year picker -->
-    <ion-card color="medium">
+  <ion-segment value="monthly" (ionChange)="segmentChanged($event)">
+    <ion-segment-button value="monthly">
+      <ion-label>Monthly</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="daily">
+      <ion-label>Daily</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+ <ion-grid fixed>
+   <ion-row class="justify-content-center">
+     <ion-col size="6" *ngIf="segment=='monthly'">
       <ngb-datepicker  (navigate)=" thisMonthRecord($event)" 
       class="datepicker-only-month-select"></ngb-datepicker>
-    </ion-card>
+     </ion-col>
+     <ion-col size="6" *ngIf="segment=='daily'">
+    <ngb-datepicker (dateSelect)="onDateSelect($event)"></ngb-datepicker>
+
+     </ion-col>
+   </ion-row>
+ </ion-grid>
+   
 
     <ion-card class="p-1 aqua-gradient tezt-white">
       <!-- select filter -->
       <ion-item color="light" >
         <ion-label color="dark" class="text-center">select outlet</ion-label>
         <select (change)="selectOutlet($event)"  >
+          <option value="none" selected disabled hidden> 
+            SELECT OUTLET 
+        </option> 
           <option *ngFor="let item of allOutlet" [value]="item.code">{{item.code}}</option>
          
         </select>
@@ -207,7 +227,7 @@
       </ion-card>
 
         <!-- loading.. -->
-<div *ngIf="loading" class="spinner">
+<!-- <div *ngIf="loading" class="spinner">
   <div class="loader"></div>
-</div>
+</div> -->
   </ion-content>

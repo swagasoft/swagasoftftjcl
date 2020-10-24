@@ -17,10 +17,33 @@
       
 <ion-content>
 
-    <ion-item color="light">
-      <ion-label  class="ion-text-center font-weight-bold">PICK A MONTH</ion-label>
-      <ion-datetime  [pickerOptions]="filter_Month_Year" displayFormat="MMMM YYYY"  [(ngModel)]="myDate" ></ion-datetime>
-    </ion-item>
+  <ion-row>
+    <ion-col size="4">
+      <ion-item color="dark">
+        <div  class="ion-text-center font-weight-bold">Monthly</div>
+        <ion-datetime  [pickerOptions]="filter_Month_Year" displayFormat="MMMM YYYY"  [(ngModel)]="myDate" > </ion-datetime>
+      </ion-item>
+    </ion-col>
+
+    <ion-col size="8">
+      <form #dateform="ngForm"   (submit)=" submitDate(dateform)" class="form-inline">
+      <div class="form-group">
+        <div class="input-group">
+          <input class="form-control"  placeholder="yyyy-mm-dd"
+                 name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" (click)="d.toggle()"
+             type="button"><ion-icon name="apps"></ion-icon> </button>
+            <ion-button class="primary" [disabled]="!model"
+             (click)="submitDate(dateform)" type="submit">
+            <ion-icon name="search"></ion-icon></ion-button>
+          </div>
+        </div>
+      </div>
+    </form>
+    </ion-col>
+  </ion-row>
+   
 
 
   <ion-fab 
@@ -37,29 +60,15 @@
     </ion-refresher>
 
 
-  <div class="pb-5">
-    <form #dateform="ngForm"   (submit)=" submitDate(dateform)" class="form-inline">
-      <div class="form-group">
-        <div class="input-group">
-          <input class="form-control"  placeholder="yyyy-mm-dd"
-                 name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker">
-          <div class="input-group-append">
-            <button class="btn btn-outline-secondary" (click)="d.toggle()"
-             type="button"><ion-icon name="apps"></ion-icon> </button>
-            <ion-button class="primary" [disabled]="!model"
-             (click)="submitDate(dateform)" type="submit">
-            <ion-icon name="search"></ion-icon></ion-button>
-          </div>
-        </div>
-      </div>
-    </form>
+  <div >
+    
 
 
 
 
-<!-- sales list -->
 
- <ion-card *ngFor="let item of salesRecord" class="blue-gradient text-white">
+<ion-virtual-scroll [items]="salesRecord" approxItemHeight="320px">
+ <ion-card *virtualItem="let item; let itemBounds = bounds;" class="blue-gradient text-white">
   <ion-row>
     <ion-col>
       <div  class="font-weight-bold">Merchant:  {{item.merchantName}} </div>
@@ -108,6 +117,7 @@
 
   </ion-row>
 </ion-card> 
+</ion-virtual-scroll>
 
 
 </div>
@@ -117,10 +127,10 @@
     <ion-icon name="alert"></ion-icon>
   </ion-fab-button>
   <ion-fab-list side="top">
-    <ion-button color="light" [routerLink]="['/view-outlet-sales']">
+    <ion-button color="light" [routerLink]="['/tabs/view-outlet-sales']">
       <a class=" " ><ion-icon name="cube"></ion-icon>VIEW OUTLET SALES </a>
     </ion-button>
-    <ion-button color="light"  [routerLink]="['/view-merchant-sales']">
+    <ion-button color="light"  [routerLink]="['/tabs/view-merchant-sales']">
       <a class=" " ><ion-icon name="arrow-dropdown-circle"></ion-icon>VIEW MERCHANT SALES </a>
     </ion-button>
     <ion-button color="light" (click)="merchantModal()"> 

@@ -12,44 +12,40 @@
 
 <ion-content> 
 
-  <ion-fab 
-  vertical="bottom" horizontal="end" slot="fixed">
- <ion-fab-button (click)="doRefresh($event)"   color="primary">
-   <ion-icon  name="refresh"></ion-icon>
- </ion-fab-button>
-</ion-fab>
-
-  <!-- month/year picker -->
-   
- 
-
-   
-  <ion-item color="light">
-    <ion-label  class="ion-text-center font-weight-bold">PICK A MONTH</ion-label>
+ <ion-row>
+   <ion-col size="4">
+       
+  <ion-item color="success">
+   <ion-label>Month</ion-label> <ion-icon name="calendar"></ion-icon>
     <ion-datetime  [pickerOptions]="filter_Month_Year" displayFormat="MMMM YYYY"  [(ngModel)]="myDate" ></ion-datetime>
   </ion-item>
-
-<form #dateform="ngForm"  (submit)=" submitDate(dateform)" class="form-inline">
-  <div class="form-group">
-    <div class="input-group">
-      <input class="form-control" placeholder="yyyy-mm-dd"
-             name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker">
-      <div class="input-group-append">
-        <button class="btn btn-outline-secondary" (click)="d.toggle()"
-         type="button"><ion-icon name="apps"></ion-icon> </button>
-        <button class="btn btn-success" [disabled]="!model"
-         (click)="submitDate(dateform)" type="submit">
-        <ion-icon name="search"></ion-icon></button>
+   </ion-col>
+   <ion-col size="8">
+    <form #dateform="ngForm"  (submit)=" submitDate(dateform)" class="form-inline">
+      <div class="form-group">
+        <div class="input-group">
+          <input class="form-control" placeholder="yyyy-mm-dd"
+                 name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" (click)="d.toggle()"
+             type="button"><ion-icon name="apps"></ion-icon> </button>
+            <ion-button color="success" [disabled]="!model"
+             (click)="submitDate(dateform)" type="submit">
+            <ion-icon name="search"></ion-icon></ion-button>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-</form>
+    </form>
+   </ion-col>
+ </ion-row>
+
+
     <!-- search by name -->
 <ion-card>
   <ion-row>
     <ion-item>
     <ion-input name="search" #search placeholder="search by name"  [(ngModel)]="searchModel.search"></ion-input> 
-    <ion-button color="success" size="medium" (click)="searchPenalty()" [disabled]="!search.value">
+    <ion-button color="success" slot="end" size="medium" (click)="searchPenalty()" [disabled]="!search.value">
       <ion-icon name="search" size="large"></ion-icon>
     </ion-button> 
   </ion-item>
@@ -127,10 +123,10 @@
     <ion-icon name="alert"></ion-icon>
   </ion-fab-button>
   <ion-fab-list side="top">
-     <ion-button color="light" [routerLink]="['/penalty']">
+     <ion-button color="light" [routerLink]="['/tabs/penalty']">
      <div>penalty</div>
     </ion-button>
-    <ion-button  color="light"  [routerLink]="['/salary_adv']">
+    <ion-button  color="light"  [routerLink]="['/tabs/salary_adv']">
       <div>salary advance</div>
     </ion-button>
   </ion-fab-list>

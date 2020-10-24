@@ -63,7 +63,7 @@
           </div>
     
           <ion-item class="ion-margin-bottom" color="light">
-            <ion-label color="dark" position="floating">Number</ion-label>
+            <ion-label color="danger" position="floating">Number</ion-label>
             <ion-input type="number" #phone name="phone" clearInput [(ngModel)]="model.number" 
               minlength="11" required="true"></ion-input>
               <ion-icon name="call" slot="end"></ion-icon>
@@ -71,12 +71,12 @@
     
     
           <ion-item color="light" class="">
-            <ion-label position="floating">Password</ion-label>
+            <ion-label color="danger" position="floating">Password</ion-label>
             <ion-input class="" type="password" input #password name="password" minlength="6" [(ngModel)]="model.password"
             clearInput required="true">
             </ion-input>
             <ion-icon (click)="password.type=password.type=='password'?'text':'password'" 
-              size="large" name="eye" slot="end"></ion-icon> 
+              name="eye" slot="end"></ion-icon> 
             
           </ion-item>
     

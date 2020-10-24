@@ -24,11 +24,15 @@
     <ion-segment-button value="">
      <small>expand</small> <ion-toggle (ionChange)="expandPanel($event)" ></ion-toggle>
     </ion-segment-button>
-    <ion-segment-button value="star">
-      <ion-chip outline (click)="getAllStaff()"> <div> all staff</div> </ion-chip>
-    </ion-segment-button>
+   
     <ion-segment-button value="add" >
-      <ion-chip (click)="addStaff()" outline> <div>add</div> </ion-chip>
+      <ion-chip (click)="addStaff()" outline> <div>add <ion-icon color="danger"  slot="start" name="add"></ion-icon></div> </ion-chip>
+    </ion-segment-button>
+    <ion-segment-button value="star">
+      <ion-chip outline (click)="getAllStaff()"> <div> <ion-icon color="success"  slot="start" name="hammer"></ion-icon>staff</div> </ion-chip>
+    </ion-segment-button>
+    <ion-segment-button value="star">
+      <ion-chip outline (click)="removedStaff()"> <div> <ion-icon color="danger"  slot="start" name="hand"></ion-icon>staff</div> </ion-chip>
     </ion-segment-button>
     <!-- <ion-segment-button value="globe">
       <ion-icon name="globe"></ion-icon>
@@ -72,22 +76,28 @@
 
 
       <ion-list *ngIf="segment =='department'">
-          <ion-item color="light">
-          <ion-label class="text-center">select by department</ion-label>
-          <ion-select select="success" name="accountType"
-           (ngModelChange)="selectStaffByDepartment($event)"  [(ngModel)]="model.department"
-         >
-         <ion-select-option  value="ADMINISTRATOR">ADMINISTRATOR</ion-select-option>
-         <ion-select-option  value="ADMIN-ASSIST">ADMIN-ASSIST</ion-select-option>
-         <ion-select-option  value="TECHNICAL">TECHNICAL</ion-select-option>
-         <ion-select-option  value="PRODUCTION">PRODUCTION</ion-select-option>
-         <ion-select-option  value="CLEANER">CLEANER</ion-select-option>
-         <ion-select-option  value="DRIVER">DRIVER</ion-select-option>
-         <ion-select-option  value="SECURITY">SECURITY</ion-select-option>
-         <ion-select-option  value="MERCHANDISER">MERCHANDISER</ion-select-option>
-         <ion-select-option  value="MANAGEMENT">MANAGEMENT</ion-select-option>
-          </ion-select>
-        </ion-item>
+        <ion-row>
+          <ion-col size="2"></ion-col>
+          <ion-col size="8">
+            <ion-item color="medium">
+              <ion-label class="text-center">SELECT</ion-label>
+              <ion-select select="success" name="accountType"
+               (ngModelChange)="selectStaffByDepartment($event)"  [(ngModel)]="model.department"
+             >
+             <ion-select-option  value="ADMINISTRATOR">ADMINISTRATOR</ion-select-option>
+             <ion-select-option  value="ADMIN-ASSIST">ADMIN-ASSIST</ion-select-option>
+             <ion-select-option  value="TECHNICAL">TECHNICAL</ion-select-option>
+             <ion-select-option  value="PRODUCTION">PRODUCTION</ion-select-option>
+             <ion-select-option  value="CLEANER">CLEANER</ion-select-option>
+             <ion-select-option  value="DRIVER">DRIVER</ion-select-option>
+             <ion-select-option  value="SECURITY">SECURITY</ion-select-option>
+             <ion-select-option  value="MERCHANDISER">MERCHANDISER</ion-select-option>
+             <ion-select-option  value="MANAGEMENT">MANAGEMENT</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+          <ion-col size="2"></ion-col>
+        </ion-row>
        </ion-list>
 
        <ion-chip color="dark" outline>Total : {{staffList.length}} </ion-chip>
@@ -160,7 +170,12 @@
           <ion-col> <small> <ion-icon slot="start" name="man"></ion-icon> {{item.admin}}  </small> </ion-col>
           <ion-col> <div> <ion-icon slot="start" name="compass"></ion-icon> {{item.location}}  </div> </ion-col>
         </ion-row>
-        <small> <ion-icon slot="start" name="home"> </ion-icon> {{item.address}} </small>
+       <ion-row>
+         <ion-col>  <small> <ion-icon slot="start" name="home"> </ion-icon> {{item.address}} </small></ion-col>
+         <ion-col> <small>active: {{item.active}}</small> 
+          <ion-toggle [checked]="item.active" color="success" (ionChange)="changeStatus($event,item._id)" ></ion-toggle> 
+        </ion-col>
+       </ion-row>
         </div>
 
       </ion-card>
@@ -206,7 +221,7 @@
             <ion-item>
               <ion-label color="primary" position="floating">start date</ion-label>
               <ion-input  type="text" #startDate="ngModel" name="startDate" 
-              [(ngModel)]="model.startDate" placeholder="example 03-05-2020"
+              [(ngModel)]="model.startDate" placeholder="e.g 03-05-2020"
                 autocomplete="off" required="true"></ion-input>
             </ion-item>
           </ion-col>

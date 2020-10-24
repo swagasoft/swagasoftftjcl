@@ -32,12 +32,10 @@ export class ExpenseComponent implements OnInit , OnDestroy {
     this.expenseModel.admin = this.admin;
 
     let appDay = new Date().getDate();
+    this.searchModel.day =  new Date().getDate();
     this.searchModel.month =  new Date().getMonth() + 1;
     this.searchModel.year = new Date().getFullYear() ;
-    setTimeout(()=> {
-    this.getThisMonthExpense();
-   },1000);
-   
+    this.todayExpense();
   }
 
 
@@ -107,13 +105,15 @@ this.findLastCredit();
       };
 
 
+      
+
     getThisMonthExpense(){
-      this.expense = this.userService.expenseSaver;
-      if(this.expense.length){
-     console.log('data exist');
-     this.loading = false;
-     return;
-    }else{
+    //   this.expense = this.userService.expenseSaver;
+    //   if(this.expense.length){
+    //  console.log('data exist');
+    //  this.loading = false;
+    //  return;
+    // }else{
       console.log('no saved data....')
       this.loading = true;
       this.expenseSub =  this.userService.thisMonthExpense(this.searchModel).subscribe(
@@ -126,36 +126,59 @@ this.findLastCredit();
            this.loading = false;
            console.log(err);
            this.expense = [];
-          //  let message = (err.error.msg) ? err.error.msg : 'Internet connnection failed!';
            this.userService.generalToastSh(err.error.msg);
          }
         );
-    }
+    // }
     }
 
 
-    refreshExpense(){
-      console.log('refresh expense..')
+
+    refreshMonthlyExpense(){
       this.loading = true;
       this.expenseSub =  this.userService.thisMonthExpense(this.searchModel).subscribe(
-           res => {
-             this.loading = false;
-             this.expense = res['record'];
-             this.refresherRef.complete();
-             this.userService.expenseSaver =  this.expense;
-             console.log(this.userService.expenseSaver)
-           },
-           err => {
-             this.loading = false;
-             console.log(err);
-             this.refresherRef.complete();
-             this.expense = [];
-            //  let message = (err.error.message) ? err.error.message : 'Internet connnection failed!';
-             this.userService.generalToastSh(err.error.msg);
-           }
-          );
-      
+         res => {
+           this.loading = false;
+           this.expense = res['record'];
+           this.userService.expenseSaver =  this.expense;
+         },
+         err => {
+           this.loading = false;
+           console.log(err);
+           this.expense = [];
+           this.userService.generalToastSh(err.error.msg);
+         }
+        );
+    
+    }
+
+
+  todayExpense(){
+    this.loading = true;
+    this.userService.findExpenseByDate(this.searchModel).subscribe(
+      res => {
+        this.loading = false;
+        this.expense = res['record'];
+        this.refresherRef.complete();
+      },
+      err => {
+        this.loading = false;
+        this.refresherRef.complete();
+        this.expense = [];
+        this.userService.generalToastSh(err.error.msg);
       }
+    );
+  }
+
+    refreshExpense(){
+      // this.searchModel.day =  new Date().getDate();
+      // this.searchModel.month =  new Date().getMonth() + 1;
+      // this.searchModel.year = new Date().getFullYear() ;
+      this.todayExpense();
+      }
+
+
+      
 
   async editExpense(id, description, product, amountPaid, receiver, information) {
                       const modal = await this.modalController.create({ component: ExpenseEditComponent,
@@ -204,7 +227,7 @@ this.findLastCredit();
     this.searchModel.month = new Date(this.myDate).getMonth() + 1;
     this.searchModel.year = new Date(this.myDate).getFullYear() ;
     console.log(this.searchModel);
-    this.refreshExpense();
+    this.getThisMonthExpense();
  
  } 
 //  Ccustom date picker
@@ -218,27 +241,25 @@ this.findLastCredit();
           handler: (event) => {
            this.searchModel.month = event.month.value;
            this.searchModel.year = event.year.value;
-           this.refreshExpense();
+            this.getThisMonthExpense();
           }
         }]
       };
 
       submitDate(form: NgForm){
-        console.log(this.model);
         this.loading = true;
         this.userService.findExpenseByDate(this.model).subscribe(
           res => {
             this.loading = false;
             console.log(res);
-            this.expense = res['expenses'];
+            this.expense = res['record'];
             this.userService.expenseSaver =  this.expense;
           },
           err => {
             this.loading = false;
             this.expense = [];
-        let message = (err.error.msg) ? err.error.msg : 'Internet connnection failed!';
+            let message = (err.error.msg) ? err.error.msg : 'Internet connnection failed!';
             this.userService.generalToastSh(message);
-            console.log('my error',err);
           }
         );
       }
@@ -253,7 +274,6 @@ this.findLastCredit();
       {
         text: 'Cancel', role: 'cancel', cssClass: 'danger',
         handler: (blah) => {
-          console.log('cancel amount input');
         }
       }, {
         text: 'Confirm',
@@ -269,7 +289,7 @@ this.findLastCredit();
           },
           err => {
             this.loading = false;
-        let message = (err.error.msg) ? err.error.msg : 'Internet connnection failed!';
+            let message = (err.error.msg) ? err.error.msg : 'Internet connnection failed!';
             this.userService.generalToast(message);
           }
         );
@@ -290,7 +310,6 @@ this.findLastCredit();
 
 
   doRefresh(event) {
-    console.log('refreshing expense')
     this.refreshExpense();
     this.getBalance();
 
@@ -304,8 +323,6 @@ this.findLastCredit();
     this.userService.getBalance().subscribe(
       res => {
         this.loading = false;
-        // this.refresherRef.complete();
-        console.log(res['balance']['0']['balance']);
         this.balance = res['balance']['0']['balance'];
       },
       err => {
@@ -327,7 +344,6 @@ this.findLastCredit();
           role: 'cancel',
           cssClass: 'danger',
           handler: (blah) => {
-            console.log('cancel amount input');
           }
         }, {
           text: 'Confirm',
@@ -366,7 +382,6 @@ this.findLastCredit();
           role: 'cancel',
           cssClass: 'danger',
           handler: (blah) => {
-            console.log('cancel amount input');
           }
         }, {
           text: 'Confirm',
@@ -466,7 +481,6 @@ this.findLastCredit();
     modal.onDidDismiss().then(()=> {
       this.refreshExpense();
       this.getBalance();
-      console.log('modal dismiss...');
     });
     return await modal.present();
     

@@ -1,3 +1,5 @@
+import { TabsComponent } from './components/tabs/tabs.component';
+import { DistributionsPage } from './distributions/distributions.page';
 import { EditReturnComponent } from './components/edit-return/edit-return.component';
 import { ProdEditModalComponent } from './components/prod-edit-modal/prod-edit-modal.component';
 import { EditSupplyComponent } from './components/edit-supply/edit-supply.component';
@@ -55,6 +57,7 @@ import { ViewMerchantComponent } from './components/view-merchant/view-merchant.
 import { SpecialComponent } from './components/special/special.component';
 import { ProdRecordComponent } from './components/prod-record/prod-record.component';
 import { EditStaffComponent } from './components/edit-staff/edit-staff.component';
+import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 
 @NgModule({
   declarations: [AppComponent,ProductionComponent,
@@ -86,6 +89,8 @@ import { EditStaffComponent } from './components/edit-staff/edit-staff.component
     PenaltyComponent,
     SettingComponent,
     EditReturnComponent,
+    DistributionsPage,
+    TabsComponent,
     SupplyComponent, PayRollComponent, EditStaffComponent],
   entryComponents: [ PayModalComponent,MerchantModalComponent, ReturnModalComponent,
     ExpReturnModalComponent, EditExpenseTwoComponent,EditProductionComponent,
@@ -114,7 +119,9 @@ import { EditStaffComponent } from './components/edit-staff/edit-staff.component
     DistributionService,
     StaffService,
     UserServiceService,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
+    {provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
   bootstrap: [AppComponent]
 })

@@ -43,7 +43,7 @@ export class LoginPage implements OnInit {
       localStorage.setItem('user-role',response['doc']['role']);
       this.loading = false;
       this.userService.refreshDetails();
-      this.router.navigate(['/distributions']);
+      this.router.navigate(['/tabs/distributions']);
    
         
     }, err => {

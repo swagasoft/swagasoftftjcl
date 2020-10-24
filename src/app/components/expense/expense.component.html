@@ -10,7 +10,7 @@
   </ion-toolbar>
 </ion-header> 
 
-<ion-content>
+<ion-content color="light">
 
   <ion-toolbar>
 
@@ -30,32 +30,26 @@
 
       <ion-segment-button value="monthly-record" >
       <ion-item>
-        <ion-chip outline><div> MONTHLY RECORD</div> </ion-chip>
+        <ion-chip outline><div> MONTHLY</div> </ion-chip>
         <ion-datetime  [pickerOptions]="filter_Month_Year" displayFormat="MMMM YYYY"  [(ngModel)]="myDate" ></ion-datetime>
       </ion-item>
       </ion-segment-button>
 
       <ion-segment-button value="calendar">
-        <ion-icon name="calendar"></ion-icon>
+       <ion-chip  mode="ios" outline="true">
+         <div>DAILY</div>
+       </ion-chip>
       </ion-segment-button>
       <ion-segment-button value="return" >
-        <ion-chip (click)="returnStock()" outline> <div>return expense</div> </ion-chip>
+        <ion-chip (click)="returnStock()" outline> <div>return</div> </ion-chip>
       </ion-segment-button>
       <ion-segment-button value="credit" >
-        <ion-chip [routerLink]="['/credit']" outline> <div>credit list</div> </ion-chip>
+        <ion-chip [routerLink]="['/tabs/credit']" outline> <div>credit list</div> </ion-chip>
       </ion-segment-button>
     </ion-segment>
   </ion-toolbar>
 
-  
 
-
-  <ion-fab 
-  vertical="bottom" horizontal="end" slot="fixed">
- <ion-fab-button (click)="doRefresh($event)"   color="primary">
-   <ion-icon  name="refresh"></ion-icon>
- </ion-fab-button>
- </ion-fab>
   <!-- <h6 class="
     text-center text-dark"> expense records</h6> -->
   <ion-row  *ngIf="segment=='balance'">
@@ -82,7 +76,7 @@
             <ion-button (click)="d.toggle()"
              ><ion-icon name="calendar"></ion-icon> </ion-button>
             <ion-button color="success" [disabled]="!model"
-             (click)="submitDate(dateform)" type="submit">
+              type="submit">
             <ion-icon name="search"></ion-icon></ion-button>
           </div>
         </div>
@@ -132,7 +126,7 @@
   <ion-col size="12" size-lg="6" size-md="6" size-xs="12"
   size-sm="6" size-xl="6" *ngFor="let item of expense; index as i">
     <ion-card 
-     color="light" class="p-1 text-center font-weight-bold" 
+      class="p-1 text-center font-weight-bold" 
      [ngClass]="{'primary-color-dark text-white': item.return}">
         <ion-row [ngClass]="{'success-color-dark text-white': !item.return}">
           <!-- here card -->
@@ -212,7 +206,7 @@
 
   <!-- add expense -->
   <ion-grid class="pt-3">
-  <ion-card color="light" *ngIf="showExpenseInput" class="pt-5 ">
+  <ion-card  *ngIf="showExpenseInput" class="pt-5 ">
     <form #expense="ngForm" (keydown.enter)="expense.valid && submitExpense(expense)"
      (submit)="expense.valid && submitExpense(expense)">
       <!--  form data -->

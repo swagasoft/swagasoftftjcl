@@ -7,7 +7,7 @@
         
        <ion-menu-toggle>
          <ion-tem color="medium" class="ion-padding"> 
-          <small class="p-5 pt-2 pl-1 text-uppercase" [routerLink]="['/setting']"
+          <small class="p-5 pt-2 pl-1 text-uppercase" [routerLink]="['/tabs/setting']"
           >user - {{userService.appUser}} </small> <br>
           <small class="p-5 pl-1 text-uppercase" [routerLink]="['/setting']"
           >MY ROLE - {{userService.role}} </small> <br>
@@ -47,7 +47,7 @@
     <ion-list color="light">
       <ion-list-header color="light">DIRECTOR</ion-list-header>
        <ion-menu-toggle autoHide="false">
-        <ion-item  color="light"   [routerLink]="['/expense-two']" routerLinkActive="router-link-active">
+        <ion-item  color="light"   [routerLink]="['/tabs/expense-two']" routerLinkActive="router-link-active">
           <ion-icon name="list"></ion-icon>
           <ion-label  class="ml-4">EXPENSE 2</ion-label>
         </ion-item>
@@ -55,7 +55,7 @@
       
        <ion-menu-toggle autoHide="false">
         <ion-item color="light" 
-        [routerLink]="['//pay-roll']" routerLinkActive="router-link-active">
+        [routerLink]="['/tabs/pay-roll']" routerLinkActive="router-link-active">
         <ion-icon name="cash"></ion-icon>
         <ion-label  class="ml-4"> PAY ROLL</ion-label>
       </ion-item>
@@ -63,7 +63,7 @@
          
        <ion-menu-toggle autoHide="false">
         <ion-item color="light" 
-        [routerLink]="['/manager']" routerLinkActive="router-link-active">
+        [routerLink]="['/tabs/manager']" routerLinkActive="router-link-active">
         <ion-icon name="build"></ion-icon>
         <ion-label  class="ml-4">APP USERS</ion-label>
       </ion-item>

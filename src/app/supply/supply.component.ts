@@ -86,7 +86,7 @@ model = {
         this.loading = false;
         this.resetForm();
         this.userService.generalToastSh(res['msg']);
-        this.router.navigate(['/distributions']);
+        this.router.navigate(['/tabs/distributions']);
       },
       err => {
         this.loading = false;

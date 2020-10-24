@@ -80,6 +80,10 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
       return this.http.put(environment.apiBaseUrl +'/update-stafe', staff);
     }
 
+    changeStaffStatus(status){
+      return this.http.put(environment.apiBaseUrl + '/change-staff-status', status);
+    }
+
     deleteTaff(id){
       return this.http.get(environment.apiBaseUrl + `/delete-staff${id}`);
     }
@@ -155,6 +159,11 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
 
     reloadPenalty(data){
      return this.http.post(environment.apiBaseUrl + '/this-month-penalty', data);
+
+    }
+    
+    getRemovedStaff(){
+     return this.http.get(environment.apiBaseUrl + '/removed-staffed');
 
     }
 

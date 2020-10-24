@@ -73,7 +73,7 @@ loading = false;
                console.log(res);
                this.usrService.generalToast(res['msg']);
                this.resetProd();
-               this.router.navigateByUrl('/distributions');
+               this.router.navigateByUrl('/tabs/distributions');
              },
              err => {
                console.log(err);

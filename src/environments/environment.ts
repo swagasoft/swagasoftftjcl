@@ -4,16 +4,7 @@
 
 export const environment = {
   production: false,
-  apiBaseUrl:  'http://localhost:5005/api',
+  // apiBaseUrl:  'http://localhost:5005/api',
   // apiBaseUrl:  'http://farm2juice.name.ng:5005/api',
-  // apiBaseUrl:  'http://3.21.122.194:5005/api',
+  apiBaseUrl:  'http://3.21.122.194:5005/api',
 }
-//simon
-/*
- * For easier debugging in development mode, you can import the following file
- * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
- *
- * This import should be commented out in production mode because it will have a negative impact
- * on performance if an error is thrown.
- */
-// import 'zone.js/dist/zone-error';  // Included with Angular CLI.

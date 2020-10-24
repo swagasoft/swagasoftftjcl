@@ -22,39 +22,39 @@ dark = false;
   public appPages = [
     {
       title: 'EXPENSES',
-      url: '/expenses',
+      url: '/tabs/expenses',
       icon: 'cash'
     },
     
      {
       title: 'DISTRIBUTION',
-      url: '/distributions',
+      url: '/tabs/distributions',
       icon: 'list'
     }, 
      {
       title: 'MERCHANDISERS',
-      url: '/merchandisers',
+      url: '/tabs/merchandisers',
       icon: 'calculator'
     }, 
     {
       title: 'FRUIT',
-      url: '/fruit',
+      url: '/tabs/fruit',
       icon: 'nutrition'
     },
      {
       title: 'PENALTY',
-      url: '/penalty',
+      url: '/tabs/penalty',
       icon: 'cut'
     },
    
      {
       title: 'STAFF',
-      url: '/staff-list',
+      url: '/tabs/staff-list', 
       icon: 'contacts'
     },
      {
       title: 'OUTLETS',
-      url: '/outlets',
+      url: '/tabs/outlets',
       icon: 'home'
     }, 
    

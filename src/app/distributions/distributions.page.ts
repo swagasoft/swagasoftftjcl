@@ -314,7 +314,7 @@ componentProps: {
    this.getProduction();
  });
  return await modal.present();
- 
+  
 } 
 
 async exchangeStock() {
