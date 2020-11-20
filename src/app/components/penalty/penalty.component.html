@@ -63,8 +63,11 @@
   <ion-col size="12" size-lg="6" size-md="6" size-xs="12"
   size-sm="6" size-xl="6" *ngFor="let item of penalize; index as i">
 
-    <ion-card  class="bg-dark text-white">
+    <ion-card  [ngClass]="{'success-color-dark text-white': item.treated}" color="dark">
+     <ion-item color="dark">
       <ion-chip outline color="light" class="font-weight-bold">{{i+1}} </ion-chip>
+      <ion-icon (click)="handleTreated(item)" color="warning" slot="end" name="checkmark"></ion-icon>
+     </ion-item>
       <ion-row class="font-weight-bold">
        <ion-col>
         <div>{{item.name}} </div>

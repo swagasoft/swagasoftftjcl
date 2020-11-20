@@ -88,7 +88,7 @@ model = {
   }
 
   closeModal(){
-    this.navCtrl.pop();
+    // this.navCtrl.pop();
     this.modalController.dismiss();
     console.log('i clicked close');
   } 

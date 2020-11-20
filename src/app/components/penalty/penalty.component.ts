@@ -1,3 +1,4 @@
+import { Penalty } from './../../interfaces/penalty';
 
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { IonRefresher, AlertController } from '@ionic/angular';
@@ -17,7 +18,7 @@ export class PenaltyComponent implements OnInit{
   admin: any;
   model;
   myDate  = new Date();
-  penalize = [];
+  penalize : Penalty[];
 
 searchModel = { 
   search: '',fullname: '', month: null, year : null
@@ -40,6 +41,25 @@ searchModel = {
       },1000);
    
     } 
+
+    handleTreated(item){
+      console.log(item);
+      const oldPenalize = this.penalize;
+      let exist = this.penalize.find(element => element._id == item._id);
+      if (exist) {
+        exist.treated  = (exist.treated == true) ? false : true;
+        console.log("goood",exist);
+        this.userService.updatePenaltyRemark(exist).subscribe(res => {
+          console.log("saved ", res);
+        })
+      } else {
+      this.userService.generalToast('error updating record!');
+      
+      }
+  
+    }
+
+
   
     getPenalty(){
       if(this.staffService.penaltySaver.length){
@@ -49,6 +69,7 @@ searchModel = {
         this.loading =true;
         this.staffService.thisMonthPenalty(this.searchModel).subscribe(
           res => {
+            console.log(res)
             this.loading = false;
             this.penalize = res['record'];
             this.staffService.penaltySaver = this.penalize;

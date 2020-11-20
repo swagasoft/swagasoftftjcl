@@ -58,6 +58,7 @@ import { SpecialComponent } from './components/special/special.component';
 import { ProdRecordComponent } from './components/prod-record/prod-record.component';
 import { EditStaffComponent } from './components/edit-staff/edit-staff.component';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
+import { IonicSelectableModule } from 'ionic-selectable';
 
 @NgModule({
   declarations: [AppComponent,ProductionComponent,
@@ -102,6 +103,7 @@ import { LocationStrategy, HashLocationStrategy } from '@angular/common';
     FormsModule,NgxElectronModule,
     ReactiveFormsModule,
     HttpClientModule,
+    IonicSelectableModule,
      AppRoutingModule],
      schemas: [ NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
   

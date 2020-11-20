@@ -14,19 +14,28 @@
 
   <ion-list>
     <ion-item color="light">
-      <ion-label>SELECT MERCHANDISER</ion-label>
-      <ion-select (ionChange)="selectedVal($event)" >
-        <ion-select-option  *ngFor="let item of allMerchant" [value]="item.fullname">{{item.fullname}} </ion-select-option>
-      </ion-select>
+      <ion-label color="primary">search merchant</ion-label>
+      <ionic-selectable
+        item-content 
+        [(ngModel)]="merchant"
+        [items]="merchants"
+        itemValueField="_id"
+        itemTextField="fullname"
+        [canSearch]="true"
+        (onChange)="portChange($event)">
+      </ionic-selectable>
     </ion-item>
-  </ion-list> 
-  <ion-card>
-    <ion-card>
+   
       <ngb-datepicker  (navigate)="dateNavigate($event)" 
       class="datepicker-only-month-select "></ngb-datepicker>
-    </ion-card>
+    <!-- </ion-card> -->
+  </ion-list> 
+
+ 
+  
+  
     
-  </ion-card>
+ 
   <ion-row color="light">
     <ion-col>
       <ion-chip class="font-weight-bold" ouline color="dark"> bottles: {{totalBottles}}</ion-chip>

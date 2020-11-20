@@ -166,6 +166,9 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
     verifyExpense(id){
       return this.http.get(environment.apiBaseUrl + `/verify-expense${id}`)
     }
+    updatePenaltyRemark(penalty){
+      return this.http.put(environment.apiBaseUrl + `/update-penalty-remark`,penalty);
+    }
 
     reverseExpense(data){
       return this.http.post(environment.apiBaseUrl + `/reverse-expense`, data);

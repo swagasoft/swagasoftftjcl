@@ -34,21 +34,11 @@
     <ion-segment-button value="star">
       <ion-chip outline (click)="removedStaff()"> <div> <ion-icon color="danger"  slot="start" name="hand"></ion-icon>staff</div> </ion-chip>
     </ion-segment-button>
-    <!-- <ion-segment-button value="globe">
-      <ion-icon name="globe"></ion-icon>
-    </ion-segment-button>
-    <ion-segment-button value="basket">
-      <ion-icon name="basket"></ion-icon>
-    </ion-segment-button> -->
+ 
   </ion-segment>
 </ion-toolbar>
 
-  <!-- <ion-fab *ngIf="showList"
-     vertical="top" horizontal="end" slot="fixed">
-    <ion-fab-button (click)="addStaff()" [disabled]="userService.getUserRole() =='ADMIN' "   color="success">
-      <ion-icon  name="add"></ion-icon>
-    </ion-fab-button>
-  </ion-fab> -->
+
 
   <ion-fab *ngIf="showform" (click)="cancelForm()"  vertical="top" horizontal="end" slot="fixed">
     <ion-fab-button   color="danger">
