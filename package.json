@@ -30,7 +30,7 @@
     "@ionic/angular": "^4.7.1",
     "@ng-bootstrap/ng-bootstrap": "^6.0.0",
     "capacitor-app": "file:electron",
-    "chart.js": "^2.9.3",
+    "chart.js": "^2.9.4",
     "cordova-android": "^8.1.0",
     "cordova-plugin-network-information": "^2.0.2",
     "core-js": "^2.5.4",
