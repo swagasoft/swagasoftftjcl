@@ -12,7 +12,7 @@
     <ion-list>
     <!-- select filter -->
     <ion-item color="light" >
-      <ion-label color="dark" class="text-center"></ion-label>
+      <ion-label color="primary" class="text-center"></ion-label>
       <select (change)="selectOutlet($event)"  >
         <option value="none"> 
           SELECT OUTLET 
@@ -33,11 +33,17 @@
 
   <ion-list>
     <ion-item color="light">
-      <ion-label>SELECT MERCHANDISER</ion-label>
+      <ion-label color="primary">SELECT MERCHANDISER</ion-label>
       <ion-select (ionChange)="selectedVal($event)" >
         <ion-select-option  *ngFor="let item of specifieldmerchant" [value]="item.fullname">{{item.fullname}} </ion-select-option>
       </ion-select>
     </ion-item>
+  
+    <ion-item>
+      <ion-label color="primary">MM DD YY</ion-label>
+      <ion-datetime (ionChange)="dateChange($event)" displayFormat="DDDD MMM D, YYYY" placeholder="Select Date"></ion-datetime>
+    </ion-item>
+         
   </ion-list>
 
   

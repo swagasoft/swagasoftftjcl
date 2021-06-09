@@ -14,6 +14,7 @@ export class MerchantModalComponent implements OnInit, OnDestroy {
 loading = true; allOutlet: any;  allMerchant: any; 
 admin: any; singleOutlet: any; saleRecords : any;
 specifieldmerchant: any;
+dateModel;
 
 
   constructor(public userService: UserServiceService,
@@ -26,7 +27,7 @@ specifieldmerchant: any;
               
 model = {
   admin:'', outletCode : '', outletName:'', outletRate: 0,
-  amountSold: null, bottleSold : null, merchant: []
+  amountSold: null, bottleSold : null, merchant: [], date:Date.now()
 } 
 
   ngOnInit() {
@@ -34,15 +35,22 @@ model = {
   }
 
   ngOnDestroy(){
+    this.dateModel = Date.now();
     this.model = {
       admin:'', outletCode : '', outletName:'', outletRate: 0,
-      amountSold: null, bottleSold : null, merchant: []
+      amountSold: null, bottleSold : null, merchant: [], date:Date.now()
     }
     this.allOutlet = [];  this.specifieldmerchant = [];
     this.singleOutlet = [] ;
   }
 
 
+
+  dateChange(event){
+    console.log(event.detail.value)
+    console.log( this.dateModel)
+    this.dateModel = event.detail.value;
+  }
 
 
   submitForm(form: NgForm){
@@ -56,7 +64,8 @@ model = {
         attendant: this.model.merchant.length,
         outletCode: this.model.outletCode,
         bottles: this.model.bottleSold /this.model.merchant.length,
-        date: Date.now(),
+        date: this.dateModel,
+        rate : this.model.outletRate,
         amountSold : this.model.outletRate * this.model.bottleSold / this.model.merchant.length,
       }
 

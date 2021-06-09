@@ -15,12 +15,12 @@
  <ion-row>
    <ion-col size="4">
        
-  <ion-item color="success">
-   <ion-label>Month</ion-label> <ion-icon name="calendar"></ion-icon>
+  <ion-item color="dark">
+    <ion-icon name="calendar"></ion-icon>
     <ion-datetime  [pickerOptions]="filter_Month_Year" displayFormat="MMMM YYYY"  [(ngModel)]="myDate" ></ion-datetime>
   </ion-item>
    </ion-col>
-   <ion-col size="8">
+   <!-- <ion-col size="8">
     <form #dateform="ngForm"  (submit)=" submitDate(dateform)" class="form-inline">
       <div class="form-group">
         <div class="input-group">
@@ -36,7 +36,7 @@
         </div>
       </div>
     </form>
-   </ion-col>
+   </ion-col> -->
  </ion-row>
 
 
@@ -59,67 +59,37 @@
       </ion-refresher-content>
     </ion-refresher>
 
-<ion-row>
-  <ion-col size="12" size-lg="6" size-md="6" size-xs="12"
-  size-sm="6" size-xl="6" *ngFor="let item of penalize; index as i">
+    <ion-scroll >
+   
 
-    <ion-card  [ngClass]="{'success-color-dark text-white': item.treated}" color="dark">
-     <ion-item color="dark">
-      <ion-chip outline color="light" class="font-weight-bold">{{i+1}} </ion-chip>
+</ion-scroll>
+
+
+
+<ion-row>
+  <ion-col size="2">
     
-      <ion-icon *ngIf="userService.getUserRole() === 'DIRECTOR'"
-       (click)="handleTreated(item)" color="warning" slot="end" name="checkmark"></ion-icon>
+  </ion-col>
+  <ion-col size="10">
+    <table class=" table table-striped table-responsive text-center">
+      <thead>
+        <tr>
+          <th> #</th>
+          <th>Names</th>
+        
+        </tr>
+      </thead>
+      <tbody *ngFor="let item of penalize; index as i">
+        <tr>
+          <td class=" text-dark">{{i + 1 }} </td>
+          <td   [ngClass]="{'success-color-dark text-white': item?.hide}"  class="" (click)="viewPenalty(item)">
+              <div class="font-weight-bold">{{item?.name}} </div> </td>
+          <!-- <td  *ngIf="userService.getUserRole() === 'DIRECTOR'" >   <ion-icon (click)="hidePenalty(item)" name="flash-off"></ion-icon> </td> -->
+        
+        </tr>
      
-     </ion-item>
-      <ion-row class="font-weight-bold">
-       <ion-col>
-        <div>{{item.name}} </div>
-       </ion-col>
-      <ion-col>
-        <div class="pl-4"> {{item.amount | currency:'₦'}} </div>
-      </ion-col>
-      <ion-col>
-        <div>{{item.created_at | date:'medium'}} </div>
-       </ion-col>
-      </ion-row>
-      <ion-row>
-        <div class="text-center font-weight-bold">{{item.reason}} </div> 
-      </ion-row>
-      <ion-row>
-        <ion-col>
-          <div>Admin </div>
-          <div>{{item.admin}} </div>
-        </ion-col>
-        <ion-col>
-          <div class="text-warning"> edited:{{item.edit}} </div>
-        </ion-col>
-        <ion-col>
-          <h6 *ngIf="item.wave" class="text-success font-weight-bold"> WAVED </h6>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-button color="medium">
-          <ion-button  size="small"
-           (click)="editRecord(item._id,item.user_id,item.amount,item.reason)"
-           >EDIT</ion-button>
-          <ion-button size="small" color="warning" *ngIf="userService.role == 'DIRECTOR'"
-           size="small"(click)="waveRecord(item._id)" >WAVE</ion-button>
-          <ion-button *ngIf="userService.role == 'DIRECTOR'"
-           size="small" color="danger" size="small"(click)="deleteRecord(item._id)" >DELETE</ion-button>
-           <ion-button [disabled]="userService.role !='DILIGENT'" *ngIf="!item.confirm"
-           (click)="confirmPenalty(item._id)" size="small" color="light">ok</ion-button>
-           <ion-button [disabled]="userService.role !='DILIGENT'"  *ngIf="item.confirm"
-           (click)="unConfirmPenalty(item._id)" size="small" color="success">ok</ion-button>
-           <ion-button [disabled]="userService.role !='DIRECTOR'" *ngIf="!item.verify"
-           (click)="verifyPenalty(item._id)" size="small" color="light">verify</ion-button>
-           <ion-button [disabled]="userService.role !='DIRECTOR'"  *ngIf="item.verify"
-           (click)="unVerifyPenalty(item._id)" size="small" color="success">verified</ion-button>
-        </ion-button>
- 
-      </ion-row>
-      
-  
-    </ion-card>
+      </tbody>
+    </table>
   </ion-col>
 </ion-row>
 
@@ -142,4 +112,5 @@
 <div *ngIf="loading" class="spinner">
   <div class="loader"></div>
 </div>
+
 </ion-content>

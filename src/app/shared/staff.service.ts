@@ -11,7 +11,7 @@ import { AlertController, ToastController } from '@ionic/angular';
   providedIn: 'root'
 })
 export class StaffService {
-penaltySaver = [];
+// penaltySaver = [];
 staffSaver = [];
 nigeriaState =[
   {value :"ABIA", name: "ABIA"},
@@ -155,6 +155,15 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
     thisMonthPenalty(date){
      return this.http.post(environment.apiBaseUrl + '/this-month-penalty', date)
     
+    }
+
+    getPersonalPenalty(date){
+     return this.http.post(environment.apiBaseUrl + '/get-personal-penalty', date)
+    
+    }
+
+    hidePenalty(id){
+      return this.http.get(environment.apiBaseUrl + `/hide-penalty${id}`)
     }
 
     reloadPenalty(data){

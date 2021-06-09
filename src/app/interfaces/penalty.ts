@@ -15,6 +15,6 @@ treated: boolean,
 user_id:  string,
 verify: boolean,
 wave: boolean,
-
+hide? : boolean,
 _id: string
 }

@@ -1,0 +1,85 @@
+
+<ion-header>
+  <ion-toolbar color="dark">
+   
+    <ion-icon class="ion-padding" (click)="dismiss()" slot="start" name="close"></ion-icon>
+    <ion-title>{{item?.name}} </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+
+  <ion-row>
+  <ion-col size="12" size-lg="6" size-md="6" size-xs="12"
+  size-sm="6" size-xl="6" *ngFor="let item of penalize; index as i">
+
+    <ion-card  [ngClass]="{'success-color-dark text-white': item.treated}" color="dark">
+     <ion-item color="dark">
+      <ion-chip outline color="light" class="font-weight-bold">{{i+1}} </ion-chip>
+    
+      <ion-icon *ngIf="userService.getUserRole() === 'DIRECTOR'"
+       (click)="handleTreated(item)" color="warning" slot="end" name="checkmark"></ion-icon>
+     
+     </ion-item>
+      <ion-row class="font-weight-bold">
+       <ion-col>
+        <div>{{item.name}} </div>
+       </ion-col>
+      <ion-col>
+        <div class="pl-4"> {{item.amount | currency:'₦'}} </div>
+      </ion-col>
+      <ion-col>
+        <div>{{item.created_at | date:'medium'}} </div>
+       </ion-col>
+      </ion-row>
+      <ion-row>
+        <div class="text-center font-weight-bold">{{item.reason}} </div> 
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <div>Admin </div>
+          <div>{{item.admin}} </div>
+        </ion-col>
+        <ion-col>
+          <div class="text-warning"> edited:{{item.edit}} </div>
+        </ion-col>
+        <ion-col>
+          <h6 *ngIf="item.wave" class="text-success font-weight-bold"> WAVED </h6>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-button color="medium">
+          <ion-button  size="small"
+           (click)="editRecord(item._id,item.user_id,item.amount,item.reason)"
+           >EDIT</ion-button>
+          <ion-button size="small" color="warning" *ngIf="userService.role == 'DIRECTOR'"
+           size="small"(click)="waveRecord(item._id)" >WAVE</ion-button>
+          <ion-button *ngIf="userService.role == 'DIRECTOR'"
+           size="small" color="danger" size="small"(click)="deleteRecord(item._id)" >DELETE</ion-button>
+           <ion-button [disabled]="userService.role !='DILIGENT'" *ngIf="!item.confirm"
+           (click)="confirmPenalty(item._id)" size="small" color="light">ok</ion-button>
+           <ion-button [disabled]="userService.role !='DILIGENT'"  *ngIf="item.confirm"
+           (click)="unConfirmPenalty(item._id)" size="small" color="success">ok</ion-button>
+           <ion-button [disabled]="userService.role !='DIRECTOR'" *ngIf="!item.verify"
+           (click)="verifyPenalty(item._id)" size="small" color="light">verify</ion-button>
+           <ion-button [disabled]="userService.role !='DIRECTOR'"  *ngIf="item.verify"
+           (click)="unVerifyPenalty(item._id)" size="small" color="success">verified</ion-button>
+        </ion-button>
+ 
+      </ion-row>
+      
+  
+    </ion-card>
+  </ion-col>
+</ion-row>
+
+
+
+
+<!-- loading.. -->
+<div *ngIf="loading" class="spinner">
+  <div class="loader"></div>
+</div>
+
+</ion-content>

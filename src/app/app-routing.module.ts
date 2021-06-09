@@ -22,6 +22,7 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes, CanActivate } from '@angular/router';
 import { ViewByOutletComponent } from './components/view-by-outlet/view-by-outlet.component';
 import { ProdRecordComponent } from './components/prod-record/prod-record.component';
+import { MerchantProPage } from './pages/merchant-pro/merchant-pro.page';
 
 const routes: Routes = [
   { path: '', redirectTo: '/tabs/distributions', pathMatch: 'full' },
@@ -133,8 +134,15 @@ const routes: Routes = [
         path: 'salary_adv',
         component : SalaryAdvComponent, canActivate: [AuthGuard]
       },
+      {
+        path: 'merchant-pro',
+        component: MerchantProPage,
+        canActivate:[DirectorGuard]
+      },
     ]
   },
+
+ 
  
 ];
 

@@ -1,9 +1,10 @@
+import { UserServiceService } from './../../shared/user-service.service';
+import { ViewPenaltyComponent } from './../view-penalty/view-penalty.component';
 import { Penalty } from './../../interfaces/penalty';
 
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { IonRefresher, AlertController } from '@ionic/angular';
+import { IonRefresher, AlertController, IonInfiniteScroll, ModalController } from '@ionic/angular';
 import { StaffService } from 'src/app/shared/staff.service';
-import { UserServiceService } from 'src/app/shared/user-service.service';
 import { NgForm } from '@angular/forms';
 
 @Component({
@@ -13,12 +14,12 @@ import { NgForm } from '@angular/forms';
 })
 export class PenaltyComponent implements OnInit{
   @ViewChild('refresherRef', {static : false}) refresherRef: IonRefresher;
+  @ViewChild(IonInfiniteScroll, {static : false}) infiniteScroll: IonInfiniteScroll;
  
   loading = true;
-  admin: any;
   model;
   myDate  = new Date();
-  penalize : Penalty[];
+  penalize : Penalty[] = [];
 
 searchModel = { 
   search: '',fullname: '', month: null, year : null
@@ -27,7 +28,7 @@ searchModel = {
 
 
     constructor(public staffService: StaffService,public alertController: AlertController,
-                public userService: UserServiceService) {
+                public userService: UserServiceService, private modalController : ModalController) {
                   let appMonth = new Date().getMonth() + 1;
                   let appYear = new Date().getFullYear() ;
                   this.searchModel.month = appMonth;
@@ -35,56 +36,41 @@ searchModel = {
      }
   
     ngOnInit() {
-      this.admin = localStorage.getItem('appUser');
       setTimeout(()=> {
         this.getPenalty();
       },1000);
-   
+
+    
     } 
 
-    handleTreated(item){
-      console.log(item);
-      const oldPenalize = this.penalize;
-      let exist = this.penalize.find(element => element._id == item._id);
-      if (exist) {
-        exist.treated  = (exist.treated == true) ? false : true;
-        console.log("goood",exist);
-        this.userService.updatePenaltyRemark(exist).subscribe(res => {
-          console.log("saved ", res);
-        })
-      } else {
-      this.userService.generalToast('error updating record!');
-      
-      }
   
-    }
 
 
   
     getPenalty(){
-      if(this.staffService.penaltySaver.length){
-        this.penalize = this.staffService.penaltySaver;
         this.loading = false;
-      }else{
+  
         this.loading =true;
         this.staffService.thisMonthPenalty(this.searchModel).subscribe(
           res => {
-            console.log(res)
+            console.log('result...',res)
             this.loading = false;
             this.penalize = res['record'];
-            this.staffService.penaltySaver = this.penalize;
+            this.penalize = this.penalize.sort((a, b) => a.name.normalize().localeCompare(b.name.normalize()));
           },
           err => {
             this.loading = false;
             console.log(err)
             this.penalize = [];
-            let message = (err.error.msg) ? err.error.msg : 'Internet connnection failed!';
+            let message = (err.error.msg) ? err.error.msg : 'Internet connection failed!';
             this.userService.generalToastSh(message);
           }
         );
-      }
+      
     
     }
+
+    
 
     
     reloadPenalty(){
@@ -93,15 +79,18 @@ searchModel = {
         res => {
           this.loading = false;
           this.penalize = res['record'];
+          this.penalize.sort()
+          // this.penalize = this.penalize.sort((a, b) => a.name.normalize().localeCompare(b.name.normalize()));
+          this.penalize = this.penalize.sort((a, b) => a.name.toLocaleLowerCase().normalize().localeCompare(b.name.toLocaleLowerCase().normalize()));
+
           this.refresherRef.complete();
-          this.staffService.penaltySaver = this.penalize;
         },
         err => {
           this.loading = false;
           this.refresherRef.complete();
           console.log(err)
           this.penalize = [];
-          let message = (err.error.msg) ? err.error.msg : 'Internet connnection failed!';
+          let message = (err.error.msg) ? err.error.msg : 'Internet connection failed!';
           this.userService.generalToastSh(message);
         }
       );
@@ -113,6 +102,8 @@ searchModel = {
       console.log(this.model);
       this.findByDay();
     }
+
+
 
 
     // tslint:disable-next-line: member-ordering
@@ -130,7 +121,10 @@ searchModel = {
           res => {
             this.loading = false;
             this.penalize = res['record'];
-            this.staffService.penaltySaver = this.penalize;
+            this.penalize = this.penalize.sort((a, b) => a.name.toLocaleLowerCase().normalize().localeCompare(b.name.toLocaleLowerCase().normalize()));
+
+
+            // this.staffService.penaltySaver = this.penalize;
           },
           err => {
             this.loading = false;
@@ -148,8 +142,6 @@ searchModel = {
       this.staffService.findPenaltyDate(this.model).subscribe(
         res => {
           this.loading = false;
-          this.penalize = res['users'];
-          this.staffService.penaltySaver = this.penalize;
         },
         err => {
           this.loading = false;
@@ -165,13 +157,16 @@ searchModel = {
      
     }
 
-    searchPenalty(){
+   async searchPenalty(){
       this.loading = true;
       this.staffService.searchPenalty(this.searchModel).subscribe(
         res=> {
           this.loading = false;
-          this.penalize = res['users']; 
-          this.staffService.penaltySaver = this.penalize;
+
+        this.penalize = res['users']; 
+          this.penalize = this.penalize.sort((a, b) => a.name.toLocaleLowerCase().normalize().localeCompare(b.name.toLocaleLowerCase().normalize()));
+
+
         },
         err=>{
           this.loading = false;
@@ -180,128 +175,26 @@ searchModel = {
         }
       )
     }
+
+
+    async viewPenalty(item) {
+      const modal = await this.modalController.create({
+      component: ViewPenaltyComponent,
+      componentProps: { item: item, model: this.searchModel }
+      });
+      await modal.present();
+      const data = await modal.onDidDismiss();
+      console.log(data)
+    }
+  
+  
   
     // getThisMonthPenalty() {
     //   this.staffService.thisMonthPenalty(this.searchModel);
     // }
   
-    async editRecord(id,user_id,amount, reason){
-      const alert = await this.alertController.create({
-        header: `EDIT THIS RECORD?`,
-        inputs: [ {  name: 'amount', type: 'number',value: amount, placeholder: 'enter amount',
-          },
-        { name: 'reason', type: 'text', value: reason, placeholder: 'enter offence',
-        }],
-        buttons: [
-          {
-            text: 'Cancel', role: 'cancel', cssClass: 'danger',
-            handler: (blah) => {
-              console.log('cancel amount input');
-            }
-          }, {
-            text: 'Confirm',
-            cssClass : 'danger',
-            handler: (values) => {
-              console.log(values);
-              if (values.amount == '' || values.reason == ''){
-                this.userService.generalToast("you did not enter amount/reasons");
-              }else{
-              this.loading = true;
-              let body = {
-                  values: values,
-                  admin: this.admin,
-                  user_id: user_id,
-                  id : id
-              } 
-              this.staffService.editPenalty(body).subscribe(
-              res => {
-                this.loading = false;
-                this.userService.generalToastSh(res['msg']);
-                this.reloadPenalty();
-              },
-              err => {
-                this.loading = false;
-                this.penalize = [];
-                this.userService.generalToast(err.error.msg);
-              }
-            );
-          }
-            }
-          }
-        ]
-      });
-      await alert.present();
-    }
+  
 
-
-    async waveRecord(id){
-      const alert = await this.alertController.create({
-        header: `WAVE PENALTY?`,
-       
-        buttons: [
-          {
-            text: 'Cancel', role: 'cancel', cssClass: 'danger',
-            handler: (blah) => {
-              console.log('cancel amount input');
-            }
-          }, {
-            text: 'Confirm',
-            cssClass : 'danger',
-            handler: (values) => {
-              this.loading = true;
-              this.staffService.wavePenalty(id).subscribe(
-              res => {
-                this.loading = false;
-                this.userService.generalToastSh(res['msg']);
-                this.reloadPenalty();
-              },
-              err => {
-                this.loading = false;
-                this.userService.generalToast(err.error.msg);
-              }
-            );
-          }
-            }
-          
-        ]
-      });
-      await alert.present();
-    }
-
-    async deleteRecord(id){
-      const alert = await this.alertController.create({
-        header: `DELETE PENALTY?`,
-       
-        buttons: [
-          {
-            text: 'Cancel', role: 'cancel', cssClass: 'danger',
-            handler: (blah) => {
-              console.log('cancel amount input');
-            }
-          }, {
-            text: 'Confirm',
-            cssClass : 'danger',
-            handler: (values) => {
-              console.log(id);
-              this.loading = true;
-              this.staffService.deletePenalty(id).subscribe(
-              res => {
-                this.loading = false;
-                this.userService.generalToastSh(res['msg']);
-                this.reloadPenalty();
-              },
-              err => {
-                this.loading = false;
-                this.userService.generalToast(err.error.msg);
-              }
-            );
-          }
-            }
-          
-        ]
-      });
-      await alert.present();
-    }
 
     //  thisMonthRecord(event){
      
@@ -321,47 +214,5 @@ searchModel = {
     //    );
     // }
 
-    verifyPenalty(id){
-      this.loading = true;
-      this.staffService.verifyPenal(id).subscribe(
-        res=> {
-          this.loading = false;
-          this.userService.generalToastSh(res['msg']);
-          this.reloadPenalty();
-        }
-      );
-    }
-
-    unVerifyPenalty(id){
-      this.loading = true;
-      this.staffService.unVerifyPenal(id).subscribe(
-        res=> {
-          this.loading = false;
-          this.userService.generalToastSh(res['msg']);
-          this.reloadPenalty();
-        }
-      );
-    }
-    confirmPenalty(id){
-      this.loading = true;
-      this.staffService.confirmPenal(id).subscribe(
-        res=> {
-          this.loading = false;
-          this.userService.generalToastSh(res['msg']);
-          this.reloadPenalty();
-        }
-      );
-    }
-
-    unConfirmPenalty(id){
-      this.loading = true;
-      this.staffService.unConfirmPenal(id).subscribe(
-        res=> {
-          this.loading = false;
-          this.userService.generalToastSh(res['msg']);
-          this.reloadPenalty();
-        }
-      );
-    }
   
 }

@@ -4,17 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { DistributionsPageRoutingModule } from './distributions-routing.module';
+import { MerchantProPageRoutingModule } from './merchant-pro-routing.module';
 
-import { DistributionsPage } from './distributions.page';
+import { MerchantProPage } from './merchant-pro.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    DistributionsPageRoutingModule
+    MerchantProPageRoutingModule
   ],
   declarations: []
 })
-export class DistributionsPageModule {}
+export class MerchantProPageModule {}

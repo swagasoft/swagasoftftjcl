@@ -1,0 +1,44 @@
+
+<ion-header>
+  <ion-toolbar color="dark">
+   
+    <ion-icon class="ion-padding" (click)="dismiss()" slot="start" name="close"></ion-icon>
+    <ion-title>  Add new Record </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <h6 class=""> gabriel james</h6>
+
+  <ion-row>
+    <ion-col size="6">
+      <ion-item>
+        <ion-label>Pizza</ion-label>
+        <ion-select value="peperoni" multiple="true" placeholder="Select Pizza">
+          <ion-select-option value="peperoni">Peperoni</ion-select-option>
+          <ion-select-option value="hawaii">Hawaii</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-col>
+
+    <ion-col size="6">
+     <ion-button size="small" (click)="newMerchantClick()" >
+       new merchant
+     </ion-button>
+
+     <form  ngForm="userForm">
+       <label for="name"></label>
+       <input name="name" placeholder="name" [(ngModel)]="newMerchantModel.name" type="text">
+       <input name="group" placeholder="group" [(ngModel)]="newMerchantModel.group" type="text">
+       <ion-button  size="small" (click)="submitUser()" > <br>
+         submit
+       </ion-button>
+     </form>
+    </ion-col>
+  </ion-row>
+
+ 
+
+
+</ion-content>

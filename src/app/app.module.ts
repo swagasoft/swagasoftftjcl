@@ -1,3 +1,5 @@
+import { AddMerchantProComponent } from './components/add-merchant-pro/add-merchant-pro.component';
+import { ViewPenaltyComponent } from './components/view-penalty/view-penalty.component';
 import { TabsComponent } from './components/tabs/tabs.component';
 import { DistributionsPage } from './distributions/distributions.page';
 import { EditReturnComponent } from './components/edit-return/edit-return.component';
@@ -59,6 +61,7 @@ import { ProdRecordComponent } from './components/prod-record/prod-record.compon
 import { EditStaffComponent } from './components/edit-staff/edit-staff.component';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { IonicSelectableModule } from 'ionic-selectable';
+import { MerchantProPage } from './pages/merchant-pro/merchant-pro.page';
 
 @NgModule({
   declarations: [AppComponent,ProductionComponent,
@@ -92,10 +95,14 @@ import { IonicSelectableModule } from 'ionic-selectable';
     EditReturnComponent,
     DistributionsPage,
     TabsComponent,
+    MerchantProPage,
+    ViewPenaltyComponent,
+    AddMerchantProComponent,
     SupplyComponent, PayRollComponent, EditStaffComponent],
   entryComponents: [ PayModalComponent,MerchantModalComponent, ReturnModalComponent,
-    ExpReturnModalComponent, EditExpenseTwoComponent,EditProductionComponent,
+    ExpReturnModalComponent, EditExpenseTwoComponent,EditProductionComponent,ViewPenaltyComponent,
     EditBadStockComponent,EditSupplyComponent,ProdEditModalComponent,EditStaffComponent,
+    AddMerchantProComponent,
     ExpenseEditComponent, FruitmodalComponent, FruiteditComponent,ExchangeModalComponent ,EditReturnComponent],
   imports: [BrowserModule,
     NgbModule,

@@ -47,6 +47,12 @@
     <ion-list color="light">
       <ion-list-header color="light">DIRECTOR</ion-list-header>
        <ion-menu-toggle autoHide="false">
+        <ion-item  color="light"   [routerLink]="['/tabs/merchant-pro']" routerLinkActive="router-link-active">
+          <ion-icon name="list"></ion-icon>
+          <ion-label  class="ml-4"> MERCHANT PRO</ion-label>
+        </ion-item>
+       </ion-menu-toggle>
+       <ion-menu-toggle autoHide="false">
         <ion-item  color="light"   [routerLink]="['/tabs/expense-two']" routerLinkActive="router-link-active">
           <ion-icon name="list"></ion-icon>
           <ion-label  class="ml-4">EXPENSE 2</ion-label>

@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./supply.component.scss'],
 })
 export class SupplyComponent implements OnInit, OnDestroy {
+  productionId: any;
 
   constructor(private outletService: OutletService,
               private distService: DistributionService,
@@ -69,8 +70,8 @@ model = {
       p_return: 0, o_return: 0, w_return: 0, t_return: 0, c_return : 0, s_return: 0, slg_return : 0,
       outlet:'',
       location:'',
-      admin:'',
-      fileId : '', rate_p:null, rate_o:null,rate_w:null, rate_t:null, 
+      admin: localStorage.getItem('appUser'),
+      fileId : this.productionId, rate_p:null, rate_o:null,rate_w:null, rate_t:null, 
       rate_c:null,rate_s:null, rate_slg:null, 
       date: Date.now()
     };
@@ -148,6 +149,7 @@ model = {
       res => {
         this.loading = false;
         this.model.fileId = res['docs']['_id'];
+        this.productionId = res['docs']['_id'];
       },
       err => {
         this.loading = false;

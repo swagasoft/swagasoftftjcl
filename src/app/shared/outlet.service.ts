@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { UserServiceService } from './user-service.service';
 import { Injectable } from '@angular/core';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
@@ -94,5 +95,20 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
 
   findOutletSaleByCode(search){
     return this.http.post(environment.apiBaseUrl + '/find-outlet-sales', search);
+  }
+
+  resetMerchantPrice(data){
+    return this.http.put(environment.apiBaseUrl + '/reset-merchant-price', data);
+  }
+
+  submitMerchantPro(data){
+    return this.http.post(environment.apiBaseUrl + '/submit-merchant-pro', data);
+  }
+  getMerchantMonthly(data){
+    return this.http.post(environment.apiBaseUrl + '/get-merchant-monthly', data);
+  }
+
+  updateBottles(data){
+   return this.http.put(environment.apiBaseUrl + '/update-bottles', data);
   }
 }

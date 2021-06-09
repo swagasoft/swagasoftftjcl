@@ -119,12 +119,19 @@
   </ion-refresher-content>
 </ion-refresher>
 <!-- search list -->
+<!-- <ion-virtual-scroll [items]="items">
+  <ion-item *virtualItem="let item">
+    {{ item }}
+  </ion-item>
+</ion-virtual-scroll> -->
 
-
-
+<ion-scroll>
 <ion-row>
   <ion-col size="12" size-lg="6" size-md="6" size-xs="12"
   size-sm="6" size-xl="6" *ngFor="let item of expense; index as i">
+
+
+  
     <ion-card 
       class="p-1 text-center font-weight-bold" 
      [ngClass]="{'primary-color-dark text-white': item.return}">
@@ -199,6 +206,7 @@
   </ion-col>
 
 </ion-row>
+</ion-scroll>
   </div>
 </div>
   

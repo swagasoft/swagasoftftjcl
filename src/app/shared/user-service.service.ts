@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 
 import { AlertController, ToastController, Platform } from '@ionic/angular';
 import { Observable } from 'rxjs';
+import jwtDecode, * as jwt_decode from "jwt-decode";
 // import { Network } from '@ionic-native/network';
 
 @Injectable({
@@ -13,7 +14,6 @@ import { Observable } from 'rxjs';
 })
 export class UserServiceService {
   messsageFromServer : any;
-  token: any;
   public appUser: any; 
   public role: any;
   username: any;
@@ -96,7 +96,6 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
     }
 
     thisMonthExpense(model){
-      console.log('search from service');
        return this.http.post(environment.apiBaseUrl + '/this-month-expense', model)
     
     }
@@ -117,7 +116,6 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
       this.http.post(environment.apiBaseUrl + '/this-month-expense', model).subscribe(
         res => {
           this.loadingExpense = false;
-          console.log('this month', res);
           this.expense = res['record'];
         },
         err => {
@@ -195,18 +193,42 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
     }
 
     deleteUser(id){
-      console.log(id)
       return this.http.get(environment.apiBaseUrl + `/delete-user${id}`);
     }
 
-     getUserRole(){
+    //  getUserRole(){
+    //   return localStorage.getItem('user-role');
+    //  }
+
+
+  //  public  getUsername() {
+  //     let payLoad =  jwtDecode(this.getToken());
+  //     let email = payLoad['username'];
+  //     return email;
+  //    }
+   
+
+   public  getUsername() {
+return localStorage.getItem('appUser')
+     }
+   
+
+    // public  getUserRole() : string{
+    //   let payLoad = jwtDecode(this.getToken());
+    //   let role = payLoad['role'];
+    //   // console.log(role);
+    //   return role;
+    //  }
+
+
+    getUserRole(){
       return localStorage.getItem('user-role');
      }
 
 
     public getToken(): string {
-      this.token = localStorage.getItem('token');
-      return this.token;
+      const token = localStorage.getItem('token');
+      return token;
       }
 
     getUserPayload() {
@@ -232,6 +254,8 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
       localStorage.setItem('token', token);
      }
 
+
+
      deleteToken() {
        localStorage.removeItem('user-role');
        window.localStorage.removeItem('token');
@@ -239,7 +263,6 @@ AuthHeader = {headers: new HttpHeaders().set('Authorization',
 
      public logout(): void {
       this.deleteToken();
-      this.token = '';
       this.username = '';
       localStorage.removeItem('appUser');
       this.router.navigateByUrl('/login');

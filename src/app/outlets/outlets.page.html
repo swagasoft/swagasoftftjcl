@@ -119,15 +119,17 @@
 
   <!--  end of outlets list -->
 
+
+
   <div *ngIf="showForm">
-  <ion-card class="aqua-gradient">
+  <ion-card color="light">
     <form class="p-3 pb-4 text-center" (keydown.enter)="outletForm.valid && createOutlet(outletForm)"
     #outletForm="ngForm"  (submit)="outletForm.valid && createOutlet(outletForm)">
       <h5  class="text-center font-weight-bold text-dark mb-4 pt-5">CREATE NEW OUTLET</h5>
 
       <ion-item>
         <div  class="text-input mb-1">
-        <ion-label position="floating">Name</ion-label>
+        <ion-label color="primary" position="floating">Name</ion-label>
         <ion-input  type="text" #name="ngModel" name="name" 
         [(ngModel)]="model.name"
           autocomplete="off" required="true"  ></ion-input>
@@ -138,7 +140,7 @@
       <ion-row>
         <ion-col>
           <ion-item color="light" >
-            <ion-label color="dark" class="text-center">LOCATION</ion-label>
+            <ion-label color="primary" class="text-center">LOCATION</ion-label>
             <ion-select select="dark" [value]="model.location" required #location name="location"
             (ngModelChange)="selectChange($event)" [(ngModel)]="modelSel.filterOptions">
             <ion-select-option *ngFor="let item of staffService.nigeriaState"
@@ -151,7 +153,7 @@
         <ion-col>
           <ion-item>
             <div  class="text-input mb-1">
-            <ion-label position="floating">code</ion-label>
+            <ion-label color="primary" position="floating">code</ion-label>
             <ion-input  type="text" #code="ngModel" name="code" 
             [(ngModel)]="model.code" 
               autocomplete="off" required="true"></ion-input>
@@ -166,7 +168,7 @@
         <ion-col>
           <ion-item>
             <div  class="text-input mb-1">
-            <ion-label position="floating">(P) price</ion-label>
+            <ion-label color="primary" position="floating">(P) price</ion-label>
             <ion-input  type="number" #pineapple="ngModel" name="pneapple" 
             [(ngModel)]="model.p_price" 
               autocomplete="off" required="true"  ></ion-input>
@@ -178,7 +180,7 @@
         <ion-col>
           <ion-item>
             <div  class="text-input mb-1">
-            <ion-label position="floating">(O) price</ion-label>
+            <ion-label color="primary" position="floating">(O) price</ion-label>
             <ion-input  type="number" #orange="ngModel" name="orange" 
             [(ngModel)]="model.o_price" 
               autocomplete="off" required="true"  ></ion-input>
@@ -189,7 +191,7 @@
         <ion-col>
           <ion-item>
             <div  class="text-input mb-1">
-            <ion-label position="floating">(W) price</ion-label>
+            <ion-label color="primary" position="floating">(W) price</ion-label>
             <ion-input  type="number" #watermelon="ngModel" name="watermelon" 
             [(ngModel)]="model.w_price" 
               autocomplete="off" required="true"  ></ion-input>
@@ -206,7 +208,7 @@
           <ion-col>
             <ion-item>
               <div  class="text-input mb-1">
-              <ion-label position="floating">(T) price</ion-label>
+              <ion-label color="primary" position="floating">(T) price</ion-label>
               <ion-input  type="number" #tigernut="ngModel" name="tigernut" 
               [(ngModel)]="model.t_price" 
                 autocomplete="off" required="true"  ></ion-input>
@@ -217,7 +219,7 @@
           <ion-col>
             <ion-item>
               <div  class="text-input mb-1">
-              <ion-label position="floating">(C) price</ion-label>
+              <ion-label color="primary" position="floating">(C) price</ion-label>
               <ion-input  type="number" #carrot="ngModel" name="carrot" 
               [(ngModel)]="model.c_price" 
                 autocomplete="off" required="true"  ></ion-input>
@@ -229,7 +231,7 @@
           <ion-col>
             <ion-item>
               <div  class="text-input mb-1">
-              <ion-label position="floating">(S) price</ion-label>
+              <ion-label color="primary" position="floating">(S) price</ion-label>
               <ion-input  type="number" #sugarcane="ngModel" name="sugercane" 
               [(ngModel)]="model.s_price" 
                 autocomplete="off" required="true"  ></ion-input>
@@ -244,7 +246,7 @@
           <ion-col>
             <ion-item>
               <div  class="text-input mb-1">
-              <ion-label position="floating">(SLG) price</ion-label>
+              <ion-label color="primary" position="floating">(SLG) price</ion-label>
               <ion-input  type="number" #slg="ngModel" name="slg" 
               [(ngModel)]="model.slg_price" 
                 autocomplete="off" required="true"  ></ion-input>
@@ -260,7 +262,7 @@
           <ion-col>
             <ion-item>
               <div  class="text-input mb-1">
-              <ion-label position="floating"> P-MAX</ion-label>
+              <ion-label color="primary" position="floating"> P-MAX</ion-label>
               <ion-input  type="number" #pineapple_max ="ngModel" name="pineapple_max" 
               [(ngModel)]="model.p_max" 
                 autocomplete="off" required="true"  ></ion-input>
@@ -272,7 +274,7 @@
           <ion-col>
             <ion-item>
               <div  class="text-input mb-1">
-              <ion-label position="floating">O-MAX</ion-label>
+              <ion-label color="primary" position="floating">O-MAX</ion-label>
               <ion-input  type="number" #orange_max="ngModel" name="orange_max" 
               [(ngModel)]="model.o_max" 
                 autocomplete="off" required="true"  ></ion-input>
@@ -287,7 +289,7 @@
           <ion-col>
             <ion-item>
               <div  class="text-input mb-1">
-              <ion-label position="floating"> W-MAX</ion-label>
+              <ion-label color="primary" position="floating"> W-MAX</ion-label>
               <ion-input  type="number" #watermelon_max="ngModel" name="watermelon_max" 
               [(ngModel)]="model.w_max" 
                 autocomplete="off" required="true"  ></ion-input>
@@ -299,7 +301,7 @@
           <ion-col>
             <ion-item>
               <div  class="text-input mb-1">
-              <ion-label position="floating">T-MAX</ion-label>
+              <ion-label color="primary" position="floating">T-MAX</ion-label>
               <ion-input  type="number" #tigernut_max="ngModel" name="tigernut_max" 
               [(ngModel)]="model.t_max" 
                 autocomplete="off" required="true"  ></ion-input>
@@ -314,7 +316,7 @@
           <ion-col>
             <ion-item>
               <div  class="text-input mb-1">
-              <ion-label position="floating"> C-MAX</ion-label>
+              <ion-label color="primary" position="floating"> C-MAX</ion-label>
               <ion-input  type="number" #carrot_max="ngModel" name="carrot_max" 
               [(ngModel)]="model.c_max" 
                 autocomplete="off" required="true"  ></ion-input>
@@ -326,7 +328,7 @@
           <ion-col>
             <ion-item>
               <div  class="text-input mb-1">
-              <ion-label position="floating">S-MAX</ion-label>
+              <ion-label color="primary" position="floating">S-MAX</ion-label>
               <ion-input  type="number" #sugarcane_max="ngModel" name="sugarcane_max" 
               [(ngModel)]="model.s_max" 
                 autocomplete="off" required="true"  ></ion-input>
@@ -340,7 +342,7 @@
           <ion-col>
             <ion-item>
               <div  class="text-input mb-1">
-              <ion-label position="floating"> SLG-MAX</ion-label>
+              <ion-label color="primary" position="floating"> SLG-MAX</ion-label>
               <ion-input  type="number" #slg_max="ngModel" name="slg_max" 
               [(ngModel)]="model.slg_max" 
                 autocomplete="off" required="true"  ></ion-input>
@@ -354,7 +356,7 @@
         <ion-col>
           <ion-item>
             <div>
-            <ion-label position="floating">merchandiser profit per bottle</ion-label>
+            <ion-label color="primary" position="floating">merchandiser profit per bottle</ion-label>
             <ion-input  type="number" #merchant_rate="ngModel" name="merchant_rate" 
             [(ngModel)]="model.merchant_rate"  required="true"  ></ion-input>
         </div>
@@ -384,7 +386,7 @@
 
       <ion-item>
         <div  class="text-input mb-1">
-        <ion-label position="floating">Name</ion-label>
+        <ion-label color="primary" position="floating">Name</ion-label>
         <ion-input  type="text" #name="ngModel" name="name" 
         [(ngModel)]="editModel.name"
           autocomplete="off" required="true"  ></ion-input>
@@ -395,7 +397,7 @@
       <ion-row>
         <ion-col>
           <ion-item color="light" >
-            <ion-label color="dark" class="text-center">LOCATION</ion-label>
+            <ion-label color="primary" class="text-center">LOCATION</ion-label>
             <ion-select select="dark" [value]="editModel.location" required #location name="location"
             (ngModelChange)="editModelLocation($event)" [(ngModel)]="editModel.location">
             <ion-select-option *ngFor="let item of staffService.nigeriaState"
@@ -408,7 +410,7 @@
         <ion-col>
           <ion-item>
             <div  class="text-input mb-1">
-            <ion-label position="floating">code</ion-label>
+            <ion-label color="primary" position="floating">code</ion-label>
             <ion-input  type="text" #code="ngModel" name="code" 
             [(ngModel)]="editModel.code" 
               autocomplete="off" required="true"></ion-input>
@@ -426,7 +428,7 @@
         <ion-col>
           <ion-item>
             <div  class="text-input mb-1">
-            <ion-label position="floating">(P) price</ion-label>
+            <ion-label color="primary" position="floating">(P) price</ion-label>
             <ion-input  type="number" #pineapple="ngModel" name="pneapple" 
             [(ngModel)]="editModel.p_price" 
               autocomplete="off" required="true"  ></ion-input>
@@ -438,7 +440,7 @@
         <ion-col>
           <ion-item>
             <div  class="text-input mb-1">
-            <ion-label position="floating">(O) price</ion-label>
+            <ion-label color="primary" position="floating">(O) price</ion-label>
             <ion-input  type="number" #orange="ngModel" name="orange" 
             [(ngModel)]="editModel.o_price" 
               autocomplete="off" required="true"  ></ion-input>
@@ -449,7 +451,7 @@
         <ion-col>
           <ion-item>
             <div  class="text-input mb-1">
-            <ion-label position="floating">(W) price</ion-label>
+            <ion-label color="primary" position="floating">(W) price</ion-label>
             <ion-input  type="number" #watermelon="ngModel" name="watermelon" 
             [(ngModel)]="editModel.w_price" 
               autocomplete="off" required="true"  ></ion-input>
@@ -466,7 +468,7 @@
           <ion-col>
             <ion-item>
               <div  class="text-input mb-1">
-              <ion-label position="floating">(T) price</ion-label>
+              <ion-label color="primary" position="floating">(T) price</ion-label>
               <ion-input  type="number" #tigernut="ngModel" name="tigernut" 
               [(ngModel)]="editModel.t_price" 
                 autocomplete="off" required="true"  ></ion-input>
@@ -477,7 +479,7 @@
           <ion-col>
             <ion-item>
               <div  class="text-input mb-1">
-              <ion-label position="floating">(C) price</ion-label>
+              <ion-label color="primary" position="floating">(C) price</ion-label>
               <ion-input  type="number" #carrot="ngModel" name="carrot" 
               [(ngModel)]="editModel.c_price" 
                 autocomplete="off" required="true"  ></ion-input>
@@ -489,7 +491,7 @@
           <ion-col>
             <ion-item>
               <div  class="text-input mb-1">
-              <ion-label position="floating">(S) price</ion-label>
+              <ion-label color="primary" position="floating">(S) price</ion-label>
               <ion-input  type="number" #sugarcane="ngModel" name="sugercane" 
               [(ngModel)]="editModel.s_price" 
                 autocomplete="off" required="true"  ></ion-input>
@@ -504,7 +506,7 @@
           <ion-col>
             <ion-item>
               <div  class="text-input mb-1">
-              <ion-label position="floating">(SLG) price</ion-label>
+              <ion-label color="primary" position="floating">(SLG) price</ion-label>
               <ion-input  type="number" #slg="ngModel" name="slg" 
               [(ngModel)]="editModel.slg_price" 
                 autocomplete="off" required="true"  ></ion-input>
@@ -520,7 +522,7 @@
           <ion-col>
             <ion-item>
               <div  class="text-input mb-1">
-              <ion-label position="floating"> P-MAX</ion-label>
+              <ion-label color="primary" position="floating"> P-MAX</ion-label>
               <ion-input  type="number" #pineapple_max ="ngModel" name="pineapple_max" 
               [(ngModel)]="editModel.p_max" 
                 autocomplete="off" required="true"  ></ion-input>
@@ -532,7 +534,7 @@
           <ion-col>
             <ion-item>
               <div  class="text-input mb-1">
-              <ion-label position="floating">O-MAX</ion-label>
+              <ion-label color="primary" position="floating">O-MAX</ion-label>
               <ion-input  type="number" #orange_max="ngModel" name="orange_max" 
               [(ngModel)]="editModel.o_max" 
                 autocomplete="off" required="true"  ></ion-input>
@@ -547,7 +549,7 @@
           <ion-col>
             <ion-item>
               <div  class="text-input mb-1">
-              <ion-label position="floating"> W-MAX</ion-label>
+              <ion-label color="primary" position="floating"> W-MAX</ion-label>
               <ion-input  type="number" #watermelon_max="ngModel" name="watermelon_max" 
               [(ngModel)]="editModel.w_max" 
                 autocomplete="off" required="true"  ></ion-input>
@@ -559,7 +561,7 @@
           <ion-col>
             <ion-item>
               <div  class="text-input mb-1">
-              <ion-label position="floating">T-MAX</ion-label>
+              <ion-label color="primary" position="floating">T-MAX</ion-label>
               <ion-input  type="number" #tigernut_max="ngModel" name="tigernut_max" 
               [(ngModel)]="editModel.t_max" 
                 autocomplete="off" required="true"  ></ion-input>
@@ -574,7 +576,7 @@
           <ion-col>
             <ion-item>
               <div  class="text-input mb-1">
-              <ion-label position="floating"> C-MAX</ion-label>
+              <ion-label color="primary" position="floating"> C-MAX</ion-label>
               <ion-input  type="number" #carrot_max="ngModel" name="carrot_max" 
               [(ngModel)]="editModel.c_max" 
                 autocomplete="off" required="true"  ></ion-input>
@@ -586,7 +588,7 @@
           <ion-col>
             <ion-item>
               <div  class="text-input mb-1">
-              <ion-label position="floating">S-MAX</ion-label>
+              <ion-label color="primary" position="floating">S-MAX</ion-label>
               <ion-input  type="number" #sugarcane_max="ngModel" name="sugarcane_max" 
               [(ngModel)]="editModel.s_max" 
                 autocomplete="off" required="true"  ></ion-input>
@@ -600,7 +602,7 @@
           <ion-col>
             <ion-item>
               <div  class="text-input mb-1">
-              <ion-label position="floating"> SLG-MAX</ion-label>
+              <ion-label color="primary" position="floating"> SLG-MAX</ion-label>
               <ion-input  type="number" #slg_max="ngModel" name="slg_max" 
               [(ngModel)]="editModel.slg_max" 
                 autocomplete="off" required="true"  ></ion-input>

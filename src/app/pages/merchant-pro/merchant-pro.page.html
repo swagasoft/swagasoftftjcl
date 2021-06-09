@@ -1,0 +1,140 @@
+<ion-header>
+  <ion-toolbar color="light">
+    
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <div class="row d-flex justify-content-center font-weight-bold">
+      OUTLET PRO
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ngb-datepicker  (navigate)="theMonthNavigate($event)" 
+    class="datepicker-only-month-select "></ngb-datepicker>
+  </ion-card>
+
+
+
+
+
+
+  <div *ngIf="loading" class="spinner">
+    <div class="loader"></div>
+  </div>
+
+
+
+<div class="">
+     
+  <ion-item *ngIf="outletSales" color="light">
+    <!-- <ion-label slot="start" class="font-weight-bold" color="primary">Change Merchant Rate</ion-label> -->
+    <input  type="number" [(ngModel)]="newRate" style="font-weight: bold;" placeholder="enter rate">
+    <ion-button [disabled]="!newRate" size="small" (click)="changeRate()" expand="block" fill="solid" >
+      confirm
+    </ion-button>
+  </ion-item>
+
+</div>
+
+
+<div>
+
+</div>
+
+
+
+
+<!-- <table class="table table-striped table-responsive text-center">
+  <thead  >
+    <tr >
+      <th>SN</th>
+      <th>Name</th>
+      <th>Total</th>
+      <th *ngFor="let item of allOutlet"> <small>₦ {{item?.merchant_rate}} </small> <br> {{item?.code}}  </th>
+      <div *ngFor="let item of merchantPro">
+        <td >{{item?.merchantName}}</td>
+        <td>{{item.group}}</td>
+        <div *ngFor="let data of item.mixed">
+          <small>{{data?.store}}</small>
+          <td> {{data?.bottles}} </td>
+        </div>
+      </div>
+    </tr>
+  </thead>
+ <tbody>
+ </tbody>
+  </table> -->
+
+  <ion-list>
+    
+  </ion-list>
+
+  <!-- <div class="container" *ngFor="let item of merchantPro">
+    <ion-item>
+      <ion-label>{{item?.merchantName}}</ion-label>
+      <div>{{item.group}}</div>
+    </ion-item>
+    <table class="table table-striped table-responsive text-center" *ngFor="let data of item.mixed">
+    <thead  > 
+      <tr >
+      <th scope="col">{{data?.store}}</th>  <td scope="row">{{data?.bottles}}</td>
+     </tr>
+    </thead>
+    </table>
+  </div> -->
+
+
+  <!-- <ul id="menu" *ngFor="let item of merchantPro">
+    <ion-label>{{item?.merchantName}}</ion-label>
+    <div>{{item.group}}</div>
+
+    <li *ngFor="let data of item.mixed"> {{data?.store}}</li> <hr>
+    <li *ngFor="let data of item.mixed"> {{data?.bottles}}</li> <hr>
+  </ul>   -->
+
+
+
+<table class="table table-striped table-responsive"  *ngFor="let item of merchantPro">
+    <ion-label></ion-label>
+   <ion-item>
+     <!-- <div  slot="end">Total  =  000</div> -->
+     <div class="font-weight-bold pt-3">{{item?.merchantName  + "  " }}  <small class="ml-2">{{item.group}} </small>  </div> 
+   </ion-item>
+  <thead>
+    <tr >
+      <th scope="col"  *ngFor="let data of item.mixed"> {{data?.store}}</th> 
+    </tr>
+  </thead>
+  <tbody>
+    <tr >
+      <td *ngFor="let data of item.mixed"> <input (input)="bootleChange($event, data, item._id)" [value]="data?.bottles" size="3" > </td>
+    </tr>
+
+    <!-- <tr >
+      <td *ngFor="let data of item.mixed"> <input [value]="data?.rate" size="3" > </td>
+    </tr> -->
+  </tbody>
+
+  
+</table>
+ 
+
+
+
+
+
+
+<!-- add button -->
+<ion-fab class="mb-5" (click)="addRecord()"  vertical="top" horizontal="end" slot="fixed">
+  <ion-fab-button color="success">
+    <ion-icon  name="add"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
+
+
+
+
+</ion-content>
